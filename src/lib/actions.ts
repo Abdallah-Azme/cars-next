@@ -1,12 +1,12 @@
 "use server";
 
 import { cookies } from "next/headers";
-
 import type { SettingsResponse } from "@/types/settings";
 import type { CategoriesSResponse } from "@/types/categories";
 import type { VehicleSResponse, FiltersResponse, SingleVehicleResponse } from "@/types/vehicles";
-import type { FavResponse, AddToFavResponse } from "@/types/favorites";
+import type { FavResponse } from "@/types/favorites";
 import type { LoginResponse, RegisterResponse, UpdateProfileResponse, ChangePasswordResponse, User } from "@/types/auth";
+import type { UsersResponse, UserActionResponse } from "@/types/users";
 
 const BASE_URL = process.env.LARAVEL_API_URL;
 
@@ -21,31 +21,48 @@ async function getAuthHeaders() {
   };
 }
 
-export async function fetchFromLaravel<T>(endpoint: string, options: RequestInit = {}) {
+export type ActionResponse<T> = {
+  ok: boolean;
+  status: number;
+  data: T;
+  error?: string;
+};
+
+export async function fetchFromLaravel<T>(endpoint: string, options: RequestInit = {}): Promise<ActionResponse<T>> {
   const headers = await getAuthHeaders();
   
   // If body is FormData, don't set Content-Type
-  if (options.body instanceof FormData) {
+  const finalOptions = { ...options };
+  if (finalOptions.body instanceof FormData) {
     const restHeaders: Record<string, string> = { ...headers };
     delete restHeaders["Content-Type"];
-    options.headers = { ...restHeaders, ...options.headers };
+    finalOptions.headers = { ...restHeaders, ...finalOptions.headers };
   } else {
-    options.headers = { ...headers, ...options.headers };
+    finalOptions.headers = { ...headers, ...finalOptions.headers };
   }
 
+  try {
+    const response = await fetch(`${BASE_URL}${endpoint}`, {
+      ...finalOptions,
+    });
 
-  const response = await fetch(`${BASE_URL}${endpoint}`, {
-    ...options,
-  });
+    const data = await response.json().catch(() => null);
 
-  const data = await response.json().catch(() => null);
-
-  return {
-    ok: response.ok,
-    status: response.status,
-    data: data as T,
-    error: !response.ok ? (data?.message || "Something went wrong") : undefined,
-  };
+    return {
+      ok: response.ok,
+      status: response.status,
+      data: data as T,
+      error: !response.ok ? (data?.message || "Something went wrong") : undefined,
+    };
+  } catch (err: unknown) {
+    const message = err instanceof Error ? err.message : "Connection failed";
+    return {
+      ok: false,
+      status: 500,
+      data: null as unknown as T,
+      error: message,
+    };
+  }
 }
 
 // Settings
@@ -73,6 +90,7 @@ export type VehicleFilterParams = {
   page?: number;
   holdingDate?: string;
   per_page?: number;
+  [key: string]: string | number | string[] | undefined;
 };
 
 export async function getVehicles(params?: VehicleFilterParams) {
@@ -107,26 +125,35 @@ export async function getFavorites() {
   return fetchFromLaravel<FavResponse>("/favorites", { method: "GET", cache: "no-store" });
 }
 
-export async function addToFav(id: number) {
-  return fetchFromLaravel<AddToFavResponse>(`/favorites/${id}`, { method: "POST" });
+export async function addToFav(vehicleId: number) {
+  return fetchFromLaravel<unknown>("/favorites", {
+    method: "POST",
+    body: JSON.stringify({ vehicle_id: vehicleId }),
+  });
 }
 
-export async function removeFromFav(id: number) {
-  return fetchFromLaravel<AddToFavResponse>(`/favorites/${id}`, { method: "DELETE" });
+export async function removeFromFav(vehicleId: number) {
+  return fetchFromLaravel<unknown>(`/favorites/${vehicleId}`, {
+    method: "DELETE",
+  });
 }
 
 // Auth
-export async function login(formData: Record<string, string>) {
+export async function login(data: Record<string, unknown>) {
   const res = await fetchFromLaravel<LoginResponse>("/login", {
     method: "POST",
-    body: JSON.stringify(formData),
+    body: JSON.stringify(data),
   });
 
   if (res.ok && res.data?.data?.accessToken) {
-    const cookieStore = await cookies();
-    cookieStore.set("auth_token", res.data.data.accessToken, {
+    // NOTE: `secure: false` is intentional — this server runs on plain HTTP
+    // (no SSL/TLS). Setting `secure: true` on an HTTP connection causes
+    // browsers to silently refuse to store or send the cookie, which breaks
+    // authentication entirely. Update to `true` only if HTTPS is added.
+    (await cookies()).set("auth_token", res.data.data.accessToken, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
+      secure: false,
+      sameSite: "lax",
       path: "/",
       maxAge: 60 * 60 * 24 * 7, // 1 week
     });
@@ -135,37 +162,36 @@ export async function login(formData: Record<string, string>) {
   return res;
 }
 
-export async function register(formData: Record<string, string>) {
+export async function register(data: Record<string, unknown>) {
   return fetchFromLaravel<RegisterResponse>("/register", {
     method: "POST",
-    body: JSON.stringify(formData),
+    body: JSON.stringify(data),
   });
 }
 
 export async function logout() {
-  const res = await fetchFromLaravel<{ message: string }>("/logout", { method: "POST" });
-  if (res.ok) {
-    const cookieStore = await cookies();
-    cookieStore.delete("auth_token");
-  }
+  const res = await fetchFromLaravel<{ message: string }>("/logout", {
+    method: "POST",
+  });
+  (await cookies()).delete("auth_token");
   return res;
 }
 
 export async function getProfile() {
-  return fetchFromLaravel<{ success: boolean; data: { user: User } }>("/profile", { method: "GET", cache: "no-store" });
+  return fetchFromLaravel<{ success: boolean; data: { user: User } }>("/profile");
 }
 
-export async function updateProfile(formData: FormData) {
+export async function updateProfile(data: FormData) {
   return fetchFromLaravel<UpdateProfileResponse>("/profile", {
     method: "POST",
-    body: formData,
+    body: data,
   });
 }
 
-export async function changePassword(formData: Record<string, string>) {
+export async function changePassword(data: Record<string, unknown>) {
   return fetchFromLaravel<ChangePasswordResponse>("/profile/password", {
     method: "POST",
-    body: JSON.stringify(formData),
+    body: JSON.stringify(data),
   });
 }
 
@@ -177,4 +203,27 @@ export async function subscribeNewsletter(email: string) {
   });
 }
 
+// Admin Users
+export async function getUsers(page: number = 1, perPage: number = 10, role?: string) {
+  const query = new URLSearchParams();
+  query.set("page", String(page));
+  query.set("per_page", String(perPage));
+  if (role) query.set("role", role);
+  
+  return fetchFromLaravel<UsersResponse>(`/users?${query.toString()}`, {
+    method: "GET",
+    cache: "no-store",
+  });
+}
 
+export async function activateUser(userId: number) {
+  return fetchFromLaravel<UserActionResponse>(`/users/${userId}/activate`, {
+    method: "PATCH",
+  });
+}
+
+export async function disableUser(userId: number) {
+  return fetchFromLaravel<UserActionResponse>(`/users/${userId}/disable`, {
+    method: "PATCH",
+  });
+}
