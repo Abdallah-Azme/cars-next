@@ -4,6 +4,7 @@ import "./globals.css";
 import QueryProvider from "@/components/providers/query-provider";
 import { Toaster } from "sonner";
 import Navbar from "@/components/shared/Navbar";
+import Footer from "@/components/shared/Footer";
 import { DynamicHead } from "@/components/shared/DynamicHead";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -25,6 +26,7 @@ export default function RootLayout({
           <DynamicHead />
           <Navbar />
           {children}
+          <Footer />
           <Toaster richColors position="bottom-right" />
         </QueryProvider>
       </body>

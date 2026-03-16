@@ -101,7 +101,7 @@ export function ProductCard({ vehicle }: Props) {
               {/* Dots Indicator */}
               {images.length > 1 && (
                 <div 
-                  className="z-[9999]!"
+                  className="z-9999!"
                   style={{ position: 'absolute', bottom: '12px', left: 0, right: 0, display: 'flex', justifyContent: 'center', pointerEvents: 'none' }}
                 >
                   <div 

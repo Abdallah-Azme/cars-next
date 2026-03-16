@@ -11,6 +11,7 @@ export default function HomePage() {
       <StatsSection />
       <CategorySection />
       <ProductSection />
+      {/* <SocialLinksSection /> */}
       <EmailSubscription />
     </main>
   );

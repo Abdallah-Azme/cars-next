@@ -1,11 +1,26 @@
 "use client";
 
+import { useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { CircleDollarSign, Phone } from "lucide-react";
 import { useSettingsStore } from "@/stores/settings";
+import { getSettings } from "@/lib/actions";
 
 export default function Hero() {
   const settings = useSettingsStore((state) => state.settings);
+  const setSettings = useSettingsStore((state) => state.setSettings);
+
+  useEffect(() => {
+    if (!settings) {
+      const fetchSettings = async () => {
+        const res = await getSettings();
+        if (res.ok && res.data?.data) {
+          setSettings(res.data.data);
+        }
+      };
+      fetchSettings();
+    }
+  }, [settings, setSettings]);
 
   return (
     <section
@@ -31,10 +46,10 @@ export default function Hero() {
             <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
               <Button
                 size={"lg"}
-                className="bg-red-600 hover:bg-red-700 text-white font-semibold  text-lg"
+                className="bg-red-600 hover:bg-red-700 text-white font-semibold text-lg"
                 asChild
               >
-                <a href={settings?.heroButton1Link || "#"}>
+                <a href={settings?.email ? `mailto:${settings.email}` : "#"}>
                   <CircleDollarSign size={20} />
                   Request a Quote
                 </a>
@@ -43,11 +58,11 @@ export default function Hero() {
               <Button
                 size={"lg"}
                 variant="outline"
-                className="border-white text-primary hover:bg-slate-200   text-lg"
+                className="border-white text-white hover:bg-white/10 text-lg"
                 asChild
               >
-                <a href={settings?.heroButton2Link || "#"}>
-                  <Phone />
+                <a href={settings?.phone ? `tel:${settings.phone}` : "#"}>
+                  <Phone size={20} />
                   Contact Us
                 </a>
               </Button>

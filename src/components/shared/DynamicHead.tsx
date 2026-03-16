@@ -5,7 +5,21 @@ import { useEffect } from "react";
 import { useSettingsStore } from "@/stores/settings";
 
 export function DynamicHead() {
+  const setSettings = useSettingsStore((state) => state.setSettings);
   const settings = useSettingsStore((state) => state.settings);
+
+  useEffect(() => {
+    if (!settings) {
+      const fetchSettings = async () => {
+        const { getSettings } = await import("@/lib/actions");
+        const res = await getSettings();
+        if (res.ok && res.data?.data) {
+          setSettings(res.data.data);
+        }
+      };
+      fetchSettings();
+    }
+  }, [settings, setSettings]);
 
   useEffect(() => {
     if (!settings) return;
