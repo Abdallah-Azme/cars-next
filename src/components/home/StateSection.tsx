@@ -18,8 +18,8 @@ export default function StatsSection() {
       ];
 
   return (
-    <section className=" py-20">
-      <div className="container flex flex-col gap-10">
+    <section className="py-10">
+      <div className="container flex flex-col gap-6">
         {/* Header */}
         <div className="text-center flex flex-col gap-2">
           <h2 className="text-3xl md:text-4xl font-bold text-red-600">
