@@ -13,6 +13,7 @@ import {
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import AuthBtns from "./AuthBtns";
+import { fixImageUrl } from "@/lib/utils";
 
 const links = [
   {
@@ -50,7 +51,7 @@ export default function Navbar() {
           {/* Logo */}
           <Link href={"/"} className="text-xl font-bold flex items-center gap-2">
             <img
-              src={settings?.siteLogo || "/logo-icon.jpeg"}
+              src={fixImageUrl(settings?.siteLogo) || "/logo-icon.jpeg"}
               alt={settings?.siteName || "logo"}
               className="size-20 object-contain"
             />

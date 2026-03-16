@@ -39,6 +39,15 @@ const nextConfig = {
       },
     ];
   },
+
+  async rewrites() {
+    return [
+      {
+        source: "/storage/:path*",
+        destination: "http://204.168.156.86/storage/:path*",
+      },
+    ];
+  },
 };
 
 export default nextConfig;

@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useSettingsStore } from "@/stores/settings";
+import { fixImageUrl } from "@/lib/utils";
 import {
   Facebook,
   Twitter,
@@ -66,7 +67,7 @@ export default function Footer() {
                 {settings?.siteLogo ? (
                   <div className="relative w-12 h-12">
                     <img
-                      src={settings.siteLogo}
+                      src={fixImageUrl(settings.siteLogo)}
                       alt={settings?.siteName || "Logo"}
                       className="w-full h-full object-contain"
                     />
