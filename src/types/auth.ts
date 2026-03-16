@@ -30,7 +30,8 @@ export type RegisterResponse = {
             avatar: string|null,
             createdAt: string,
             updatedAt: string
-        }
+        },
+        verificationCode?: string
     }
 }
 

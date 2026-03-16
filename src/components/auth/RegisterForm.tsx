@@ -60,7 +60,14 @@ export default function RegisterForm() {
     
     if (res?.ok) {
       toast.success(res?.data?.message || "Registration successful");
-      router.push("/login");
+      const email = res.data?.data?.user?.email || data.email;
+      const code = res.data?.data?.verificationCode;
+      
+      const params = new URLSearchParams();
+      params.set("email", email);
+      if (code) params.set("code", code);
+      
+      router.push(`/verify-email?${params.toString()}`);
     } else {
       toast.error(res?.error || "Registration failed");
     }

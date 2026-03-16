@@ -90,11 +90,16 @@ export default function LoginForm() {
           )}
         />
 
-        <div>
-          <p className="text-sm font-semibold text-end ">
-            Don&apos;t have an account{" "}
+        <div className="flex flex-col gap-2">
+          <p className="text-sm font-semibold text-end">
+            Don&apos;t have an account?{" "}
             <Link href={"/register"} className="font-bold underline text-red-700">
               Signup
+            </Link>
+          </p>
+          <p className="text-sm font-semibold text-end">
+            <Link href={"/forgot-password"} className="font-bold underline text-gray-500 hover:text-red-700">
+              Forgot password?
             </Link>
           </p>
         </div>

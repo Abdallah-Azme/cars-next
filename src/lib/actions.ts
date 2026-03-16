@@ -3,9 +3,19 @@
 import { cookies } from "next/headers";
 import type { SettingsResponse } from "@/types/settings";
 import type { CategoriesSResponse } from "@/types/categories";
-import type { VehicleSResponse, FiltersResponse, SingleVehicleResponse } from "@/types/vehicles";
+import type {
+  VehicleSResponse,
+  FiltersResponse,
+  SingleVehicleResponse,
+} from "@/types/vehicles";
 import type { FavResponse } from "@/types/favorites";
-import type { LoginResponse, RegisterResponse, UpdateProfileResponse, ChangePasswordResponse, User } from "@/types/auth";
+import type {
+  LoginResponse,
+  RegisterResponse,
+  UpdateProfileResponse,
+  ChangePasswordResponse,
+  User,
+} from "@/types/auth";
 import type { UsersResponse, UserActionResponse } from "@/types/users";
 
 const BASE_URL = process.env.LARAVEL_API_URL;
@@ -13,11 +23,11 @@ const BASE_URL = process.env.LARAVEL_API_URL;
 async function getAuthHeaders() {
   const cookieStore = await cookies();
   const token = cookieStore.get("auth_token")?.value;
-  
+
   return {
     "Content-Type": "application/json",
-    "Accept": "application/json",
-    ...(token ? { "Authorization": `Bearer ${token}` } : {}),
+    Accept: "application/json",
+    ...(token ? { Authorization: `Bearer ${token}` } : {}),
   };
 }
 
@@ -28,9 +38,12 @@ export type ActionResponse<T> = {
   error?: string;
 };
 
-export async function fetchFromLaravel<T>(endpoint: string, options: RequestInit = {}): Promise<ActionResponse<T>> {
+export async function fetchFromLaravel<T>(
+  endpoint: string,
+  options: RequestInit = {},
+): Promise<ActionResponse<T>> {
   const headers = await getAuthHeaders();
-  
+
   // If body is FormData, don't set Content-Type
   const finalOptions = { ...options };
   if (finalOptions.body instanceof FormData) {
@@ -52,7 +65,7 @@ export async function fetchFromLaravel<T>(endpoint: string, options: RequestInit
       ok: response.ok,
       status: response.status,
       data: data as T,
-      error: !response.ok ? (data?.message || "Something went wrong") : undefined,
+      error: !response.ok ? data?.message || "Something went wrong" : undefined,
     };
   } catch (err: unknown) {
     const message = err instanceof Error ? err.message : "Connection failed";
@@ -72,7 +85,10 @@ export async function getSettings() {
 
 // Categories
 export async function getCategories() {
-  return fetchFromLaravel<CategoriesSResponse>("/categories", { method: "GET", cache: "no-store" });
+  return fetchFromLaravel<CategoriesSResponse>("/categories", {
+    method: "GET",
+    cache: "no-store",
+  });
 }
 
 // Vehicles
@@ -95,10 +111,14 @@ export type VehicleFilterParams = {
 
 export async function getVehicles(params?: VehicleFilterParams) {
   const query = new URLSearchParams();
-  if (params?.makers?.length) params.makers.forEach((v) => query.append("selection_maker", v));
-  if (params?.models?.length) params.models.forEach((v) => query.append("selection_model", v));
-  if (params?.types?.length) params.types.forEach((v) => query.append("vehicle_type", v));
-  if (params?.sizes?.length) params.sizes.forEach((v) => query.append("vehicle_size", v));
+  if (params?.makers?.length)
+    params.makers.forEach((v) => query.append("selection_maker", v));
+  if (params?.models?.length)
+    params.models.forEach((v) => query.append("selection_model", v));
+  if (params?.types?.length)
+    params.types.forEach((v) => query.append("vehicle_type", v));
+  if (params?.sizes?.length)
+    params.sizes.forEach((v) => query.append("vehicle_size", v));
   if (params?.yearFrom) query.set("year_min", params.yearFrom);
   if (params?.yearTo) query.set("year_max", params.yearTo);
   if (params?.hourFrom) query.set("working_hours_min", params.hourFrom);
@@ -107,22 +127,34 @@ export async function getVehicles(params?: VehicleFilterParams) {
   if (params?.page) query.set("page", String(params.page));
   if (params?.per_page) query.set("per_page", String(params.per_page));
   if (params?.holdingDate) query.set("holding_date", params.holdingDate);
-  
+
   const qs = query.toString();
-  return fetchFromLaravel<VehicleSResponse>(`/vehicles${qs ? `?${qs}` : ""}`, { method: "GET", cache: "no-store" });
+  return fetchFromLaravel<VehicleSResponse>(`/vehicles${qs ? `?${qs}` : ""}`, {
+    method: "GET",
+    cache: "no-store",
+  });
 }
 
 export async function getFilters() {
-  return fetchFromLaravel<FiltersResponse>("/vehicles/filters", { method: "GET", cache: "no-store" });
+  return fetchFromLaravel<FiltersResponse>("/vehicles/filters", {
+    method: "GET",
+    cache: "no-store",
+  });
 }
 
 export async function getSingleVehicle(id: string) {
-  return fetchFromLaravel<SingleVehicleResponse>(`/vehicles/${id}`, { method: "GET", cache: "no-store" });
+  return fetchFromLaravel<SingleVehicleResponse>(`/vehicles/${id}`, {
+    method: "GET",
+    cache: "no-store",
+  });
 }
 
 // Favorites
 export async function getFavorites() {
-  return fetchFromLaravel<FavResponse>("/favorites", { method: "GET", cache: "no-store" });
+  return fetchFromLaravel<FavResponse>("/favorites", {
+    method: "GET",
+    cache: "no-store",
+  });
 }
 
 export async function addToFav(vehicleId: number) {
@@ -163,10 +195,39 @@ export async function login(data: Record<string, unknown>) {
 }
 
 export async function register(data: Record<string, unknown>) {
-  return fetchFromLaravel<RegisterResponse>("/register", {
+  const res = await fetchFromLaravel<RegisterResponse>("/register", {
     method: "POST",
     body: JSON.stringify(data),
   });
+  console.log("x", JSON.stringify(res, null, 2));
+  return res;
+}
+
+export async function verifyEmail(data: { email: string; code: string }) {
+  const formData = new FormData();
+  formData.append("email", data.email);
+  formData.append("code", data.code);
+
+  return fetchFromLaravel<{ success: boolean; message: string; data: null }>(
+    "/verify-email",
+    {
+      method: "POST",
+      body: formData,
+    },
+  );
+}
+
+export async function resendVerification(email: string) {
+  const formData = new FormData();
+  formData.append("email", email);
+
+  return fetchFromLaravel<{ success: boolean; message: string; data: null }>(
+    "/resend-verification",
+    {
+      method: "POST",
+      body: formData,
+    },
+  );
 }
 
 export async function logout() {
@@ -178,7 +239,51 @@ export async function logout() {
 }
 
 export async function getProfile() {
-  return fetchFromLaravel<{ success: boolean; data: { user: User } }>("/profile");
+  return fetchFromLaravel<{ success: boolean; data: { user: User } }>(
+    "/profile",
+  );
+}
+
+export async function forgotPassword(email: string) {
+  const formData = new FormData();
+  formData.append("email", email);
+
+  return fetchFromLaravel<{ success: boolean; message: string; data: { reset_code?: number } }>(
+    "/forgot-password",
+    {
+      method: "POST",
+      body: formData,
+    },
+  );
+}
+
+export async function verifyResetCode(data: { email: string; code: string }) {
+  const formData = new FormData();
+  formData.append("email", data.email);
+  formData.append("code", data.code);
+
+  return fetchFromLaravel<{ success: boolean; message: string; data: { token: string } }>(
+    "/verify-reset-code",
+    {
+      method: "POST",
+      body: formData,
+    },
+  );
+}
+
+export async function resetPassword(data: Record<string, string>) {
+  const formData = new FormData();
+  formData.append("token", data.token);
+  formData.append("password", data.password);
+  formData.append("password_confirmation", data.password_confirmation);
+
+  return fetchFromLaravel<{ success: boolean; message: string; data: null }>(
+    "/reset-password",
+    {
+      method: "POST",
+      body: formData,
+    },
+  );
 }
 
 export async function updateProfile(data: FormData) {
@@ -204,12 +309,16 @@ export async function subscribeNewsletter(email: string) {
 }
 
 // Admin Users
-export async function getUsers(page: number = 1, perPage: number = 10, role?: string) {
+export async function getUsers(
+  page: number = 1,
+  perPage: number = 10,
+  role?: string,
+) {
   const query = new URLSearchParams();
   query.set("page", String(page));
   query.set("per_page", String(perPage));
   if (role) query.set("role", role);
-  
+
   return fetchFromLaravel<UsersResponse>(`/users?${query.toString()}`, {
     method: "GET",
     cache: "no-store",

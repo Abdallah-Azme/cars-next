@@ -13,7 +13,7 @@ import {
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import AuthBtns from "./AuthBtns";
-import { fixImageUrl } from "@/lib/utils";
+import FallbackImage from "./FallbackImage";
 
 const links = [
   {
@@ -50,11 +50,17 @@ export default function Navbar() {
         <div className="container flex items-center justify-between">
           {/* Logo */}
           <Link href={"/"} className="text-xl font-bold flex items-center gap-2">
-            <img
-              src={fixImageUrl(settings?.siteLogo) || "/logo-icon.jpeg"}
-              alt={settings?.siteName || "logo"}
+            <FallbackImage 
+              src={settings?.siteLogo || "/logo-icon.jpeg"}
+              alt={settings?.siteName && settings.siteName !== "site_nan" ? settings.siteName : "Car Auction"}
+              width={80}
+              height={80}
               className="size-20 object-contain"
+              priority
             />
+            {settings?.siteName && settings.siteName !== "site_nan" && (
+              <span className="hidden lg:block">{settings.siteName}</span>
+            )}
           </Link>
 
           {/* Links */}
