@@ -12,7 +12,7 @@ export default function Hero() {
     <section
       className="relative md:h-[60vh] h-[70vh] text-white bg-no-repeat bg-center bg-cover"
       style={{
-        backgroundImage: `url('${fixImageUrl(settings?.heroImage) || "/hero.jpg"}')`,
+        backgroundImage: `url("${fixImageUrl(settings?.heroImage) || "/hero.jpg"}")`,
       }}
     >
       {/* Background */}
