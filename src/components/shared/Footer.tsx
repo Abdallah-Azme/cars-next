@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useSettingsStore } from "@/stores/settings";
+import { usePathname } from "next/navigation";
 import { fixImageUrl } from "@/lib/utils";
 import {
   Facebook,
@@ -33,7 +34,10 @@ const socialPlatforms = [
 ];
 
 export default function Footer() {
+  const pathname = usePathname();
   const settings = useSettingsStore((state) => state.settings);
+
+  if (pathname?.startsWith("/admin")) return null;
 
   const importantLinks = [
     { label: "Home", href: "/" },
