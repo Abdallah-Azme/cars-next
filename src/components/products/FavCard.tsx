@@ -46,17 +46,23 @@ export function FavCard({ vehicle }: Props) {
         {/* Middle: specs table + image */}
         <div className="flex flex-col gap-4">
           {/* Image */}
-          <Link
-            href={`/products/${vehicle?.id}`}
-            className="relative overflow-hidden rounded-md border bg-muted aspect-4/3"
-          >
-            <FallbackImage
-              src={vehicle?.images?.[0]?.image_url}
-              alt={vehicle?.carMaker || "vehicle"}
-              fill
-              className="object-cover hover:scale-105 transition-all duration-300"
-            />
-          </Link>
+          {(() => {
+            const firstValidImg = vehicle?.images?.find((img) => img.download_url);
+            if (!firstValidImg) return null;
+            return (
+              <Link
+                href={`/products/${vehicle?.id}`}
+                className="relative overflow-hidden rounded-md border bg-muted aspect-4/3"
+              >
+                <FallbackImage
+                  src={firstValidImg.download_url || ""}
+                  alt={vehicle?.carMaker || "vehicle"}
+                  fill
+                  className="object-cover hover:scale-105 transition-all duration-300"
+                />
+              </Link>
+            );
+          })()}
           {/* Specs */}
           <div className="rounded-md border bg-muted/20 overflow-hidden">
             <div className="grid grid-cols-[110px_1fr]">

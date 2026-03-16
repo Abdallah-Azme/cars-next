@@ -27,7 +27,6 @@ function ChecklistBox({
   items,
   selectedItems,
   onToggle,
-
 }: {
   items: string[];
   selectedItems: string[];
@@ -36,7 +35,7 @@ function ChecklistBox({
 }) {
   return (
     <div className="rounded-md border bg-background">
-      <ScrollArea  className="p-3 max-h-96 overflow-y-auto">
+      <ScrollArea className="p-3 max-h-96 overflow-y-auto">
         <div className="space-y-2">
           {items.map((item) => {
             const id = item.replace(/\s+/g, "-").toLowerCase();
@@ -150,7 +149,9 @@ export function ProductFilters({
     setList: React.Dispatch<React.SetStateAction<string[]>>,
     key: keyof VehicleFilterParams,
   ) => {
-    const next = checked ? [...list, value] : list.filter((item) => item !== value);
+    const next = checked
+      ? [...list, value]
+      : list.filter((item) => item !== value);
     setList(next);
     notify({ [key]: next });
   };
@@ -187,19 +188,6 @@ export function ProductFilters({
       <Separator />
 
       <div className="flex flex-col gap-6">
-        {!!filters.types.length && (
-          <div className="space-y-3">
-            <SectionTitle title="Category" />
-            <ChecklistBox
-              items={filters.types}
-              selectedItems={selectedTypes}
-              onToggle={(value, checked) =>
-                toggleItem(value, checked, selectedTypes, setSelectedTypes, "types")
-              }
-            />
-          </div>
-        )}
-
         {!!filters.models.length && (
           <div className="space-y-3">
             <SectionTitle title="Model" />
@@ -207,7 +195,32 @@ export function ProductFilters({
               items={filters.models}
               selectedItems={selectedModels}
               onToggle={(value, checked) =>
-                toggleItem(value, checked, selectedModels, setSelectedModels, "models")
+                toggleItem(
+                  value,
+                  checked,
+                  selectedModels,
+                  setSelectedModels,
+                  "models",
+                )
+              }
+            />
+          </div>
+        )}
+
+        {!!filters.types.length && (
+          <div className="space-y-3">
+            <SectionTitle title="Type" />
+            <ChecklistBox
+              items={filters.types}
+              selectedItems={selectedTypes}
+              onToggle={(value, checked) =>
+                toggleItem(
+                  value,
+                  checked,
+                  selectedTypes,
+                  setSelectedTypes,
+                  "types",
+                )
               }
             />
           </div>
@@ -220,7 +233,13 @@ export function ProductFilters({
               items={filters.makers}
               selectedItems={selectedMakers}
               onToggle={(value, checked) =>
-                toggleItem(value, checked, selectedMakers, setSelectedMakers, "makers")
+                toggleItem(
+                  value,
+                  checked,
+                  selectedMakers,
+                  setSelectedMakers,
+                  "makers",
+                )
               }
             />
           </div>
@@ -296,7 +315,13 @@ export function ProductFilters({
               items={filters.sizes}
               selectedItems={selectedSizes}
               onToggle={(value, checked) =>
-                toggleItem(value, checked, selectedSizes, setSelectedSizes, "sizes")
+                toggleItem(
+                  value,
+                  checked,
+                  selectedSizes,
+                  setSelectedSizes,
+                  "sizes",
+                )
               }
             />
           </div>

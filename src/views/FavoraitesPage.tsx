@@ -1,27 +1,33 @@
 "use client";
 
+import { useEffect } from "react";
 import { getFavorites } from "@/lib/actions";
 import { FavCard } from "@/components/products/FavCard";
 import EmailSubscription from "@/components/shared/EmailBox";
 import PageHeader from "@/components/shared/PageHeader";
-import { useQuery } from "@tanstack/react-query";
-import { Loader2 } from "lucide-react";
+import { useFavoritesStore } from "@/stores/favorites";
+import { useAuthStore } from "@/stores/user";
 import type { VehicleData } from "@/types/vehicles";
 
 const FavoraitesPage = () => {
-  const { data, isLoading } = useQuery({
-    queryKey: ["favorites"],
-    queryFn: () => getFavorites(),
-  });
+  const { favorites, setFavorites } = useFavoritesStore();
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
 
-  const vehicles = data?.data?.data ?? [];
-  
-  if (isLoading)
-    return (
-      <div className="flex justify-center items-center h-screen">
-        <Loader2 className="animate-spin" />
-      </div>
-    );
+  useEffect(() => {
+    if (isAuthenticated) {
+      const fetchFavs = async () => {
+        try {
+          const res = await getFavorites();
+          if (res.ok && res.data?.data) {
+            setFavorites(res.data.data);
+          }
+        } catch (error) {
+          console.error("Failed to sync favorites on page load", error);
+        }
+      };
+      fetchFavs();
+    }
+  }, [isAuthenticated, setFavorites]);
     
   return (
     <>
@@ -38,7 +44,7 @@ const FavoraitesPage = () => {
           </div>
         </div>
 
-        {vehicles.length === 0 ? (
+        {favorites.length === 0 ? (
           <div className="flex justify-center items-center py-12">
             <p className="text-2xl font-bold text-red-600">
               No favorites found
@@ -46,7 +52,7 @@ const FavoraitesPage = () => {
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            {vehicles.map((vehicle: VehicleData) => (
+            {favorites.map((vehicle: VehicleData) => (
               <FavCard key={vehicle.id} vehicle={vehicle} />
             ))}
           </div>

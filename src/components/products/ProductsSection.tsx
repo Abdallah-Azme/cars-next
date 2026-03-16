@@ -1,6 +1,10 @@
 "use client";
 
-import { getFilters, getVehicles, type VehicleFilterParams } from "@/lib/actions";
+import {
+  getFilters,
+  getVehicles,
+  type VehicleFilterParams,
+} from "@/lib/actions";
 import { defaultFilters } from "@/types/vehicles";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
@@ -26,7 +30,6 @@ export function ProductSection() {
   const pagination = data?.data?.data?.pagination;
   const filters = filtersData?.data?.data ?? defaultFilters;
 
-  // Reset to page 1 whenever filters change
   const handleFilterChange = (params: VehicleFilterParams) => {
     setFilterParams(params);
     setPage(1);
@@ -95,4 +98,3 @@ export function ProductSection() {
     </section>
   );
 }
-

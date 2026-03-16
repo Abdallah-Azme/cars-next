@@ -2,7 +2,6 @@ import { Card, CardContent, CardHeader } from "@/components/admin/ui/card";
 import { Badge } from "@/components/admin/ui/badge";
 import { Separator } from "@/components/admin/ui/separator";
 import type { Category } from "@/types/categories";
-import FallbackImage from "@/components/shared/FallbackImage";
 
 export function CategoriesPageSimple({ categories }: { categories: Category[] }) {
   return (
@@ -18,16 +17,6 @@ export function CategoriesPageSimple({ categories }: { categories: Category[] })
             <Card key={cat.id} className="overflow-hidden">
               <CardHeader className="p-4 pb-3">
                 <div className="flex items-center gap-3">
-                  {/* Category image */}
-                  <div className="relative size-16 overflow-hidden rounded-md border bg-muted">
-                    <FallbackImage
-                      src={cat.image || "/hero.jpg"}
-                      alt={cat.title}
-                      fill
-                      className="object-cover"
-                    />
-                  </div>
-
                   {/* Category name */}
                   <div className="flex-1">
                     <div className="flex items-center justify-between gap-3">
@@ -55,14 +44,6 @@ export function CategoriesPageSimple({ categories }: { categories: Category[] })
                       key={sub.id}
                       className="flex items-center gap-3 rounded-lg border p-3 hover:bg-muted/30 transition-colors"
                     >
-                      <div className="relative size-14 overflow-hidden rounded-md border bg-muted">
-                        <FallbackImage
-                          src={sub.image || "/hero.jpg"}
-                          alt={sub.title}
-                          fill
-                          className="object-cover"
-                        />
-                      </div>
 
                       <div className="min-w-0">
                         <div className="truncate text-red-700 font-medium">

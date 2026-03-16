@@ -42,38 +42,38 @@ export type VehicleData = {
   model: string | null;
   chassisId: string;
   year: string;
-  vehicleType: string;
-  score: string | null;
-  color: string | null;
-  transmission: string | null;
-  displacement: string | null;
-  fuel: string | null;
-  odometer: string;
-  workingHours: string;
-  equipment: string;
-  vehicleHistory: string | null;
-  repairHistory: string | null;
-  inspection: string | null;
-  vehicleSize: string | null;
-  constructionVehicleSize: string | null;
-  startPrice: string;
-  corner: string;
-  selectionMaker: string;
-  selectionModel: string;
-  auctionSite: string;
-  holdingDate: string;
+  vehicleType?: string;
+  score?: string | null;
+  color?: string | null;
+  transmission?: string | null;
+  displacement?: string | null;
+  fuel?: string | null;
+  odometer?: string;
+  workingHours?: string;
+  equipment?: string;
+  vehicleHistory?: string | null;
+  repairHistory?: string | null;
+  inspection?: string | null;
+  vehicleSize?: string | null;
+  constructionVehicleSize?: string | null;
+  startPrice?: string;
+  corner?: string;
+  selectionMaker?: string;
+  selectionModel?: string;
+  auctionSite?: string;
+  holdingDate?: string;
   acceptancePeriod: string;
   url: string;
-  status: string;
-  result: string;
-  soldPrice: string | null;
-  statusHistory: VehicleStatusHistory[];
-  firstSeenAt: string;
-  lastUpdatedAt: string;
-  updateCount: number;
-  imageCount: number;
-  translatedData: VehicleTranslatedData;
-  images: VehicleImage[];
+  status?: string;
+  result?: string;
+  soldPrice?: string | null;
+  statusHistory?: VehicleStatusHistory[];
+  firstSeenAt?: string;
+  lastUpdatedAt?: string;
+  updateCount?: number;
+  imageCount?: number;
+  translatedData?: VehicleTranslatedData;
+  images?: VehicleImage[];
 };
 
 export type SingleVehicleResponse = {
@@ -98,8 +98,8 @@ export type VehicleSResponse = {
   message:string
   data: {
     vehicles: VehicleData[],
-    summary: AuctionSummaryItem[],
-    pagination:Pagination
+    summary?: AuctionSummaryItem[],
+    pagination?:Pagination
   }
 };
 

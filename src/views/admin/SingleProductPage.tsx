@@ -8,6 +8,7 @@ import { useQuery } from "@tanstack/react-query";
 import { getSingleVehicle } from "@/lib/actions";
 import { Loader2 } from "lucide-react";
 import FallbackImage from "@/components/shared/FallbackImage";
+import { cn } from "@/lib/utils";
 
 import {
   Carousel,
@@ -15,12 +16,16 @@ import {
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
+  type CarouselApi,
 } from "@/components/admin/ui/carousel";
 import { SingleVehicleResponse } from "@/types/vehicles";
+import * as React from "react";
 
 export default function SingleProductPage() {
   const params = useParams();
   const id = params?.id as string;
+  const [api, setApi] = React.useState<CarouselApi>();
+  const [current, setCurrent] = React.useState(0);
 
   const { data, isLoading } = useQuery<SingleVehicleResponse>({
     queryKey: ["vehicle", id],
@@ -31,6 +36,21 @@ export default function SingleProductPage() {
     },
     enabled: !!id,
   });
+
+  React.useEffect(() => {
+    if (!api) return;
+
+    const updateCurrent = () => setCurrent(api.selectedScrollSnap());
+    
+    updateCurrent();
+    api.on("select", updateCurrent);
+    api.on("reInit", updateCurrent);
+
+    return () => {
+      api.off("select", updateCurrent);
+      api.off("reInit", updateCurrent);
+    };
+  }, [api]);
 
   if (isLoading) {
     return (
@@ -51,7 +71,8 @@ export default function SingleProductPage() {
   }
 
   const title = `${vehicle.carMaker} ${vehicle.model}`;
-  const images = vehicle.images?.map((img) => img.image_url) || ["/placeholder.svg"];
+  const mappedImages = vehicle.images?.map((img) => img.download_url).filter((url): url is string => Boolean(url)) || [];
+  const images = mappedImages.length > 0 ? mappedImages : [];
   
   const specs = [
     { label: "Model", value: vehicle.model || "—" },
@@ -79,49 +100,91 @@ export default function SingleProductPage() {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      <div className={cn("grid grid-cols-1 gap-8", images.length > 0 ? "lg:grid-cols-2" : "max-w-3xl mx-auto")}>
         {/* Images Section */}
-        <div className="space-y-4">
-          <Card className="overflow-hidden border-2 shadow-sm">
-            <CardContent className="p-0">
-              <Carousel className="w-full">
-                <CarouselContent>
-                  {images.map((src, i) => (
-                    <CarouselItem key={`${src}-${i}`}>
-                      <div className="relative overflow-hidden rounded-lg border bg-muted h-[400px]">
-                        <FallbackImage
-                          src={src}
-                          alt={`${title} - image ${i + 1}`}
-                          fill
-                          className="object-cover"
-                        />
+        {images.length > 0 && (
+          <div className="space-y-4">
+            <Card className="overflow-hidden border-2 shadow-sm">
+              <CardContent className="p-0">
+                <Carousel setApi={setApi} className="w-full">
+                  <CarouselContent>
+                    {images.map((src, i) => (
+                      <CarouselItem key={`${src}-${i}`}>
+                        <div className="relative overflow-hidden rounded-lg border bg-muted h-[400px]">
+                          <FallbackImage
+                            src={src}
+                            alt={`${title} - image ${i + 1}`}
+                            fill
+                            className="object-cover"
+                          />
+                        </div>
+                      </CarouselItem>
+                    ))}
+                  </CarouselContent>
+                  
+                  {/* Dots Indicator */}
+                  {images.length > 1 && (
+                    <div style={{ position: 'absolute', bottom: '12px', left: 0, right: 0, display: 'flex', justifyContent: 'center', zIndex: 10, pointerEvents: 'none' }}>
+                      <div style={{ 
+                        display: 'flex', 
+                        gap: '6px', 
+                        alignItems: 'center', 
+                        padding: '6px 12px', 
+                        borderRadius: '999px', 
+                        backgroundColor: 'rgba(0,0,0,0.7)', 
+                        border: '1px solid rgba(255,255,255,0.2)',
+                        backdropFilter: 'blur(8px)',
+                        pointerEvents: 'auto'
+                      }}>
+                        {Array.from({ length: Math.min(images.length, 10) }).map((_, i) => (
+                          <div
+                            key={i}
+                            onClick={(e) => {
+                              e.preventDefault();
+                              e.stopPropagation();
+                              api?.scrollTo(i);
+                            }}
+                            style={{
+                              height: '8px',
+                              width: current === i ? '24px' : '8px',
+                              backgroundColor: current === i ? '#EF4444' : 'rgba(255,255,255,0.6)',
+                              borderRadius: '999px',
+                              transition: 'all 0.3s ease',
+                              cursor: 'pointer'
+                            }}
+                          />
+                        ))}
                       </div>
-                    </CarouselItem>
-                  ))}
-                </CarouselContent>
-                {images.length > 1 && (
-                  <>
-                    <CarouselPrevious className="left-2" />
-                    <CarouselNext className="right-2" />
-                  </>
-                )}
-              </Carousel>
-            </CardContent>
-          </Card>
-          
-          <div className="grid grid-cols-4 gap-2">
-            {images.slice(0, 4).map((src, i) => (
-              <div key={`thumb-${i}`} className="relative aspect-video rounded-md overflow-hidden border bg-muted">
-                <FallbackImage
-                  src={src}
-                  alt={`${title} thumb ${i + 1}`}
-                  fill
-                  className="object-cover"
-                />
-              </div>
-            ))}
+                    </div>
+                  )}
+
+                  {images.length > 1 && (
+                    <>
+                      <CarouselPrevious className="left-2" />
+                      <CarouselNext className="right-2" />
+                    </>
+                  )}
+                </Carousel>
+              </CardContent>
+            </Card>
+
+            <div className="grid grid-cols-4 gap-2">
+              {images.slice(0, 4).map((src, i) => (
+                <div
+                  key={`thumb-${i}`}
+                  className="relative aspect-video rounded-md overflow-hidden border bg-muted"
+                >
+                  <FallbackImage
+                    src={src}
+                    alt={`${title} thumb ${i + 1}`}
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+              ))}
+            </div>
           </div>
-        </div>
+        )}
 
         {/* Details Section */}
         <div className="space-y-6">
