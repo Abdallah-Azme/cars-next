@@ -7,7 +7,7 @@ export function cn(...inputs: ClassValue[]) {
 
 export function fixImageUrl(url: string | null | undefined): string {
   if (!url) return "";
-  // Convert absolute insecure URLs from the backend to relative paths.
-  // This allows them to be proxied through our HTTPS-enabled Next.js server.
-  return url.replace(/^http:\/\/204\.168\.156\.86(\/storage\/)/, "$1");
+  
+  // Replace the IP-based URL with the domain — the SSL cert is on the domain, not the IP
+  return url.replace(/^https?:\/\/204\.168\.156\.86\//, "https://egyjapco.tech/");
 }

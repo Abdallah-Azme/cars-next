@@ -1,18 +1,17 @@
 import CategorySection from "@/components/categories/CategorySection";
-import Hero from "@/components/home/HeroSection";
+import MergedHero from "@/components/home/MergedHero";
 import StatsSection from "@/components/home/StateSection";
-import { ProductSection } from "@/components/products/ProductsSection";
+import { ProductCarousel } from "@/components/products/ProductCarousel";
 import EmailSubscription from "@/components/shared/EmailBox";
 
 export default function HomePage() {
   return (
     <main>
-      <Hero />
-      <StatsSection />
+      <MergedHero />
       <CategorySection />
-      <ProductSection />
-      {/* <SocialLinksSection /> */}
+      <ProductCarousel />
       <EmailSubscription />
+      <StatsSection />
     </main>
   );
 }

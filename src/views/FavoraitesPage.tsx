@@ -28,11 +28,11 @@ const FavoraitesPage = () => {
       fetchFavs();
     }
   }, [isAuthenticated, setFavorites]);
-    
+
   return (
     <>
       <PageHeader title="Favorites" />
-      <div className="container py-20 flex flex-col gap-10">
+      <div className="container py-10 flex flex-col gap-10">
         <div className="flex flex-col gap-4">
           <div className=" flex flex-col gap-2 ">
             <h2 className="text-4xl md:text-5xl font-bold text-red-600">
@@ -62,6 +62,5 @@ const FavoraitesPage = () => {
     </>
   );
 };
-
 
 export default FavoraitesPage;

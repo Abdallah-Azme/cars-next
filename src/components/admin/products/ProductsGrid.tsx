@@ -4,7 +4,7 @@ import type { VehicleData } from "@/types/vehicles";
 export function ProductsGrid({ vehicles }: { vehicles: VehicleData[] }) {
   if (!vehicles || vehicles.length === 0) {
     return (
-      <div className="flex justify-center items-center py-20 text-muted-foreground">
+      <div className="flex justify-center items-center py-10 text-muted-foreground">
         No auction products found for this date.
       </div>
     );

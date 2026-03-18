@@ -5,15 +5,24 @@ import {
   ChevronsLeft,
   ChevronsRight,
 } from "lucide-react";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 interface PaginationProps {
   pagination: Pagination;
   onPageChange: (page: number) => void;
+  onPerPageChange?: (val: number) => void;
 }
 
 export function PaginationControls({
   pagination,
   onPageChange,
+  onPerPageChange,
 }: PaginationProps) {
   const { current_page, last_page, per_page, total } = pagination;
 
@@ -42,16 +51,18 @@ export function PaginationControls({
   const to = Math.min(current_page * per_page, total);
 
   return (
-    <div className="flex flex-col items-center gap-4 py-6 sm:flex-row sm:justify-between">
+    <div className="flex flex-col items-center gap-6 py-6 border-t mt-4 sm:flex-row sm:justify-between">
       {/* Info */}
-      <p className="text-sm text-muted-foreground">
-        Showing{" "}
-        <span className="font-medium text-foreground">
-          {from}–{to}
-        </span>{" "}
-        of{" "}
-        <span className="font-medium text-foreground">{total}</span> results
-      </p>
+      <div className="flex items-center gap-4">
+        <p className="text-sm text-muted-foreground">
+          Showing{" "}
+          <span className="font-medium text-foreground">
+            {from}–{to}
+          </span>{" "}
+          of{" "}
+          <span className="font-medium text-foreground">{total}</span> results
+        </p>
+      </div>
 
       {/* Controls */}
       <div className="flex items-center gap-1">
@@ -111,6 +122,30 @@ export function PaginationControls({
           <ChevronsRight className="h-4 w-4" />
         </PaginationBtn>
       </div>
+
+      {/* Per Page Selector */}
+      {onPerPageChange && (
+        <div className="flex items-center gap-3">
+          <span className="text-sm text-muted-foreground whitespace-nowrap">
+            Results per page
+          </span>
+          <Select
+            value={String(per_page)}
+            onValueChange={(val) => onPerPageChange(Number(val))}
+          >
+            <SelectTrigger className="h-9 w-[80px]">
+              <SelectValue placeholder={String(per_page)} />
+            </SelectTrigger>
+            <SelectContent side="top">
+              {[10, 20, 30, 50, 100].map((num) => (
+                <SelectItem key={num} value={String(num)}>
+                  {num}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+      )}
     </div>
   );
 }

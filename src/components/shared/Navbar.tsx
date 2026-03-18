@@ -6,7 +6,7 @@ import { useAuthStore } from "@/stores/user";
 import {
   Heart,
   Home,
-  LayoutPanelTop,
+  // LayoutPanelTop,
   UserKey,
   Van
 } from "lucide-react";
@@ -21,11 +21,11 @@ const links = [
     path: "/",
     icon: Home,
   },
-  {
-    name: "Categories",
-    path: "/categories",
-    icon: LayoutPanelTop,
-  },
+  // {
+  //   name: "Categories",
+  //   path: "/categories",
+  //   icon: LayoutPanelTop,
+  // },
   {
     name: "Machines",
     path: "/products",
@@ -52,14 +52,17 @@ export default function Navbar() {
           <Link href={"/"} className="text-xl font-bold flex items-center gap-2">
             <FallbackImage 
               src={settings?.siteLogo || "/logo-icon.jpeg"}
-              alt={settings?.siteName && settings.siteName !== "site_nan" ? settings.siteName : "Car Auction"}
+              alt={settings?.siteName && !settings.siteName.includes("site_nan") ? settings.siteName : "Car Auction"}
               width={80}
               height={80}
               className="size-20 object-contain"
               priority
             />
-            {settings?.siteName && settings.siteName !== "site_nan" && (
+            {settings?.siteName && !settings.siteName.includes("site_nan") && (
               <span className="hidden lg:block">{settings.siteName}</span>
+            )}
+            {(!settings?.siteName || settings.siteName.includes("site_nan")) && (
+              <span className="hidden lg:block text-2xl font-black italic tracking-tighter uppercase">Sub Coders</span>
             )}
           </Link>
 

@@ -11,18 +11,35 @@ import SettingsInitializer from "@/components/shared/SettingsInitializer";
 
 const inter = Inter({ subsets: ["latin"] });
 
-export const metadata: Metadata = {
-  title: "Car Auction",
-  description: "Browse our wide range of heavy machinery solutions.",
-};
+async function fetchSettings() {
+  const settingsRes = await getSettings();
+  return settingsRes.ok ? settingsRes.data?.data ?? null : null;
+}
+
+export async function generateMetadata(): Promise<Metadata> {
+  const settings = await fetchSettings();
+
+  return {
+    title: settings?.metaTitle || settings?.siteName || "Car Auction",
+    description: settings?.metaDescription || "Browse our wide range of heavy machinery solutions.",
+    keywords: settings?.metaKeywords || "machinery, heavy equipment, auction",
+    openGraph: {
+      title: settings?.metaTitle || settings?.siteName || "Car Auction",
+      description: settings?.metaDescription || "Providing high-performance heavy machinery solutions worldwide.",
+      images: settings?.metaImage ? [settings.metaImage] : ["/hero-egypt.jpg"],
+    },
+    icons: {
+      icon: settings?.siteLogo || "/favicon.ico",
+    },
+  };
+}
 
 export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const settingsRes = await getSettings();
-  const settings = settingsRes.ok ? settingsRes.data?.data : null;
+  const settings = await fetchSettings();
 
   return (
     <html lang="en">

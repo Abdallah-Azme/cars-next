@@ -1,41 +1,42 @@
 "use client";
 
 import NextImage, { ImageProps } from "next/image";
-import { useState, useEffect } from "react";
-import { useSettingsStore } from "@/stores/settings";
+import { useState } from "react";
 import { fixImageUrl } from "@/lib/utils";
 
 interface FallbackImageProps extends ImageProps {
   fallbackSrc?: string;
+  DEFAULT?: string;
 }
 
 export default function FallbackImage({
   src,
   alt,
   fallbackSrc,
+  DEFAULT = "/logo-icon.jpeg",
   ...props
 }: FallbackImageProps) {
-  const settings = useSettingsStore((state) => state.settings);
-  const logoPlaceholder = settings?.siteLogo || "/logo-icon.jpeg";
-  
-  const [hasError, setHasError] = useState(false);
+  const resolvedSrc = typeof src === "string" && src
+    ? (fixImageUrl(src) || src)
+    : DEFAULT;
 
-  // Reset error state when src changes
-  useEffect(() => {
-    setHasError(false);
-  }, [src]);
+  const [errored, setErrored] = useState(false);
+  const [prevSrc, setPrevSrc] = useState(resolvedSrc);
 
-  const rawSrc = hasError ? (fallbackSrc || logoPlaceholder) : (src || logoPlaceholder);
-  const finalSrc = fixImageUrl(typeof rawSrc === 'string' ? rawSrc : '');
+  // Reset error when src changes (derived state update during render)
+  if (resolvedSrc !== prevSrc) {
+    setPrevSrc(resolvedSrc);
+    setErrored(false);
+  }
+
+  const displaySrc = errored ? (fallbackSrc || DEFAULT) : resolvedSrc;
 
   return (
     <NextImage
       {...props}
-      src={finalSrc || logoPlaceholder}
+      src={displaySrc}
       alt={alt}
-      onError={() => {
-        setHasError(true);
-      }}
+      onError={() => setErrored(true)}
     />
   );
 }

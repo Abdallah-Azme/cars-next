@@ -83,6 +83,13 @@ export async function getSettings() {
   return fetchFromLaravel<SettingsResponse>("/settings", { method: "GET" });
 }
 
+export async function updateSettings(data: FormData) {
+  return fetchFromLaravel<SettingsResponse>("/settings", {
+    method: "POST",
+    body: data,
+  });
+}
+
 // Categories
 export async function getCategories() {
   return fetchFromLaravel<CategoriesSResponse>("/categories", {

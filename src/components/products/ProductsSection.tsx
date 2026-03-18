@@ -16,15 +16,18 @@ import { ProductsGrid } from "./ProductsGrid";
 export function ProductSection() {
   const [filterParams, setFilterParams] = useState<VehicleFilterParams>({});
   const [page, setPage] = useState(1);
+  const [perPage, setPerPage] = useState(10);
 
   const { data } = useQuery({
-    queryKey: ["vehicles", filterParams, page],
-    queryFn: () => getVehicles({ ...filterParams, page }),
+    queryKey: ["vehicles", filterParams, page, perPage],
+    queryFn: () => getVehicles({ ...filterParams, page, per_page: perPage }),
   });
   const { data: filtersData } = useQuery({
     queryKey: ["filters"],
     queryFn: getFilters,
   });
+
+  console.log({ data });
 
   const vehicles = data?.data?.data?.vehicles ?? [];
   const pagination = data?.data?.data?.pagination;
@@ -36,7 +39,7 @@ export function ProductSection() {
   };
 
   return (
-    <section className="container py-20">
+    <section className="container py-10">
       {/* Top bar */}
       <div className="flex flex-col gap-4">
         {/* Header */}
@@ -91,6 +94,10 @@ export function ProductSection() {
             <PaginationControls
               pagination={pagination}
               onPageChange={setPage}
+              onPerPageChange={(val) => {
+                setPerPage(val);
+                setPage(1);
+              }}
             />
           )}
         </div>

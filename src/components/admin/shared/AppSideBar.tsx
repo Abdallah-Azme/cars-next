@@ -9,7 +9,7 @@ import {
   SidebarMenuItem,
 } from "@/components/admin/ui/sidebar";
 import { cn } from "@/lib/utils";
-import { LayoutPanelTop, LogOut, Truck, Users, Loader2 } from "lucide-react";
+import { LayoutPanelTop, LogOut, Truck, Users, Loader2, Settings } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { Button } from "../ui/button";
@@ -39,6 +39,11 @@ export function AppSidebar() {
       title: "Users",
       href: "/admin/users",
       icon: Users,
+    },
+    {
+      title: "Settings",
+      href: "/admin/settings",
+      icon: Settings,
     },
   ];
 

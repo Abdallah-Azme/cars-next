@@ -2,6 +2,7 @@ import type { NextConfig } from "next";
 
 const nextConfig = {
   reactCompiler: true,
+
   output: "standalone",
   eslint: {
     ignoreDuringBuilds: true,
@@ -11,6 +12,8 @@ const nextConfig = {
   },
 
   images: {
+    unoptimized: true,
+
     remotePatterns: [
       {
         protocol: "https",
@@ -44,7 +47,7 @@ const nextConfig = {
     return [
       {
         source: "/storage/:path*",
-        destination: "http://204.168.156.86/storage/:path*",
+        destination: "https://egyjapco.tech/storage/:path*",
       },
     ];
   },

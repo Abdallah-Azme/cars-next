@@ -16,8 +16,8 @@ import {
   MessageCircle,
   Send,
   Phone,
-  Mail,
   MapPin,
+  Mail,
 } from "lucide-react";
 
 const socialPlatforms = [
@@ -55,7 +55,10 @@ export default function Footer() {
 
   const activeSocials = socialPlatforms.filter(
     (platform) => settings?.[platform.id as keyof typeof settings],
-  );
+  ).map(p => ({
+    ...p,
+    url: settings?.[p.id as keyof typeof settings] as string
+  }));
 
   return (
     <footer className="bg-[#0f0f0f] text-white pt-20 pb-10 border-t border-white/5">
@@ -88,18 +91,14 @@ export default function Footer() {
                 </span>
               </div>
             </Link>
-            <p className="text-gray-400 text-sm leading-relaxed max-w-sm">
-              Providing high-performance heavy machinery solutions worldwide.
-              Built for reliability, power, and maximum productivity in every
-              project.
+            <p className="text-gray-400 text-sm leading-relaxed max-w-sm" dir="rtl">
+              {settings?.metaDescription || "للخدمات اللوجيستية ومتخصصون في استيراد المعدات الثقيلة وتجهيز المصانع من اليابان للمصانع والتجار والأفراد – من مزادات اليابان لحد عندك في مصر."}
             </p>
             <div className="flex flex-wrap gap-3 pt-2">
               {activeSocials.map((platform) => (
                 <a
                   key={platform.id}
-                  href={
-                    settings?.[platform.id as keyof typeof settings] as string
-                  }
+                  href={platform.url}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="w-10 h-10 rounded-lg bg-gray-100/50 border border-gray-100 flex items-center justify-center text-gray-500 hover:bg-red-600 hover:text-white hover:border-red-600 transition-all duration-300"
@@ -173,6 +172,7 @@ export default function Footer() {
                   </div>
                 </div>
               )}
+              
               {settings?.email && (
                 <div className="flex items-start gap-4 group">
                   <div className="w-10 h-10 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-red-500 group-hover:bg-red-600 group-hover:text-white transition-colors">
@@ -180,7 +180,7 @@ export default function Footer() {
                   </div>
                   <div className="flex flex-col">
                     <span className="text-[10px] font-black uppercase tracking-widest text-gray-500">
-                      Email Us
+                      Email
                     </span>
                     <a
                       href={`mailto:${settings.email}`}
@@ -191,6 +191,7 @@ export default function Footer() {
                   </div>
                 </div>
               )}
+
               {settings?.address && (
                 <div className="flex items-start gap-4 group">
                   <div className="w-10 h-10 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-red-500">
@@ -200,7 +201,7 @@ export default function Footer() {
                     <span className="text-[10px] font-black uppercase tracking-widest text-gray-500">
                       Location
                     </span>
-                    <span className="text-sm font-bold text-gray-300">
+                    <span className="text-sm font-bold text-gray-300" dir={settings.address.match(/[أ-ي]/) ? "rtl" : "ltr"}>
                       {settings.address}
                     </span>
                   </div>

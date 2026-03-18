@@ -6,7 +6,7 @@ import { Card, CardContent, CardFooter } from "@/components/admin/ui/card";
 import { Separator } from "@/components/admin/ui/separator";
 import Link from "next/link";
 import type { VehicleData } from "@/types/vehicles";
-import FallbackImage from "@/components/shared/FallbackImage";
+import { fixImageUrl } from "@/lib/utils";
 import {
   Carousel,
   CarouselContent,
@@ -81,11 +81,11 @@ export function ProductCard({ vehicle }: Props) {
                         href={`/admin/products/${vehicle.id}`}
                         className="relative block overflow-hidden rounded-md border bg-muted aspect-4/3"
                       >
-                        <FallbackImage
-                          src={img.download_url || ""}
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img
+                          src={fixImageUrl(img.download_url) || ""}
                           alt={vehicle.model || "vehicle"}
-                          fill
-                          className="object-cover"
+                          className="object-cover w-full h-full absolute inset-0"
                         />
                       </Link>
                     </CarouselItem>
@@ -132,11 +132,11 @@ export function ProductCard({ vehicle }: Props) {
           ) : (
             <Link href={`/admin/products/${vehicle.id}`}>
               <div className="relative overflow-hidden rounded-md border bg-muted aspect-4/3">
-                <FallbackImage
-                  src=""
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src="/hero.jpg"
                   alt={vehicle.model || "vehicle"}
-                  fill
-                  className="object-cover"
+                  className="object-cover w-full h-full absolute inset-0"
                 />
               </div>
             </Link>

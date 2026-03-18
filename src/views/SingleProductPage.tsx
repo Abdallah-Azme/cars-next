@@ -21,7 +21,7 @@ import { Loader2 } from "lucide-react";
 import { useParams } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
 import { getSingleVehicle } from "@/lib/actions";
-import FallbackImage from "@/components/shared/FallbackImage";
+import { fixImageUrl } from "@/lib/utils";
 import type { VehicleImage } from "@/types/vehicles";
 
 const SingleProductPage = () => {
@@ -135,11 +135,11 @@ const SingleProductPage = () => {
                     {images.map((src: string, i: number) => (
                       <CarouselItem key={src + i}>
                         <div className="relative overflow-hidden rounded-lg border bg-muted aspect-4/3">
-                          <FallbackImage
-                            src={src}
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img
+                            src={fixImageUrl(src)}
                             alt={`${title} image ${i + 1}`}
-                            fill
-                            className="object-contain"
+                            className="object-contain absolute inset-0 w-full h-full"
                           />
                         </div>
                       </CarouselItem>

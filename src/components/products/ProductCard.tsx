@@ -7,7 +7,7 @@ import { Separator } from "@/components/ui/separator";
 import type { VehicleData } from "@/types/vehicles";
 import Link from "next/link";
 import AddToFavBtn from "./AddToFavBtn";
-import FallbackImage from "../shared/FallbackImage";
+import { fixImageUrl } from "@/lib/utils";
 import {
   Carousel,
   CarouselContent,
@@ -86,11 +86,11 @@ export function ProductCard({ vehicle }: Props) {
                         href={`/products/${vehicle?.id}`}
                         className="relative block overflow-hidden rounded-md border bg-muted aspect-4/3"
                       >
-                        <FallbackImage
-                          src={img.download_url || ""}
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img
+                          src={fixImageUrl(img.download_url) || ""}
                           alt={vehicle?.carMaker || "vehicle"}
-                          fill
-                          className="object-cover hover:scale-105 transition-all duration-300"
+                          className="object-cover w-full h-full hover:scale-105 transition-all duration-300"
                         />
                       </Link>
                     </CarouselItem>
@@ -157,20 +157,44 @@ export function ProductCard({ vehicle }: Props) {
       </CardContent>
 
       {/* Footer */}
-      <CardFooter className=" border-t">
+      <CardFooter className=" border-t bg-muted/5">
         <div className="flex w-full flex-col gap-2  ">
-          <div className="text-xs text-muted-foreground">
-            {vehicle?.startPrice ? 'Start price' : 'Sold price'}
-            <span className="ml-2 text-sm font-semibold text-foreground">
-              {vehicle?.startPrice || vehicle?.soldPrice || '-'}
-            </span>
+          <div className="flex items-center justify-between">
+            <div className="text-xs text-muted-foreground font-medium uppercase tracking-wider">
+              {vehicle?.status === "Reception End"
+                ? Number(vehicle.soldPrice) > 0
+                  ? "Sold Price"
+                  : "Final Status"
+                : vehicle?.startPrice
+                  ? "Start Price"
+                  : "Auction Status"}
+            </div>
+            <div
+              className={`text-sm font-black px-2 py-0.5 rounded ${
+                vehicle?.status === "Reception End"
+                  ? Number(vehicle.soldPrice) > 0
+                    ? "text-green-600 bg-green-50"
+                    : "text-neutral-500 bg-neutral-100"
+                  : "text-red-600 bg-red-50"
+              }`}
+            >
+              {vehicle?.status === "Reception End"
+                ? Number(vehicle.soldPrice) > 0
+                  ? vehicle.soldPrice
+                  : "Not Sold"
+                : vehicle.status || "Bids accepted"}
+            </div>
           </div>
 
-          <div className="text-xs text-muted-foreground flex items-center gap-2">
-            <p>Acceptance Period:</p>
-            <p className="font-semibold text-primary">
-              {vehicle?.acceptancePeriod ? new Date(vehicle.acceptancePeriod).toLocaleDateString() : "-"}
-            </p>
+          <div className="text-[10px] text-muted-foreground flex items-center justify-between border-t border-dashed pt-2 mt-1">
+            <span className="flex items-center gap-1 font-medium italic">
+              Acceptance Ends:
+            </span>
+            <span className="font-bold text-neutral-700">
+              {vehicle?.acceptancePeriod
+                ? new Date(vehicle.acceptancePeriod).toLocaleDateString()
+                : "-"}
+            </span>
           </div>
         </div>
       </CardFooter>

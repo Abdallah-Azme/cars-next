@@ -19,21 +19,18 @@ export default function EmailSubscription() {
     reset,
   } = useForm<EmailFormData>();
 
-
   const onSubmit = async (data: EmailFormData) => {
     const res = await subscribeNewsletter(data.email);
     if (res?.ok) {
       toast.success(res?.data?.message || "Subscribed successfully!");
       reset();
-    }
-    else {
+    } else {
       toast.error(res?.error || "Subscription failed");
     }
-
   };
 
   return (
-    <section className=" py-20">
+    <section className=" py-10">
       <div className="container">
         <div className=" bg-primary rounded-lg">
           <div className="py-12 px-6 md:px-16 text-center">
@@ -75,7 +72,11 @@ export default function EmailSubscription() {
                 className="bg-red-600 hover:bg-red-700 text-white font-semibold px-8"
                 disabled={isSubmitting}
               >
-                {isSubmitting ? <Loader2 className="animate-spin"/> : "Subscribe"}
+                {isSubmitting ? (
+                  <Loader2 className="animate-spin" />
+                ) : (
+                  "Subscribe"
+                )}
               </Button>
             </form>
           </div>
@@ -84,4 +85,3 @@ export default function EmailSubscription() {
     </section>
   );
 }
-

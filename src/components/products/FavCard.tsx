@@ -4,7 +4,7 @@ import { Separator } from "@/components/ui/separator";
 import type { VehicleData } from "@/types/vehicles";
 import Link from "next/link";
 import RemoveFromFavBtn from "./RemoveFromFavBtn";
-import FallbackImage from "../shared/FallbackImage";
+import { fixImageUrl } from "@/lib/utils";
 
 type Props = {
   vehicle: VehicleData;
@@ -54,11 +54,11 @@ export function FavCard({ vehicle }: Props) {
                 href={`/products/${vehicle?.id}`}
                 className="relative overflow-hidden rounded-md border bg-muted aspect-4/3"
               >
-                <FallbackImage
-                  src={firstValidImg.download_url || ""}
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={fixImageUrl(firstValidImg.download_url) || ""}
                   alt={vehicle?.carMaker || "vehicle"}
-                  fill
-                  className="object-cover hover:scale-105 transition-all duration-300"
+                  className="object-cover w-full h-full absolute inset-0 hover:scale-105 transition-all duration-300"
                 />
               </Link>
             );
