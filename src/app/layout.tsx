@@ -8,6 +8,7 @@ import Footer from "@/components/shared/Footer";
 import { DynamicHead } from "@/components/shared/DynamicHead";
 import { getSettings } from "@/lib/actions";
 import SettingsInitializer from "@/components/shared/SettingsInitializer";
+import WhatsAppButton from "@/components/shared/WhatsAppButton";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -49,6 +50,7 @@ export default async function RootLayout({
           <DynamicHead />
           <Navbar />
           {children}
+          <WhatsAppButton />
           <Footer />
           <Toaster richColors position="bottom-right" />
         </QueryProvider>
