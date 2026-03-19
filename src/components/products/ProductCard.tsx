@@ -77,7 +77,12 @@ export function ProductCard({ vehicle }: Props) {
           {/* Image */}
           {/* Carousel */}
           {images.length > 0 && (
-            <div className="relative group">
+            <div
+              className="relative group"
+              onTouchStartCapture={(e) => e.stopPropagation()}
+              onMouseDownCapture={(e) => e.stopPropagation()}
+              onPointerDownCapture={(e) => e.stopPropagation()}
+            >
               <Carousel setApi={setApi} className="w-full">
                 <CarouselContent>
                   {images.map((img, index) => (

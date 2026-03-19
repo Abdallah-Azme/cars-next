@@ -10,10 +10,142 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Trash } from "lucide-react";
+import { Trash, Loader2, Check, ChevronsUpDown } from "lucide-react";
+import * as React from "react"
 import { useState } from "react";
+import { cn } from "@/lib/utils";
 import type { FiltersData } from "@/types/vehicles";
 import type { VehicleFilterParams } from "@/lib/actions";
+import { useQuery } from "@tanstack/react-query";
+import { getTypesByModel } from "@/lib/actions";
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/components/ui/command";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+
+function Combobox({
+  items,
+  value,
+  onChange,
+  placeholder = "Select item...",
+  emptyMessage = "No item found.",
+  disabled = false,
+}: {
+  items: string[];
+  value?: string;
+  onChange: (val: string | undefined) => void;
+  placeholder?: string;
+  emptyMessage?: string;
+  disabled?: boolean;
+}) {
+  const [open, setOpen] = React.useState(false);
+
+  return (
+    <Popover open={open} onOpenChange={setOpen}>
+      <PopoverTrigger asChild>
+        <Button
+          variant="outline"
+          role="combobox"
+          aria-expanded={open}
+          className="w-full justify-between font-normal"
+          disabled={disabled}
+        >
+          {value ? value : placeholder}
+          <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+        </Button>
+      </PopoverTrigger>
+      <PopoverContent className="w-full min-w-(--radix-popover-trigger-width) p-0">
+        <Command>
+          <CommandInput placeholder={`Search ${placeholder.toLowerCase()}...`} />
+          <CommandList>
+            <CommandEmpty>{emptyMessage}</CommandEmpty>
+            <CommandGroup>
+              <CommandItem
+                value="all"
+                onSelect={() => {
+                  onChange(undefined);
+                  setOpen(false);
+                }}
+              >
+                <Check
+                  className={cn(
+                    "mr-2 h-4 w-4",
+                    !value ? "opacity-100" : "opacity-0"
+                  )}
+                />
+                Unselected
+              </CommandItem>
+              {items.map((item) => (
+                <CommandItem
+                  key={item}
+                  value={item}
+                  onSelect={(currentValue) => {
+                    onChange(currentValue === value ? undefined : currentValue);
+                    setOpen(false);
+                  }}
+                >
+                  <Check
+                    className={cn(
+                      "mr-2 h-4 w-4",
+                      value === item ? "opacity-100" : "opacity-0"
+                    )}
+                  />
+                  {item}
+                </CommandItem>
+              ))}
+            </CommandGroup>
+          </CommandList>
+        </Command>
+      </PopoverContent>
+    </Popover>
+  );
+}
+
+function CascadingTypes({ 
+  model, 
+  value, 
+  onChange 
+}: { 
+  model?: string; 
+  value?: string; 
+  onChange: (val: string | undefined) => void 
+}) {
+  const { data, isFetching } = useQuery({
+    queryKey: ["typesByModel", model],
+    queryFn: () => getTypesByModel(model!),
+    enabled: !!model,
+  });
+
+  if (!model) return null;
+
+  return (
+    <div className="space-y-3">
+      <SectionTitle title="Type (Sub Category)" />
+      <Combobox
+        items={data?.data?.data || []}
+        value={value}
+        onChange={onChange}
+        placeholder="Select a Type"
+        emptyMessage="No type found."
+        disabled={isFetching}
+      />
+      {isFetching && (
+        <div className="flex items-center gap-2 px-2 py-1 text-xs text-muted-foreground">
+          <Loader2 className="h-3 w-3 animate-spin" /> Loading types...
+        </div>
+      )}
+    </div>
+  );
+}
 
 function SectionTitle({ title }: { title: string }) {
   return (
@@ -125,6 +257,12 @@ export function ProductFilters({
   const [hourTo, setHourTo] = useState<string>();
   const [scoreFrom, setScoreFrom] = useState<string>();
   const [scoreTo, setScoreTo] = useState<string>();
+  
+  const [cascadingModel, setCascadingModel] = useState<string>();
+  const [cascadingType, setCascadingType] = useState<string>();
+
+  // NOTE: We derive the model list from the standard /vehicles/filters response (passed via props)
+  // The /filters-by-model endpoint requires maker+model params and is for a different purpose.
 
   const notify = (overrides: Partial<VehicleFilterParams>) => {
     onFilterChange({
@@ -138,6 +276,8 @@ export function ProductFilters({
       hourTo,
       scoreFrom,
       scoreTo,
+      cascadingModel,
+      cascadingType,
       ...overrides,
     });
   };
@@ -167,8 +307,13 @@ export function ProductFilters({
     setHourTo(undefined);
     setScoreFrom(undefined);
     setScoreTo(undefined);
+    setCascadingModel(undefined);
+    setCascadingType(undefined);
     onFilterChange({});
   };
+
+  // Use the models list from the standard filters API (already fetched in ProductsSection and passed as prop)
+  const dynamicModels = filters.models ?? [];
 
   return (
     <div className="space-y-5">
@@ -188,43 +333,35 @@ export function ProductFilters({
       <Separator />
 
       <div className="flex flex-col gap-6">
-        {!!filters.models.length && (
+        {/* New Cascading Filters */}
+        <div className="space-y-6">
           <div className="space-y-3">
-            <SectionTitle title="Model" />
-            <ChecklistBox
-              items={filters.models}
-              selectedItems={selectedModels}
-              onToggle={(value, checked) =>
-                toggleItem(
-                  value,
-                  checked,
-                  selectedModels,
-                  setSelectedModels,
-                  "models",
-                )
-              }
+            <SectionTitle title="Model (Main Category)" />
+            <Combobox
+              items={dynamicModels}
+              value={cascadingModel}
+              onChange={(val) => {
+                setCascadingModel(val);
+                setCascadingType(undefined);
+                notify({ cascadingModel: val, cascadingType: undefined });
+              }}
+              placeholder="Select a Model"
+              emptyMessage="No model found."
             />
           </div>
-        )}
 
-        {!!filters.types.length && (
-          <div className="space-y-3">
-            <SectionTitle title="Type" />
-            <ChecklistBox
-              items={filters.types}
-              selectedItems={selectedTypes}
-              onToggle={(value, checked) =>
-                toggleItem(
-                  value,
-                  checked,
-                  selectedTypes,
-                  setSelectedTypes,
-                  "types",
-                )
-              }
-            />
-          </div>
-        )}
+          {/* Types dropdown that relies on the selected Model */}
+          <CascadingTypes 
+            model={cascadingModel} 
+            value={cascadingType}
+            onChange={(val) => {
+              setCascadingType(val);
+              notify({ cascadingType: val });
+            }}
+          />
+        </div>
+
+        {/* Old Model and Type checklists replaced by cascading dropdowns above */}
 
         {!!filters.makers.length && (
           <div className="space-y-3">

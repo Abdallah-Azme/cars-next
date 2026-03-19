@@ -1,0 +1,1977 @@
+{
+  "info": {
+    "_postman_id": "1d4bee76-4143-4bbe-829f-3c16e2e32830",
+    "name": "Vehicles",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "29689936"
+  },
+  "item": [
+    {
+      "name": "Vehicles",
+      "item": [
+        {
+          "name": "index",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Accept-Language",
+                "value": "ar",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{url}}/vehicles?vehicle_size[]=Construction Machinery&selection_model[]=CAT&per_page=392",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "vehicles"
+              ],
+              "query": [
+                {
+                  "key": "auction_day",
+                  "value": "wednesday",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "holding_date",
+                  "value": "2026-03-04",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "year_min",
+                  "value": "20",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "year_max",
+                  "value": "30",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "working_hours_min",
+                  "value": "10",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "working_hours_max",
+                  "value": "20",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "score[]",
+                  "value": "N",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "vehicle_size[]",
+                  "value": "Heavy-Duty Truck",
+                  "description": "all for all values ",
+                  "disabled": true
+                },
+                {
+                  "key": "vehicle_size[]",
+                  "value": "Construction Machinery"
+                },
+                {
+                  "key": "selection_maker[]",
+                  "value": "OTHER JAPAN",
+                  "description": "all for all values",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "selection_maker[]",
+                  "value": "OTHER IMPORTED",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "selection_model[]",
+                  "value": "Komatsu",
+                  "disabled": true
+                },
+                {
+                  "key": "selection_model[]",
+                  "value": "CAT"
+                },
+                {
+                  "key": "per_page",
+                  "value": "392"
+                },
+                {
+                  "key": "vehicle_type[]",
+                  "value": "Wheel Loader",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "show",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Accept-Language",
+                "value": "ar",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{url}}/vehicles/:id",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "vehicles",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "505"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "filter",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Accept-Language",
+                "value": "ar",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{url}}/vehicles/filters",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "vehicles",
+                "filters"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Categories",
+      "item": [
+        {
+          "name": "index",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Accept-Language",
+                "value": "ar",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{url}}/categories?per_page=5",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "categories"
+              ],
+              "query": [
+                {
+                  "key": "per_page",
+                  "value": "5",
+                  "type": "text"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "show",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Accept-Language",
+                "value": "ar",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{url}}/categories/:id",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "categories",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "14"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "store",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "title",
+                  "value": "Large",
+                  "description": "reguired",
+                  "type": "text",
+                  "uuid": "1e1440e3-bc55-4971-ad35-6d8f012c570e"
+                },
+                {
+                  "key": "description",
+                  "value": "category descrption ",
+                  "description": "nullable",
+                  "type": "text",
+                  "uuid": "3cfb04e7-b207-47d6-9d6f-e53d18f4e004"
+                },
+                {
+                  "key": "image",
+                  "description": "nullable",
+                  "type": "file",
+                  "uuid": "8e16982c-0045-4686-a8f1-ce7448ba70b8",
+                  "src": "postman-cloud:///1f1186de-cc43-46e0-be47-b96eb71bebd4"
+                },
+                {
+                  "key": "subCategories[0][title]",
+                  "value": "subcategory",
+                  "description": "SubCategories are ONLY for MODELS Where Category Type is Maker",
+                  "type": "text",
+                  "uuid": "781bdc3c-0a92-4680-9117-9c5ead85d164"
+                },
+                {
+                  "key": "subCategories[0][image]",
+                  "description": "nullable",
+                  "type": "file",
+                  "uuid": "6034ead3-a48e-4c7a-9937-7a2966d61b6e",
+                  "src": "postman-cloud:///1f1186de-cc43-46e0-be47-b96eb71bebd4"
+                },
+                {
+                  "key": "subCategories[0][description]",
+                  "value": "subcategory descrption",
+                  "description": "nullable ",
+                  "type": "text",
+                  "uuid": "52e17bb9-64d4-4ce6-80af-dc8a11717a1b"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{url}}/categories",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "categories"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "update",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "title",
+                  "value": "maker",
+                  "type": "text",
+                  "uuid": "1e1440e3-bc55-4971-ad35-6d8f012c570e"
+                },
+                {
+                  "key": "description",
+                  "value": "maker descrption ",
+                  "type": "text",
+                  "uuid": "3cfb04e7-b207-47d6-9d6f-e53d18f4e004"
+                },
+                {
+                  "key": "image",
+                  "type": "file",
+                  "uuid": "8e16982c-0045-4686-a8f1-ce7448ba70b8",
+                  "src": "postman-cloud:///1f0cafe4-24d1-4fe0-83ef-e55b810d87a9"
+                },
+                {
+                  "key": "subCategories[0][id]",
+                  "value": "27",
+                  "type": "text",
+                  "uuid": "781bdc3c-0a92-4680-9117-9c5ead85d164"
+                },
+                {
+                  "key": "subCategories[0][title]",
+                  "value": "model",
+                  "type": "text",
+                  "uuid": "52e17bb9-64d4-4ce6-80af-dc8a11717a1b"
+                },
+                {
+                  "key": "subCategories[0][description]",
+                  "type": "text",
+                  "uuid": "6034ead3-a48e-4c7a-9937-7a2966d61b6e",
+                  "value": "model descrption"
+                },
+                {
+                  "key": "subCategories[0][image]",
+                  "type": "file",
+                  "uuid": "a0a9ea54-d720-48e6-9e44-5644927f3296",
+                  "src": "postman-cloud:///1f11bb2e-6021-41e0-b292-3e475006490a"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{url}}/categories/:id",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "categories",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "14"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "delete",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Accept-Language",
+                "value": "ar",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{url}}/categories/:id",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "categories",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "7"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Register",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Accept-Language",
+                "value": "ar",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "multipart/form-data",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "name",
+                  "value": "takwa",
+                  "type": "text",
+                  "uuid": "61f3cf6d-34e0-4041-9c79-bdcb4ea85483"
+                },
+                {
+                  "key": "email",
+                  "value": "takwa1@gmail.com",
+                  "type": "text",
+                  "uuid": "640043c6-36df-4a1c-8fb6-c1fe8a2ae171"
+                },
+                {
+                  "key": "password",
+                  "value": "Fcis_it4",
+                  "description": "Password: Must be at least 8 characters and include uppercase letters, lowercase letters, numbers, and symbols.",
+                  "type": "text",
+                  "uuid": "9dbf063e-7a25-4af0-b472-cad3c94f8107"
+                },
+                {
+                  "key": "password_confirmation",
+                  "value": "Fcis_it4",
+                  "type": "text",
+                  "uuid": "ee7cbfb6-cdfc-4271-99bf-96da378dc8d2"
+                },
+                {
+                  "key": "role",
+                  "value": "Viewer",
+                  "description": "User,Viewer,Moderator",
+                  "type": "text",
+                  "uuid": "5085ee94-5dab-413a-8caa-49c7d553988d"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{url}}/register",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "register"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "login",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Accept-Language",
+                "value": "ar",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "multipart/form-data",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "email",
+                  "value": "takwa1@gmail.com",
+                  "type": "text",
+                  "uuid": "19762c3f-74b0-4097-8e5e-d4af188233a6"
+                },
+                {
+                  "key": "password",
+                  "value": "Fcis_it4",
+                  "type": "text",
+                  "uuid": "09d5d58d-2d23-413e-9920-f58b7c83bd06"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{url}}/login",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "login"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "resendVerification",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Accept-Language",
+                "value": "ar",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "multipart/form-data",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "email",
+                  "value": "takwa1@gmail.com",
+                  "type": "text",
+                  "uuid": "19762c3f-74b0-4097-8e5e-d4af188233a6"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{url}}/resend-verification",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "resend-verification"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "verify",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Accept-Language",
+                "value": "ar",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "multipart/form-data",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "email",
+                  "value": "takwa1@gmail.com",
+                  "type": "text",
+                  "uuid": "19762c3f-74b0-4097-8e5e-d4af188233a6"
+                },
+                {
+                  "key": "code",
+                  "value": "270563",
+                  "type": "text",
+                  "uuid": "e5fddd0b-a02f-4eaf-beec-a9a8b50d3d07"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{url}}/verify-email",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "verify-email"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "refreshToken",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Accept-Language",
+                "value": "ar",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "multipart/form-data",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "refresh_token",
+                  "value": "Z1qoopzaPSgkRNW9ppAhLhXsbUNnZ2AaU0BTMjQYjnaOeFpFk5Rpi4c8WRBdEDul",
+                  "type": "text",
+                  "uuid": "09d5d58d-2d23-413e-9920-f58b7c83bd06"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{url}}/auth/refresh-token",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "auth",
+                "refresh-token"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Forget password",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Accept-Language",
+                "value": "ar",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "multipart/form-data",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "email",
+                  "value": "adham@gmail.com",
+                  "type": "text",
+                  "uuid": "19762c3f-74b0-4097-8e5e-d4af188233a6"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{url}}/forgot-password",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "forgot-password"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "verifyResetCode",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Accept-Language",
+                "value": "ar",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "multipart/form-data",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "email",
+                  "value": "takwa@gmail.com",
+                  "type": "text",
+                  "uuid": "19762c3f-74b0-4097-8e5e-d4af188233a6"
+                },
+                {
+                  "key": "code",
+                  "value": "764659",
+                  "type": "text",
+                  "uuid": "f82d8d31-04eb-4f79-a566-b8ebdc3ce4f0"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{url}}/verify-reset-code",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "verify-reset-code"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "resetPassword",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Accept-Language",
+                "value": "ar",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "multipart/form-data",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "token",
+                  "value": "1DXDfiIDRaAP1VNVPSl0q9buczwhwswBFwh8O2nxlSIgc2OAo0tMOtRE2uaC",
+                  "type": "text",
+                  "uuid": "19762c3f-74b0-4097-8e5e-d4af188233a6"
+                },
+                {
+                  "key": "password",
+                  "value": "Takwa@123",
+                  "type": "text",
+                  "uuid": "f82d8d31-04eb-4f79-a566-b8ebdc3ce4f0"
+                },
+                {
+                  "key": "password_confirmation",
+                  "value": "Takwa@123",
+                  "type": "text",
+                  "uuid": "1f1d1652-da8e-4572-bc62-33082273980b"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{url}}/reset-password",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "reset-password"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "logout",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Accept-Language",
+                "value": "ar",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "multipart/form-data",
+                "type": "text",
+                "disabled": true
+              }
+            ],
+            "url": {
+              "raw": "{{url}}/logout",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "logout"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "User Status",
+      "item": [
+        {
+          "name": "active",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Accept-Language",
+                "value": "ar",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{url}}/users/:user/activate",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "users",
+                ":user",
+                "activate"
+              ],
+              "variable": [
+                {
+                  "key": "user",
+                  "value": "2"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "disable",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Accept-Language",
+                "value": "ar",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{url}}/users/:user/disable",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "users",
+                ":user",
+                "disable"
+              ],
+              "variable": [
+                {
+                  "key": "user",
+                  "value": "2"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "users",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Accept-Language",
+                "value": "ar",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{url}}/users?per_page=10",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "users"
+              ],
+              "query": [
+                {
+                  "key": "role",
+                  "value": "Admin ",
+                  "description": "Admin , User , Viewer , Moderator",
+                  "disabled": true
+                },
+                {
+                  "key": "per_page",
+                  "value": "10"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Profile",
+      "item": [
+        {
+          "name": "profile",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Accept-Language",
+                "value": "ar",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{url}}/profile",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "profile"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "update profile",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Accept-Language",
+                "value": "ar",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "multipart/form-data",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "name",
+                  "value": "adham",
+                  "type": "text",
+                  "uuid": "ee53fb8b-9585-43b4-a31c-53f1c753ca7f"
+                },
+                {
+                  "key": "avatar",
+                  "type": "file",
+                  "uuid": "dc63535c-b8d5-44cb-9d4a-c30bd8cc1897",
+                  "src": "postman-cloud:///1f1186de-cc43-46e0-be47-b96eb71bebd4"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{url}}/profile",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "profile"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "change password",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Accept-Language",
+                "value": "ar",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "multipart/form-data",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "new_password",
+                  "value": "Fcis_it4",
+                  "type": "text",
+                  "uuid": "ee53fb8b-9585-43b4-a31c-53f1c753ca7f"
+                },
+                {
+                  "key": "new_password_confirmation",
+                  "value": "Fcis_it4",
+                  "type": "text",
+                  "uuid": "bd246da8-0d7c-4c13-9305-6968542226e1"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{url}}/profile/change-password",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "profile",
+                "change-password"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Favorite",
+      "item": [
+        {
+          "name": "addFavorite",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Accept-Language",
+                "value": "ar",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "multipart/form-data",
+                "type": "text",
+                "disabled": true
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": []
+            },
+            "url": {
+              "raw": "{{url}}/favorites/:vehicle",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "favorites",
+                ":vehicle"
+              ],
+              "variable": [
+                {
+                  "key": "vehicle",
+                  "value": "505"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "New Request",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Accept-Language",
+                "value": "ar",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "multipart/form-data",
+                "type": "text",
+                "disabled": true
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": []
+            },
+            "url": {
+              "raw": "{{url}}/favorites/:vehicle",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "favorites",
+                ":vehicle"
+              ],
+              "variable": [
+                {
+                  "key": "vehicle",
+                  "value": "505"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "userFavorites",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Accept-Language",
+                "value": "ar",
+                "type": "text"
+              },
+              {
+                "key": "",
+                "value": "",
+                "type": "text",
+                "disabled": true
+              }
+            ],
+            "url": {
+              "raw": "{{url}}/favorites",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "favorites"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "setting",
+      "item": [
+        {
+          "name": "index",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Accept-Language",
+                "value": "ar",
+                "type": "text"
+              },
+              {
+                "key": "",
+                "value": "",
+                "type": "text",
+                "disabled": true
+              }
+            ],
+            "url": {
+              "raw": "{{url}}/settings",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "settings"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "update",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Accept-Language",
+                "value": "ar",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "multipart/form-data",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "hero_title",
+                  "value": "Powerful Heavy Equipment",
+                  "type": "text",
+                  "uuid": "09e5ee7b-557e-4f1c-9e18-ff45524db08f",
+                  "disabled": true
+                },
+                {
+                  "key": "hero_description",
+                  "value": "For Every Construction Project\nWe provide high-performance heavy machinery for construction, roadwork, infrastructure, and industrial projects — built for reliability and maximum productivity.",
+                  "type": "text",
+                  "uuid": "974c1c00-0285-451e-884b-0ce7c19d690e",
+                  "disabled": true
+                },
+                {
+                  "key": "hero_image",
+                  "type": "file",
+                  "uuid": "d80bd947-3940-4e94-a8d2-406e11a6f153",
+                  "src": "postman-cloud:///1f1205da-dbab-4da0-8c3b-0eca9226eadd",
+                  "disabled": true
+                },
+                {
+                  "key": "hero_button_1_link",
+                  "value": "/vehicle/contact-us",
+                  "type": "text",
+                  "uuid": "2609298f-fe22-4913-b923-c1750d55923a",
+                  "disabled": true
+                },
+                {
+                  "key": "hero_button_2_link",
+                  "value": "/vehicle/request quote",
+                  "type": "text",
+                  "uuid": "5e7e26ba-83ac-4fb7-961b-d8fbb352d9f5",
+                  "disabled": true
+                },
+                {
+                  "key": "statistics_heading",
+                  "value": "Our Performance in Numbers",
+                  "type": "text",
+                  "uuid": "1fad97d8-7992-433f-b63a-f981be5f8b7f",
+                  "disabled": true
+                },
+                {
+                  "key": "statistics_description",
+                  "value": "Delivering strength, reliability, and excellence in every project.",
+                  "type": "text",
+                  "uuid": "4bbe3874-6aab-4e3b-af7d-ca2ac9b17a54",
+                  "disabled": true
+                },
+                {
+                  "key": "statistics[0][id]",
+                  "value": "1",
+                  "type": "text",
+                  "uuid": "c55eec64-8603-433d-8307-d873d22d68dc",
+                  "disabled": true
+                },
+                {
+                  "key": "statistics[0][value]",
+                  "value": "150+",
+                  "type": "text",
+                  "uuid": "0a5c751a-5493-4889-a84e-3bf455c9b986",
+                  "disabled": true
+                },
+                {
+                  "key": "statistics[0][label]",
+                  "value": "Years of Experience",
+                  "type": "text",
+                  "uuid": "d1db5400-a5b4-4f53-af67-f1e5d77da64a",
+                  "disabled": true
+                },
+                {
+                  "key": "statistics[1][id]",
+                  "value": "",
+                  "type": "text",
+                  "uuid": "0949259e-b1e0-4d02-bc97-392f0c71eb50",
+                  "disabled": true
+                },
+                {
+                  "key": "statistics[1][value]",
+                  "value": "",
+                  "type": "text",
+                  "uuid": "1a7eb218-8f12-4fc5-b3e8-2eff2286317b",
+                  "disabled": true
+                },
+                {
+                  "key": "statistics[1][label]",
+                  "value": "",
+                  "type": "text",
+                  "uuid": "bdc2de8b-8585-4324-b0e9-118cc970e962",
+                  "disabled": true
+                },
+                {
+                  "key": "statistics[2][id]",
+                  "value": "",
+                  "type": "text",
+                  "uuid": "a3f8af73-d8cf-4df4-92f1-a600916c02a5",
+                  "disabled": true
+                },
+                {
+                  "key": "statistics[2][value]",
+                  "value": "",
+                  "type": "text",
+                  "uuid": "6d426695-2750-4cf6-9b84-3268992782bc",
+                  "disabled": true
+                },
+                {
+                  "key": "statistics[2][label]",
+                  "value": "",
+                  "type": "text",
+                  "uuid": "6386e442-0c42-4281-bda1-3cd1159ba899",
+                  "disabled": true
+                },
+                {
+                  "key": "statistics[3][id]",
+                  "value": "",
+                  "type": "text",
+                  "uuid": "75c6efe9-a8f2-458a-8985-2f6a73496352",
+                  "disabled": true
+                },
+                {
+                  "key": "statistics[3][value]",
+                  "value": "",
+                  "type": "text",
+                  "uuid": "68494f38-b24a-4429-a363-42751c906007",
+                  "disabled": true
+                },
+                {
+                  "key": "statistics[3][label]",
+                  "value": "",
+                  "type": "text",
+                  "uuid": "94a9e2b3-f7e2-482a-9bb7-994f68b53dcf",
+                  "disabled": true
+                },
+                {
+                  "key": "site_name",
+                  "value": "site_name",
+                  "type": "text",
+                  "uuid": "0f3646b5-7cdc-48f8-8471-dc2d315e050d",
+                  "disabled": true
+                },
+                {
+                  "key": "site_logo",
+                  "type": "file",
+                  "uuid": "1a42d630-e376-432b-967a-791f36b5e548",
+                  "src": "postman-cloud:///1f1205d6-80d5-4e70-a159-7501783250de",
+                  "disabled": true
+                },
+                {
+                  "key": "meta_title",
+                  "value": "meta_title",
+                  "type": "text",
+                  "uuid": "bacbff5e-d232-42ea-9b1d-adde7c7d87e8",
+                  "disabled": true
+                },
+                {
+                  "key": "meta_description",
+                  "value": "meta_description",
+                  "type": "text",
+                  "uuid": "cb7e0af3-c6e1-483c-a14e-c06b00233d47",
+                  "disabled": true
+                },
+                {
+                  "key": "meta_keywords",
+                  "value": "meta_keywords",
+                  "type": "text",
+                  "uuid": "8ac9204c-5798-44ad-b9bc-7b2d6751e1bb",
+                  "disabled": true
+                },
+                {
+                  "key": "meta_image",
+                  "type": "file",
+                  "uuid": "a18f280f-0843-4b96-b4d0-b9f47cde1a78",
+                  "src": "postman-cloud:///1f1205da-dbab-4da0-8c3b-0eca9226eadd",
+                  "disabled": true
+                },
+                {
+                  "key": "email",
+                  "value": "contact@example.com",
+                  "type": "text",
+                  "uuid": "0a777a66-b4da-402f-9164-5f04503f2a51"
+                },
+                {
+                  "key": "phone",
+                  "value": "0123456789",
+                  "type": "text",
+                  "uuid": "07dd2e44-3a7a-4dc1-9275-cec1926ba6bc"
+                },
+                {
+                  "key": "address",
+                  "value": "القاهرة - مصر",
+                  "type": "text",
+                  "uuid": "e42f4f09-693a-4d67-a3a8-d2948d2e8881"
+                },
+                {
+                  "key": "facebook",
+                  "value": "https://facebook.com/examplepage",
+                  "type": "text",
+                  "uuid": "f1cb7a52-8ca0-4623-a928-63382dca66f2"
+                },
+                {
+                  "key": "twitter",
+                  "value": "https://twitter.com/exampleprofile",
+                  "type": "text",
+                  "uuid": "56e11c55-e101-48a8-b4db-f3bf4177541d"
+                },
+                {
+                  "key": "instagram",
+                  "value": "https://instagram.com/exampleprofile",
+                  "type": "text",
+                  "uuid": "01fd1e91-9b26-4e05-91d7-4dbc0bdc7a68"
+                },
+                {
+                  "key": "linkedin",
+                  "value": "https://instagram.com/exampleprofile",
+                  "type": "text",
+                  "uuid": "e939a4be-6918-4325-a2a9-2c83d5075d10"
+                },
+                {
+                  "key": "youtube",
+                  "value": "https://instagram.com/exampleprofile",
+                  "type": "text",
+                  "uuid": "60722025-5efc-4304-a912-153b34cca6cf"
+                },
+                {
+                  "key": "tiktok",
+                  "value": "https://instagram.com/exampleprofile",
+                  "type": "text",
+                  "uuid": "ca242ceb-c337-4b90-9974-5409fed62bcb"
+                },
+                {
+                  "key": "snapchat",
+                  "value": "https://instagram.com/exampleprofile",
+                  "type": "text",
+                  "uuid": "d717cf01-403a-4ff8-8bb0-8e78b90e9676"
+                },
+                {
+                  "key": "pinterest",
+                  "value": "https://instagram.com/exampleprofile",
+                  "type": "text",
+                  "uuid": "50175139-cde4-4d73-820e-7a3a35113fea"
+                },
+                {
+                  "key": "whatsapp",
+                  "value": "https://instagram.com/exampleprofile",
+                  "type": "text",
+                  "uuid": "27e0b09b-02f8-4dfb-8b80-b1fb51efe46c"
+                },
+                {
+                  "key": "telegram",
+                  "value": "https://instagram.com/exampleprofile",
+                  "type": "text",
+                  "uuid": "0149f85e-5ecb-40a6-a0aa-e848df132b01"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{url}}/settings",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "settings"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Email subscrption",
+      "item": [
+        {
+          "name": "index",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Accept-Language",
+                "value": "ar",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{url}}/email-subscriptions",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "email-subscriptions"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "store",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Accept-Language",
+                "value": "ar",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "multipart/form-data",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "email",
+                  "value": "adham@gmail.com",
+                  "type": "text",
+                  "uuid": "64e53e70-0463-400c-8a83-66f48b1b38e6"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{url}}/email-subscriptions",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "email-subscriptions"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "destroy",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Accept-Language",
+                "value": "ar",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{url}}/email-subscriptions/:emailSubscription",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "email-subscriptions",
+                ":emailSubscription"
+              ],
+              "variable": [
+                {
+                  "key": "emailSubscription",
+                  "value": "1"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "New Filters",
+      "item": [
+        {
+          "name": "filtersByModel",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Accept-Language",
+                "value": "ar",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{url}}/filters-by-model?maker=OTHER JAPAN&model[]=TCM Wheelloader&model[]=KOMATSU",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "filters-by-model"
+              ],
+              "query": [
+                {
+                  "key": "maker",
+                  "value": "OTHER JAPAN"
+                },
+                {
+                  "key": "model[]",
+                  "value": "TCM Wheelloader"
+                },
+                {
+                  "key": "model[]",
+                  "value": "KOMATSU",
+                  "type": "text"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "typesByModel",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Accept-Language",
+                "value": "ar",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{url}}/types/:model",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "types",
+                ":model"
+              ],
+              "variable": [
+                {
+                  "key": "model",
+                  "value": "TCM Wheelloader"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "productsByModelAndType",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Accept-Language",
+                "value": "ar",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{url}}/by-model-type?type=Mini Wheel Loader&per_page=93&model=TCM Wheelloader",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "by-model-type"
+              ],
+              "query": [
+                {
+                  "key": "type",
+                  "value": "Mini Wheel Loader",
+                  "type": "text"
+                },
+                {
+                  "key": "per_page",
+                  "value": "93"
+                },
+                {
+                  "key": "model",
+                  "value": "TCM Wheelloader"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "url",
+      "value": ""
+    },
+    {
+      "key": "token",
+      "value": ""
+    }
+  ]
+}

@@ -113,6 +113,8 @@ export type VehicleFilterParams = {
   page?: number;
   holdingDate?: string;
   per_page?: number;
+  cascadingModel?: string;
+  cascadingType?: string;
   [key: string]: string | number | string[] | undefined;
 };
 
@@ -154,6 +156,70 @@ export async function getSingleVehicle(id: string) {
     method: "GET",
     cache: "no-store",
   });
+}
+
+export async function getFiltersByModel() {
+  return fetchFromLaravel<FiltersResponse>("/filters-by-model", {
+    method: "GET",
+    cache: "no-store",
+  });
+}
+
+export async function getTypesByModel(model: string) {
+  return fetchFromLaravel<{ success: boolean; message: string; data: string[] }>(
+    `/types/${encodeURIComponent(model)}`,
+    {
+      method: "GET",
+      cache: "no-store",
+    },
+  );
+}
+
+// The /by-model-type endpoint returns a flat shape:
+//   { success, message, data: Vehicle[], meta: { current_page, last_page, per_page, total } }
+// We normalize it to the standard VehicleSResponse shape:
+//   { success, message, data: { vehicles: Vehicle[], pagination: Pagination } }
+export async function getProductsByModelAndType(params: {
+  model: string;
+  type?: string;
+  per_page?: number;
+  page?: number;
+}) {
+  const query = new URLSearchParams();
+  query.set("model", params.model);
+  // Only send type if it is a real non-empty string — avoid "$undefined" from Next.js serialization
+  if (params.type && params.type !== "$undefined") {
+    query.set("type", params.type);
+  }
+  if (params.per_page) query.set("per_page", String(params.per_page));
+  if (params.page) query.set("page", String(params.page));
+
+  const qs = query.toString();
+  const raw = await fetchFromLaravel<{
+    success: boolean;
+    message: string;
+    data: import("@/types/vehicles").VehicleData[];
+    meta?: import("@/types/vehicles").Pagination;
+  }>(`/by-model-type${qs ? `?${qs}` : ""}`, {
+    method: "GET",
+    cache: "no-store",
+  });
+
+  // Normalize into VehicleSResponse shape so ProductsSection can read it uniformly
+  const normalized: import("./actions").ActionResponse<import("@/types/vehicles").VehicleSResponse> = {
+    ok: raw.ok,
+    status: raw.status,
+    error: raw.error,
+    data: {
+      success: raw.data?.success ?? raw.ok,
+      message: raw.data?.message ?? "",
+      data: {
+        vehicles: raw.data?.data ?? [],
+        pagination: raw.data?.meta,
+      },
+    },
+  };
+  return normalized;
 }
 
 // Favorites

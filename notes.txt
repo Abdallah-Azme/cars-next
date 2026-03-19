@@ -1,2 +1,37 @@
-banner full width 
-carousel for the machine 
+# الدخول لمجلد الـ standalone اللي نكست عملته
+cd .next/standalone
+
+# 1. إنشاء مجلد الـ static ونسخ الملفات جواه (مهم جداً للـ CSS والـ JS)
+mkdir .next/static
+xcopy /E /I ..\static .next\static
+
+# 2. نسخ مجلد الـ public (مهم جداً للصور والـ Icons والـ SVG)
+xcopy /E /I ..\..\public public
+
+# 3. ضغط كل المحتويات في ملف واحد اسمه deploy.zip
+tar -a -c -f ../../deploy.zip *
+
+# 4. الرجوع للمجلد الرئيسي للمشروع
+cd ../../
+
+# 5. رفع الملف المضغوط للسيرفر (انتظر حتى يكتمل الـ 100%)
+scp deploy.zip root@204.168.156.86:/var/www/next-app/
+
+
+
+ ssh root@204.168.156.86
+
+
+# 1. الدخول لمجلد المشروع على السيرفر
+cd /var/www/next-app/
+
+# 2. فك الضغط واستبدال الملفات القديمة بالجديدة
+unzip -o deploy.zip
+
+# 3. ضبط الصلاحيات لضمان ظهور الصور والملفات
+chown -R root:root .
+chmod -R 755 .next/static
+chmod -R 755 public
+
+# 4. إعادة تشغيل التطبيق (Restart)
+pm2 restart cars-next

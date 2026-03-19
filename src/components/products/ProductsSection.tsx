@@ -3,6 +3,7 @@
 import {
   getFilters,
   getVehicles,
+  getProductsByModelAndType,
   type VehicleFilterParams,
 } from "@/lib/actions";
 import { defaultFilters } from "@/types/vehicles";
@@ -20,14 +21,23 @@ export function ProductSection() {
 
   const { data } = useQuery({
     queryKey: ["vehicles", filterParams, page, perPage],
-    queryFn: () => getVehicles({ ...filterParams, page, per_page: perPage }),
+    queryFn: () => {
+      if (filterParams.cascadingModel) {
+        return getProductsByModelAndType({
+          model: filterParams.cascadingModel,
+          // Only pass type if it's a real string — undefined would be serialized as "$undefined" by Next.js
+          ...(filterParams.cascadingType ? { type: filterParams.cascadingType } : {}),
+          page,
+          per_page: perPage,
+        });
+      }
+      return getVehicles({ ...filterParams, page, per_page: perPage });
+    },
   });
   const { data: filtersData } = useQuery({
     queryKey: ["filters"],
     queryFn: getFilters,
   });
-
-  console.log({ data });
 
   const vehicles = data?.data?.data?.vehicles ?? [];
   const pagination = data?.data?.data?.pagination;
