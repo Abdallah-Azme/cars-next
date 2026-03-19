@@ -304,11 +304,17 @@ export async function resendVerification(email: string) {
 }
 
 export async function logout() {
-  const res = await fetchFromLaravel<{ message: string }>("/logout", {
-    method: "POST",
-  });
-  (await cookies()).delete("auth_token");
-  return res;
+  try {
+    const res = await fetchFromLaravel<{ message: string }>("/logout", {
+      method: "POST",
+    });
+    return res;
+  } catch (err) {
+    console.error("Logout fetch failed", err);
+    return { ok: false, status: 500, data: { message: "Internal server error" } };
+  } finally {
+    (await cookies()).delete("auth_token");
+  }
 }
 
 export async function getProfile() {

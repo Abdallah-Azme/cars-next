@@ -9,6 +9,7 @@ import { DynamicHead } from "@/components/shared/DynamicHead";
 import { getSettings } from "@/lib/actions";
 import SettingsInitializer from "@/components/shared/SettingsInitializer";
 import WhatsAppButton from "@/components/shared/WhatsAppButton";
+import NextTopLoader from "nextjs-toploader";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -46,6 +47,7 @@ export default async function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <QueryProvider>
+          <NextTopLoader color="#dc2626" showSpinner={false} />
           <SettingsInitializer settings={settings} />
           <DynamicHead />
           <Navbar />

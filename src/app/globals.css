@@ -144,3 +144,29 @@
     scrollbar-width: none; /* Firefox */
   }
 }
+
+@theme inline {
+  --animate-spin-slow: spin-slow 2s linear infinite;
+  --animate-loading-progress: loading-progress 2.5s ease-in-out infinite;
+
+  @keyframes spin-slow {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  @keyframes loading-progress {
+    0% {
+      transform: translateX(-100%);
+    }
+    50% {
+      transform: translateX(0%);
+    }
+    100% {
+      transform: translateX(100%);
+    }
+  }
+}
