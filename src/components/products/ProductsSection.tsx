@@ -7,8 +7,9 @@ import {
   type VehicleFilterParams,
 } from "@/lib/actions";
 import { defaultFilters } from "@/types/vehicles";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, keepPreviousData } from "@tanstack/react-query";
 import { useState } from "react";
+import { Skeleton } from "@/components/ui/skeleton";
 import { PaginationControls } from "./Pagination";
 import { ProductFilters } from "./ProductFilter";
 import { ProductFiltersSheet } from "./ProductFiltersSheet";
@@ -19,7 +20,7 @@ export function ProductSection() {
   const [page, setPage] = useState(1);
   const [perPage, setPerPage] = useState(10);
 
-  const { data } = useQuery({
+  const { data, isPending, isPlaceholderData } = useQuery({
     queryKey: ["vehicles", filterParams, page, perPage],
     queryFn: () => {
       if (filterParams.cascadingModel) {
@@ -33,6 +34,7 @@ export function ProductSection() {
       }
       return getVehicles({ ...filterParams, page, per_page: perPage });
     },
+    placeholderData: keepPreviousData,
   });
   const { data: filtersData } = useQuery({
     queryKey: ["filters"],
@@ -91,13 +93,21 @@ export function ProductSection() {
             products
           </div>
 
-          {vehicles?.length === 0 ? (
-            <div className="text-sm text-muted-foreground">
-              No Vehicles Found
-            </div>
-          ) : (
-            <ProductsGrid vehicles={vehicles} />
-          )}
+          <div className={isPlaceholderData ? "opacity-50 transition-opacity" : "transition-opacity"}>
+            {vehicles?.length === 0 && !isPending ? (
+              <div className="text-sm text-muted-foreground">
+                No Vehicles Found
+              </div>
+            ) : isPending ? (
+              <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                {[...Array(6)].map((_, i) => (
+                  <Skeleton key={i} className="h-[400px] w-full" />
+                ))}
+              </div>
+            ) : (
+              <ProductsGrid vehicles={vehicles} />
+            )}
+          </div>
 
           {/* Pagination */}
           {pagination && (
