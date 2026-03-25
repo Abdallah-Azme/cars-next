@@ -46,3 +46,6 @@ pm2 restart cars-next
 3- if result yet to be auction -> show the start price, if the result sold show the selling price , else show empty div 
 4- filter by auctions status 
 5- in home comment the japan and other type, show the first two cards filter then redirect to products page 
+
+
+?child_category_id[]=1&child_category_id[]=2&child_category_id[]=3

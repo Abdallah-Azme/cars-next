@@ -216,9 +216,16 @@ const SingleProductPage = () => {
             {/* Start price */}
             <Card>
               <CardContent className="p-4">
-                <div className="text-xs text-muted-foreground">Start price</div>
-                <div className="mt-1 text-lg font-semibold">
-                  {vehicle.startPrice}
+                <div className="text-xs text-muted-foreground uppercase font-medium tracking-wider">
+                  {vehicle.status?.toLowerCase().includes("sold") ? "Selling Price" : "Start Price"}
+                </div>
+                <div className={cn(
+                  "mt-1 text-lg font-black",
+                  vehicle.status?.toLowerCase().includes("sold") ? "text-green-600" : "text-blue-600"
+                )}>
+                  {vehicle.status?.toLowerCase().includes("sold")
+                    ? (vehicle.soldPrice || vehicle.startPrice || vehicle.translatedData?.startPrice || "TBD")
+                    : (vehicle.startPrice || vehicle.translatedData?.startPrice || "TBD")}
                 </div>
                 <Separator className="my-3" />
                 <div className="text-xs text-muted-foreground">Status</div>

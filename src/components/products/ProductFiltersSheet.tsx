@@ -16,7 +16,7 @@ export function ProductFiltersSheet({
 }: {
   onFilterChange: (params: VehicleFilterParams) => void;
   exclude?: string[];
-  controlledParams?: VehicleFilterParams & { selectedParentId?: number; selectedChildId?: number };
+  controlledParams?: VehicleFilterParams;
 }) {
   return (
     <Sheet>

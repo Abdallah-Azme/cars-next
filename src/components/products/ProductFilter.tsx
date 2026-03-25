@@ -131,17 +131,14 @@ export function ProductFilters({
 }: {
   onFilterChange: (params: VehicleFilterParams) => void;
   exclude?: string[];
-  controlledParams?: VehicleFilterParams & {
-    selectedParentId?: number;
-    selectedChildId?: number;
-  };
+  controlledParams?: VehicleFilterParams;
 }) {
   // ── category hierarchy state ──────────────────────────────────────────────
   const [selectedParentId, setSelectedParentId] = useState<number | undefined>(
     controlledParams.selectedParentId,
   );
-  const [selectedChildId, setSelectedChildId] = useState<number | undefined>(
-    controlledParams.selectedChildId,
+  const [selectedChildIds, setSelectedChildIds] = useState<number[]>(
+    controlledParams.selectedChildIds || [],
   );
   const [selectedModels, setSelectedModels] = useState<string[]>(
     controlledParams.selectedModels || [],
@@ -182,8 +179,8 @@ export function ProductFilters({
   React.useEffect(() => {
     if (controlledParams.selectedParentId !== undefined)
       setSelectedParentId(controlledParams.selectedParentId);
-    if (controlledParams.selectedChildId !== undefined)
-      setSelectedChildId(controlledParams.selectedChildId);
+    if (controlledParams.selectedChildIds)
+      setSelectedChildIds(controlledParams.selectedChildIds);
     if (controlledParams.selectedModels)
       setSelectedModels(controlledParams.selectedModels);
     if (controlledParams.selectedTypes)
@@ -212,9 +209,23 @@ export function ProductFilters({
   });
 
   const { data: modelsData, isLoading: loadingModels } = useQuery({
-    queryKey: ["modelsByChild", selectedChildId],
-    queryFn: () => getModelsByChildCategory(selectedChildId!),
-    enabled: !!selectedChildId,
+    queryKey: ["modelsByChild", selectedChildIds],
+    queryFn: async () => {
+      // If multiple sub-categories, we aggregate models
+      const results = await Promise.all(
+        selectedChildIds.map((id) => getModelsByChildCategory(id))
+      );
+      // Flatten model lists
+      const allModels: ModelItem[] = [];
+      results.forEach((res) => {
+        if (res.ok && res.data?.data) {
+          allModels.push(...res.data.data);
+        }
+      });
+      // De-duplicate by name if needed, but let's keep it simple
+      return { data: { data: allModels } };
+    },
+    enabled: selectedChildIds.length > 0,
   });
 
   const { data: filtersByModelData, isLoading: loadingFiltersByModel } =
@@ -238,6 +249,8 @@ export function ProductFilters({
 
   const notify = (overrides: Partial<VehicleFilterParams>) => {
     const params: VehicleFilterParams = {
+      selectedParentId,
+      selectedChildIds,
       selectedModels,
       selectedTypes,
       sizes: selectedSizes,
@@ -297,7 +310,7 @@ export function ProductFilters({
   // ── reset ─────────────────────────────────────────────────────────────────
   const handleReset = () => {
     setSelectedParentId(undefined);
-    setSelectedChildId(undefined);
+    setSelectedChildIds([]);
     setSelectedModels([]);
     setSelectedTypes([]);
     setSelectedSizes([]);
@@ -346,10 +359,10 @@ export function ProductFilters({
                 onValueChange={(val) => {
                   const id = Number(val);
                   setSelectedParentId(id);
-                  setSelectedChildId(undefined);
+                  setSelectedChildIds([]);
                   setSelectedModels([]);
                   setSelectedTypes([]);
-                  notify({ selectedModels: [], selectedTypes: [] });
+                  notify({ selectedParentId: id, selectedChildIds: [], selectedModels: [], selectedTypes: [] });
                 }}
               >
                 <SelectTrigger className="w-full">
@@ -376,35 +389,29 @@ export function ProductFilters({
                 <Loader2 className="h-3 w-3 animate-spin" /> Loading…
               </div>
             ) : (
-              <Select
-                value={
-                  selectedChildId !== undefined ? String(selectedChildId) : ""
-                }
-                onValueChange={(val) => {
-                  const id = Number(val);
-                  setSelectedChildId(id);
+              <ChecklistBox
+                items={childCategories.map((c) => c.name)}
+                selectedItems={childCategories
+                  .filter((c) => selectedChildIds.includes(c.id))
+                  .map((c) => c.name)}
+                onToggle={(name, checked) => {
+                  const cat = childCategories.find((c) => c.name === name);
+                  if (!cat) return;
+                  const next = checked
+                    ? [...selectedChildIds, cat.id]
+                    : selectedChildIds.filter((id) => id !== cat.id);
+                  setSelectedChildIds(next);
                   setSelectedModels([]);
                   setSelectedTypes([]);
-                  notify({ selectedModels: [], selectedTypes: [] });
+                  notify({ selectedChildIds: next, selectedModels: [], selectedTypes: [] });
                 }}
-              >
-                <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Select sub-category…" />
-                </SelectTrigger>
-                <SelectContent>
-                  {childCategories.map((c) => (
-                    <SelectItem key={c.id} value={String(c.id)}>
-                      {c.name}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+              />
             )}
           </div>
         )}
 
         {/* ── 3. Model checklist ─────────────────────────────────────────── */}
-        {selectedChildId !== undefined && (
+        {selectedChildIds.length > 0 && (
           <div className="space-y-3">
             <SectionTitle title="Model" />
             {loadingModels ? (

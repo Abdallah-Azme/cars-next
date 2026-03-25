@@ -92,12 +92,7 @@ export function ProductCard({ vehicle }: Props) {
           {/* Image */}
           {/* Carousel */}
           {images.length > 0 && (
-            <div
-              className="relative group"
-              onTouchStartCapture={(e) => e.stopPropagation()}
-              onMouseDownCapture={(e) => e.stopPropagation()}
-              onPointerDownCapture={(e) => e.stopPropagation()}
-            >
+            <div className="relative group">
               <Carousel setApi={setApi} className="w-full">
                 <CarouselContent>
                   {images.map((img, index) => (
@@ -191,8 +186,8 @@ export function ProductCard({ vehicle }: Props) {
                 )}
               >
                 {lastResult.toLowerCase().includes("sold") 
-                  ? vehicle.soldPrice || vehicle.startPrice 
-                  : vehicle.startPrice || "TBD"}
+                  ? (vehicle.soldPrice || vehicle.startPrice || vehicle.translatedData?.startPrice || "TBD") 
+                  : (vehicle.startPrice || vehicle.translatedData?.startPrice || "TBD")}
               </div>
             </div>
           ) : (

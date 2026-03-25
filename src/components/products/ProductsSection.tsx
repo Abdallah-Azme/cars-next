@@ -16,9 +16,11 @@ import { useSearchParams } from "next/navigation";
 import { useEffect, Suspense } from "react";
 
 /** Build the query string for the /api/vehicles route */
-function buildVehicleQS(params: VehicleFilterParams, page: number, perPage: number, childCategoryId?: number) {
+function buildVehicleQS(params: VehicleFilterParams, page: number, perPage: number, childCategoryIds: number[]) {
   const q = new URLSearchParams();
-  if (childCategoryId) q.set("child_category_id", String(childCategoryId));
+  if (childCategoryIds.length > 0) {
+    childCategoryIds.forEach((id) => q.append("child_category_id[]", String(id)));
+  }
   params.selectedModels?.forEach((v) => q.append("selection_model", v));
   params.selectedTypes?.forEach((v) => q.append("vehicle_type", v));
   params.sizes?.forEach((v) => q.append("vehicle_size", v));
@@ -53,11 +55,11 @@ function ProductSectionContent() {
 
   // Category State
   const [selectedParentId, setSelectedParentId] = useState<number | undefined>(initialParentId);
-  const [selectedChildId, setSelectedChildId] = useState<number | undefined>(initialChildId);
+  const [selectedChildIds, setSelectedChildIds] = useState<number[]>(initialChildId ? [initialChildId] : []);
 
   useEffect(() => {
     if (initialParentId) setSelectedParentId(initialParentId);
-    if (initialChildId) setSelectedChildId(initialChildId);
+    if (initialChildId) setSelectedChildIds([initialChildId]);
   }, [initialParentId, initialChildId]);
 
   const { data: parentData } = useQuery({
@@ -75,10 +77,10 @@ function ProductSectionContent() {
   const childCategories: ChildCategory[] = childData?.data?.data ?? [];
 
   const { data, isPending, isPlaceholderData, error } = useQuery({
-    queryKey: ["vehicles", filterParams, page, perPage, selectedChildId],
+    queryKey: ["vehicles", filterParams, page, perPage, selectedChildIds],
     queryFn: async () => {
       try {
-        const url = `/api/vehicles?${buildVehicleQS(filterParams, page, perPage, selectedChildId)}`;
+        const url = `/api/vehicles?${buildVehicleQS(filterParams, page, perPage, selectedChildIds)}`;
         const res = await fetch(url);
         if (!res.ok) {
           const errData = await res.json().catch(() => ({}));
@@ -90,7 +92,7 @@ function ProductSectionContent() {
         throw err;
       }
     },
-    enabled: !!selectedChildId, // Don't fetch until a sub-category is selected
+    enabled: !!selectedParentId && selectedChildIds.length > 0, // Don't fetch until a sub-category is selected
     placeholderData: keepPreviousData,
   });
 
@@ -128,7 +130,7 @@ function ProductSectionContent() {
       if (Object.keys(params).length === 0) {
         // Reset case
         setSelectedParentId(undefined);
-        setSelectedChildId(undefined);
+        setSelectedChildIds([]);
         return {};
       }
       return { ...prev, ...params };
@@ -142,10 +144,10 @@ function ProductSectionContent() {
     
     if (checked) {
       setSelectedParentId(cat.id);
-      setSelectedChildId(undefined);
+      setSelectedChildIds([]);
     } else {
       setSelectedParentId(undefined);
-      setSelectedChildId(undefined);
+      setSelectedChildIds([]);
     }
     // Also clear models/types when category changes
     handleFilterChange({ selectedModels: [], selectedTypes: [] });
@@ -156,9 +158,9 @@ function ProductSectionContent() {
     if (!cat) return;
 
     if (checked) {
-      setSelectedChildId(cat.id);
+      setSelectedChildIds((prev) => [...prev, cat.id]);
     } else {
-      setSelectedChildId(undefined);
+      setSelectedChildIds((prev) => prev.filter((id) => id !== cat.id));
     }
     // Also clear models/types when sub-category changes
     handleFilterChange({ selectedModels: [], selectedTypes: [] });
@@ -183,7 +185,7 @@ function ProductSectionContent() {
             onFilterChange={handleFilterChange}
             controlledParams={{
               selectedParentId,
-              selectedChildId,
+              selectedChildIds,
               ...filterParams
             }}
             exclude={["parentCategory", "subCategory"]}
@@ -202,7 +204,7 @@ function ProductSectionContent() {
           <HorizontalFilterRow
             title="Sub-Category"
             items={childCategories.map(c => c.name)}
-            selectedItems={childCategories.filter(c => c.id === selectedChildId).map(c => c.name)}
+            selectedItems={childCategories.filter(c => selectedChildIds.includes(c.id)).map(c => c.name)}
             onToggle={handleChildSelect}
           />
         )}
@@ -216,7 +218,7 @@ function ProductSectionContent() {
               onFilterChange={handleFilterChange}
               controlledParams={{
                 selectedParentId,
-                selectedChildId,
+                selectedChildIds,
                 ...filterParams
               }}
               exclude={["parentCategory", "subCategory"]}
@@ -235,7 +237,7 @@ function ProductSectionContent() {
           </div>
 
           <div className={isPlaceholderData ? "opacity-50 transition-opacity" : "transition-opacity"}>
-            {!selectedChildId ? (
+            {selectedChildIds.length === 0 ? (
               <div className="text-center py-20 bg-gray-50 rounded-3xl border-2 border-dashed border-gray-200">
                 <div className="flex flex-col items-center gap-4">
                   <div className="h-16 w-16 bg-red-100 text-red-600 rounded-full flex items-center justify-center animate-bounce">

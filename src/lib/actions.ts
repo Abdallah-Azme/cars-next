@@ -117,7 +117,9 @@ export type VehicleFilterParams = {
   selectedModels?: string[];  // model names for /filters-by-model
   selectedTypes?: string[];   // types chosen from filters-by-model response
   results?: string[];         // Auction results (Sold, Yet To Be Auctioned)
-  [key: string]: string | number | string[] | undefined;
+  selectedParentId?: number;
+  selectedChildIds?: number[];
+  [key: string]: string | number | string[] | number[] | undefined;
 };
 
 export async function getVehicles(params?: VehicleFilterParams) {
