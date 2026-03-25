@@ -20,13 +20,17 @@ async function fetchSettings() {
 
 export async function generateMetadata(): Promise<Metadata> {
   const settings = await fetchSettings();
+  const siteName = settings?.siteName || "Car Auction";
 
   return {
-    title: settings?.metaTitle || settings?.siteName || "Car Auction",
+    title: {
+      default: siteName, // strictly using siteName as the meta title base
+      template: `%s | ${siteName}`,
+    },
     description: settings?.metaDescription || "Browse our wide range of heavy machinery solutions.",
     keywords: settings?.metaKeywords || "machinery, heavy equipment, auction",
     openGraph: {
-      title: settings?.metaTitle || settings?.siteName || "Car Auction",
+      title: siteName,
       description: settings?.metaDescription || "Providing high-performance heavy machinery solutions worldwide.",
       images: settings?.metaImage ? [settings.metaImage] : ["/hero-egypt.jpg"],
     },

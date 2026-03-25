@@ -141,6 +141,17 @@ const SingleProductPage = () => {
                             alt={`${title} image ${i + 1}`}
                             className="object-contain absolute inset-0 w-full h-full"
                           />
+                          
+                          {/* Logo Overlay */}
+                          <div className="absolute bottom-4 right-4 z-10 select-none pointer-events-none opacity-80 transition-opacity hover:opacity-100">
+                            <div className="relative h-12 w-32 md:h-16 md:w-40 overflow-hidden rounded-lg bg-white/40 backdrop-blur-md p-2 shadow-sm border border-white/40">
+                              <img 
+                                src="/logo.jpeg" 
+                                alt="Logo" 
+                                className="h-full w-full object-contain"
+                              />
+                            </div>
+                          </div>
                         </div>
                       </CarouselItem>
                     ))}

@@ -113,8 +113,10 @@ export type VehicleFilterParams = {
   page?: number;
   holdingDate?: string;
   per_page?: number;
-  cascadingModel?: string;
-  cascadingType?: string;
+  // New category-based filters
+  selectedModels?: string[];  // model names for /filters-by-model
+  selectedTypes?: string[];   // types chosen from filters-by-model response
+  results?: string[];         // Auction results (Sold, Yet To Be Auctioned)
   [key: string]: string | number | string[] | undefined;
 };
 
@@ -158,20 +160,62 @@ export async function getSingleVehicle(id: string) {
   });
 }
 
-export async function getFiltersByModel() {
-  return fetchFromLaravel<FiltersResponse>("/filters-by-model", {
-    method: "GET",
-    cache: "no-store",
-  });
+// ── New category hierarchy actions ──────────────────────────────────────────
+
+export type ChildCategory = {
+  id: number;
+  name: string;
+  searchKeywords: string;
+};
+
+export type ParentCategory = {
+  id: number;
+  name: string;
+  childrenCount: number;
+  children: ChildCategory[];
+};
+
+export type ModelItem = {
+  id: number;
+  name: string;
+};
+
+export type FiltersByModelData = {
+  models: { title: string; count: number }[];
+  types: { title: string; count: number }[];
+  sizes: { title: string; count: number }[];
+  years: { title: string; count: number }[];
+  workingHours: { title: string; count: number }[];
+  scores: { title: string; count: number }[];
+};
+
+export async function getParentCategories() {
+  return fetchFromLaravel<{ success: boolean; message: string; data: ParentCategory[] }>(
+    "/parent-categories",
+    { method: "GET", cache: "no-store" },
+  );
 }
 
-export async function getTypesByModel(model: string) {
-  return fetchFromLaravel<{ success: boolean; message: string; data: string[] }>(
-    `/types/${encodeURIComponent(model)}`,
-    {
-      method: "GET",
-      cache: "no-store",
-    },
+export async function getChildCategories(parentId: number) {
+  return fetchFromLaravel<{ success: boolean; message: string; data: ChildCategory[] }>(
+    `/child-categories?parent_id=${parentId}`,
+    { method: "GET", cache: "no-store" },
+  );
+}
+
+export async function getModelsByChildCategory(childCategoryId: number) {
+  return fetchFromLaravel<{ success: boolean; message: string; data: ModelItem[] }>(
+    `/models?child_category_id=${childCategoryId}`,
+    { method: "GET", cache: "no-store" },
+  );
+}
+
+export async function getFiltersByModels(models: string[]) {
+  const q = new URLSearchParams();
+  models.forEach((m) => q.append("model[]", m));
+  return fetchFromLaravel<{ success: boolean; message: string; data: FiltersByModelData }>(
+    `/filters-by-model?${q.toString()}`,
+    { method: "GET", cache: "no-store" },
   );
 }
 

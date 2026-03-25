@@ -7,7 +7,7 @@ import { Separator } from "@/components/ui/separator";
 import type { VehicleData } from "@/types/vehicles";
 import Link from "next/link";
 import AddToFavBtn from "./AddToFavBtn";
-import { fixImageUrl } from "@/lib/utils";
+import { fixImageUrl, cn } from "@/lib/utils";
 import {
   Carousel,
   CarouselContent,
@@ -24,6 +24,11 @@ export function ProductCard({ vehicle }: Props) {
   const [api, setApi] = React.useState<CarouselApi>();
   const [current, setCurrent] = React.useState(0);
   const images = vehicle?.images?.filter(img => img.download_url) || [];
+  
+  const lastHistory = vehicle?.statusHistory && vehicle.statusHistory.length > 0 
+    ? vehicle.statusHistory[vehicle.statusHistory.length - 1] 
+    : null;
+  const lastResult = lastHistory?.result || "No Status";
 
   React.useEffect(() => {
     if (!api) return;
@@ -60,8 +65,18 @@ export function ProductCard({ vehicle }: Props) {
             <div className=" font-semibold tracking-wide">
               {vehicle?.carMaker || "-"} {vehicle?.model || "-"}
             </div>
-            <div className="text-sm text-muted-foreground">
-              {vehicle?.auctionDay}
+            <div className="flex flex-wrap items-center gap-2 text-xs">
+              <span className="text-muted-foreground">{vehicle?.auctionDay}</span>
+              {lastHistory && (
+                <span className={cn(
+                  "px-2 py-0.5 rounded-full font-bold uppercase text-[10px] tracking-tighter",
+                  lastResult.includes("Sold") ? "bg-green-100 text-green-700" :
+                  lastResult.includes("Yet") ? "bg-blue-100 text-blue-700" :
+                  "bg-amber-100 text-amber-700"
+                )}>
+                  {lastResult}
+                </span>
+              )}
             </div>
           </div>
 
@@ -164,32 +179,25 @@ export function ProductCard({ vehicle }: Props) {
       {/* Footer */}
       <CardFooter className=" border-t bg-muted/5">
         <div className="flex w-full flex-col gap-2  ">
-          <div className="flex items-center justify-between">
-            <div className="text-xs text-muted-foreground font-medium uppercase tracking-wider">
-              {vehicle?.status === "Reception End"
-                ? Number(vehicle.soldPrice) > 0
-                  ? "Sold Price"
-                  : "Final Status"
-                : vehicle?.startPrice
-                  ? "Start Price"
-                  : "Auction Status"}
+          {(lastResult.toLowerCase().includes("sold") || lastResult.toLowerCase().includes("yet")) ? (
+            <div className="flex items-center justify-between">
+              <div className="text-xs text-muted-foreground font-medium uppercase tracking-wider">
+                {lastResult.toLowerCase().includes("sold") ? "Selling Price" : "Start Price"}
+              </div>
+              <div
+                className={cn(
+                  "text-sm font-black px-2 py-0.5 rounded",
+                  lastResult.toLowerCase().includes("sold") ? "text-green-600 bg-green-50" : "text-blue-600 bg-blue-50"
+                )}
+              >
+                {lastResult.toLowerCase().includes("sold") 
+                  ? vehicle.soldPrice || vehicle.startPrice 
+                  : vehicle.startPrice || "TBD"}
+              </div>
             </div>
-            <div
-              className={`text-sm font-black px-2 py-0.5 rounded ${
-                vehicle?.status === "Reception End"
-                  ? Number(vehicle.soldPrice) > 0
-                    ? "text-green-600 bg-green-50"
-                    : "text-neutral-500 bg-neutral-100"
-                  : "text-red-600 bg-red-50"
-              }`}
-            >
-              {vehicle?.status === "Reception End"
-                ? Number(vehicle.soldPrice) > 0
-                  ? vehicle.soldPrice
-                  : "Not Sold"
-                : vehicle.status || "Bids accepted"}
-            </div>
-          </div>
+          ) : (
+            <div className="h-10 invisible" /> /* Empty div to maintain spacing */
+          )}
 
           <div className="text-[10px] text-muted-foreground flex items-center justify-between border-t border-dashed pt-2 mt-1">
             <span className="flex items-center gap-1 font-medium italic">

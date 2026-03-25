@@ -1,7 +1,8 @@
 import ForgotPasswordPage from "@/views/ForgotPasswordPage";
+import { Metadata } from "next";
 
-export const metadata = {
-  title: "Forgot Password | Car Auction",
+export const metadata: Metadata = {
+  title: "Forgot Password",
   description: "Reset your account password",
 };
 

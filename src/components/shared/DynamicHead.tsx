@@ -24,12 +24,7 @@ export function DynamicHead() {
   useEffect(() => {
     if (!settings) return;
 
-    // 1. Update Title
-    if (settings.metaTitle || settings.siteName) {
-      document.title = settings.metaTitle || settings.siteName || "Car Auction";
-    }
-
-    // 2. Update Description
+    // description
     let metaDesc = document.querySelector('meta[name="description"]');
     if (!metaDesc && settings.metaDescription) {
       metaDesc = document.createElement("meta");

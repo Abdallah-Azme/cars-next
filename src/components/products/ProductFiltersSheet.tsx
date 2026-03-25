@@ -7,15 +7,16 @@ import {
   SheetTrigger
 } from "@/components/ui/sheet";
 import { ProductFilters } from "./ProductFilter";
-import type { FiltersData } from "@/types/vehicles";
 import type { VehicleFilterParams } from "@/lib/actions";
 
 export function ProductFiltersSheet({
-  filters,
   onFilterChange,
+  exclude = [],
+  controlledParams = {},
 }: {
-  filters: FiltersData;
   onFilterChange: (params: VehicleFilterParams) => void;
+  exclude?: string[];
+  controlledParams?: VehicleFilterParams & { selectedParentId?: number; selectedChildId?: number };
 }) {
   return (
     <Sheet>
@@ -29,7 +30,11 @@ export function ProductFiltersSheet({
         <SheetHeader>
           <SheetDescription asChild>
             <div className="mt-6">
-              <ProductFilters filters={filters} onFilterChange={onFilterChange} />
+              <ProductFilters 
+                onFilterChange={onFilterChange} 
+                exclude={exclude}
+                controlledParams={controlledParams}
+              />
             </div>
           </SheetDescription>
         </SheetHeader>

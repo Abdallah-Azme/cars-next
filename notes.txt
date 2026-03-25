@@ -19,7 +19,7 @@ scp deploy.zip root@204.168.156.86:/var/www/next-app/
 
 
 
- ssh root@204.168.156.86
+ssh root@204.168.156.86
 
 
 # 1. الدخول لمجلد المشروع على السيرفر
@@ -35,3 +35,14 @@ chmod -R 755 public
 
 # 4. إعادة تشغيل التطبيق (Restart)
 pm2 restart cars-next
+
+
+
+
+
+
+1- first two categories need to be a cards / show no data till he pick them, and when he do so show all the data and start filtring (done)
+2- show last statusHistory -> result
+3- if result yet to be auction -> show the start price, if the result sold show the selling price , else show empty div 
+4- filter by auctions status 
+5- in home comment the japan and other type, show the first two cards filter then redirect to products page 

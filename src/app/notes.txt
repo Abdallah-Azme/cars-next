@@ -1,5 +1,2 @@
-1- السكشن بتاع الكونتاكت في الهوم بيج مش بيظهر 
-2- numbers at the end 
-3- categories remove bg 
-4- hide tghe categoruies from the header 
+
  

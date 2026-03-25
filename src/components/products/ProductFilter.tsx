@@ -1,3 +1,5 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
@@ -10,142 +12,25 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Trash, Loader2, Check, ChevronsUpDown } from "lucide-react";
-import * as React from "react"
+import { Trash, Loader2 } from "lucide-react";
+import * as React from "react";
 import { useState } from "react";
-import { cn } from "@/lib/utils";
-import type { FiltersData } from "@/types/vehicles";
-import type { VehicleFilterParams } from "@/lib/actions";
+import type {
+  VehicleFilterParams,
+  ParentCategory,
+  ChildCategory,
+  ModelItem,
+  FiltersByModelData,
+} from "@/lib/actions";
+import {
+  getParentCategories,
+  getChildCategories,
+  getModelsByChildCategory,
+  getFiltersByModels,
+} from "@/lib/actions";
 import { useQuery } from "@tanstack/react-query";
-import { getTypesByModel } from "@/lib/actions";
-import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-} from "@/components/ui/command";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
 
-function Combobox({
-  items,
-  value,
-  onChange,
-  placeholder = "Select item...",
-  emptyMessage = "No item found.",
-  disabled = false,
-}: {
-  items: string[];
-  value?: string;
-  onChange: (val: string | undefined) => void;
-  placeholder?: string;
-  emptyMessage?: string;
-  disabled?: boolean;
-}) {
-  const [open, setOpen] = React.useState(false);
-
-  return (
-    <Popover open={open} onOpenChange={setOpen}>
-      <PopoverTrigger asChild>
-        <Button
-          variant="outline"
-          role="combobox"
-          aria-expanded={open}
-          className="w-full justify-between font-normal"
-          disabled={disabled}
-        >
-          {value ? value : placeholder}
-          <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-        </Button>
-      </PopoverTrigger>
-      <PopoverContent className="w-full min-w-(--radix-popover-trigger-width) p-0">
-        <Command>
-          <CommandInput placeholder={`Search ${placeholder.toLowerCase()}...`} />
-          <CommandList>
-            <CommandEmpty>{emptyMessage}</CommandEmpty>
-            <CommandGroup>
-              <CommandItem
-                value="all"
-                onSelect={() => {
-                  onChange(undefined);
-                  setOpen(false);
-                }}
-              >
-                <Check
-                  className={cn(
-                    "mr-2 h-4 w-4",
-                    !value ? "opacity-100" : "opacity-0"
-                  )}
-                />
-                Unselected
-              </CommandItem>
-              {items.map((item) => (
-                <CommandItem
-                  key={item}
-                  value={item}
-                  onSelect={(currentValue) => {
-                    onChange(currentValue === value ? undefined : currentValue);
-                    setOpen(false);
-                  }}
-                >
-                  <Check
-                    className={cn(
-                      "mr-2 h-4 w-4",
-                      value === item ? "opacity-100" : "opacity-0"
-                    )}
-                  />
-                  {item}
-                </CommandItem>
-              ))}
-            </CommandGroup>
-          </CommandList>
-        </Command>
-      </PopoverContent>
-    </Popover>
-  );
-}
-
-function CascadingTypes({ 
-  model, 
-  value, 
-  onChange 
-}: { 
-  model?: string; 
-  value?: string; 
-  onChange: (val: string | undefined) => void 
-}) {
-  const { data, isFetching } = useQuery({
-    queryKey: ["typesByModel", model],
-    queryFn: () => getTypesByModel(model!),
-    enabled: !!model,
-  });
-
-  if (!model) return null;
-
-  return (
-    <div className="space-y-3">
-      <SectionTitle title="Type (Sub Category)" />
-      <Combobox
-        items={data?.data?.data || []}
-        value={value}
-        onChange={onChange}
-        placeholder="Select a Type"
-        emptyMessage="No type found."
-        disabled={isFetching}
-      />
-      {isFetching && (
-        <div className="flex items-center gap-2 px-2 py-1 text-xs text-muted-foreground">
-          <Loader2 className="h-3 w-3 animate-spin" /> Loading types...
-        </div>
-      )}
-    </div>
-  );
-}
+// ─── tiny helpers ────────────────────────────────────────────────────────────
 
 function SectionTitle({ title }: { title: string }) {
   return (
@@ -163,15 +48,13 @@ function ChecklistBox({
   items: string[];
   selectedItems: string[];
   onToggle: (value: string, checked: boolean) => void;
-  height?: number | string;
 }) {
   return (
     <div className="rounded-md border bg-background">
-      <ScrollArea className="p-3 max-h-96 overflow-y-auto">
+      <ScrollArea className="p-3 max-h-60 overflow-y-auto">
         <div className="space-y-2">
           {items.map((item) => {
-            const id = item.replace(/\s+/g, "-").toLowerCase();
-
+            const id = `chk-${item.replace(/\s+/g, "-").toLowerCase()}`;
             return (
               <div key={item} className="flex items-center gap-2">
                 <Checkbox
@@ -239,84 +122,198 @@ function RangeSelect({
   );
 }
 
+// ─── main component ───────────────────────────────────────────────────────────
+
 export function ProductFilters({
-  filters,
   onFilterChange,
+  exclude = [],
+  controlledParams = {},
 }: {
-  filters: FiltersData;
   onFilterChange: (params: VehicleFilterParams) => void;
+  exclude?: string[];
+  controlledParams?: VehicleFilterParams & {
+    selectedParentId?: number;
+    selectedChildId?: number;
+  };
 }) {
-  const [selectedMakers, setSelectedMakers] = useState<string[]>([]);
-  const [selectedModels, setSelectedModels] = useState<string[]>([]);
-  const [selectedTypes, setSelectedTypes] = useState<string[]>([]);
-  const [selectedSizes, setSelectedSizes] = useState<string[]>([]);
+  // ── category hierarchy state ──────────────────────────────────────────────
+  const [selectedParentId, setSelectedParentId] = useState<number | undefined>(
+    controlledParams.selectedParentId,
+  );
+  const [selectedChildId, setSelectedChildId] = useState<number | undefined>(
+    controlledParams.selectedChildId,
+  );
+  const [selectedModels, setSelectedModels] = useState<string[]>(
+    controlledParams.selectedModels || [],
+  );
 
-  const [yearFrom, setYearFrom] = useState<string>();
-  const [yearTo, setYearTo] = useState<string>();
-  const [hourFrom, setHourFrom] = useState<string>();
-  const [hourTo, setHourTo] = useState<string>();
-  const [scoreFrom, setScoreFrom] = useState<string>();
-  const [scoreTo, setScoreTo] = useState<string>();
-  
-  const [cascadingModel, setCascadingModel] = useState<string>();
-  const [cascadingType, setCascadingType] = useState<string>();
+  // ── side-filter state driven by filters-by-model ────────────────────────
+  const [selectedTypes, setSelectedTypes] = useState<string[]>(
+    controlledParams.selectedTypes || [],
+  );
+  const [selectedSizes, setSelectedSizes] = useState<string[]>(
+    controlledParams.sizes || [],
+  );
+  const [selectedResults, setSelectedResults] = useState<string[]>(
+    (controlledParams.results as string[]) || [],
+  );
 
-  // NOTE: We derive the model list from the standard /vehicles/filters response (passed via props)
-  // The /filters-by-model endpoint requires maker+model params and is for a different purpose.
+  // ── range filter state ───────────────────────────────────────────────────
+  const [yearFrom, setYearFrom] = useState<string | undefined>(
+    controlledParams.yearFrom,
+  );
+  const [yearTo, setYearTo] = useState<string | undefined>(
+    controlledParams.yearTo,
+  );
+  const [hourFrom, setHourFrom] = useState<string | undefined>(
+    controlledParams.hourFrom,
+  );
+  const [hourTo, setHourTo] = useState<string | undefined>(
+    controlledParams.hourTo,
+  );
+  const [scoreFrom, setScoreFrom] = useState<string | undefined>(
+    controlledParams.scoreFrom,
+  );
+  const [scoreTo, setScoreTo] = useState<string | undefined>(
+    controlledParams.scoreTo,
+  );
+
+  // Sync state with controlledParams
+  React.useEffect(() => {
+    if (controlledParams.selectedParentId !== undefined)
+      setSelectedParentId(controlledParams.selectedParentId);
+    if (controlledParams.selectedChildId !== undefined)
+      setSelectedChildId(controlledParams.selectedChildId);
+    if (controlledParams.selectedModels)
+      setSelectedModels(controlledParams.selectedModels);
+    if (controlledParams.selectedTypes)
+      setSelectedTypes(controlledParams.selectedTypes);
+    if (controlledParams.sizes) setSelectedSizes(controlledParams.sizes);
+    if (controlledParams.results)
+      setSelectedResults(controlledParams.results as string[]);
+    setYearFrom(controlledParams.yearFrom);
+    setYearTo(controlledParams.yearTo);
+    setHourFrom(controlledParams.hourFrom);
+    setHourTo(controlledParams.hourTo);
+    setScoreFrom(controlledParams.scoreFrom);
+    setScoreTo(controlledParams.scoreTo);
+  }, [controlledParams]);
+
+  // Restoring queries
+  const { data: parentData, isLoading: loadingParents } = useQuery({
+    queryKey: ["parentCategories"],
+    queryFn: getParentCategories,
+  });
+
+  const { data: childData, isLoading: loadingChildren } = useQuery({
+    queryKey: ["childCategories", selectedParentId],
+    queryFn: () => getChildCategories(selectedParentId!),
+    enabled: !!selectedParentId,
+  });
+
+  const { data: modelsData, isLoading: loadingModels } = useQuery({
+    queryKey: ["modelsByChild", selectedChildId],
+    queryFn: () => getModelsByChildCategory(selectedChildId!),
+    enabled: !!selectedChildId,
+  });
+
+  const { data: filtersByModelData, isLoading: loadingFiltersByModel } =
+    useQuery({
+      queryKey: ["filtersByModel", selectedModels],
+      queryFn: () => getFiltersByModels(selectedModels),
+      enabled: selectedModels.length > 0,
+    });
+
+  const parentCategories: ParentCategory[] = parentData?.data?.data ?? [];
+  const childCategories: ChildCategory[] = childData?.data?.data ?? [];
+  const modelItems: ModelItem[] = modelsData?.data?.data ?? [];
+  const dynamicFilters: FiltersByModelData | undefined =
+    filtersByModelData?.data?.data;
+
+  const dynamicTypes = dynamicFilters?.types.map((t) => t.title) ?? [];
+  const dynamicSizes = dynamicFilters?.sizes.map((s) => s.title) ?? [];
+  const dynamicYears = dynamicFilters?.years.map((y) => y.title) ?? [];
+  const dynamicHours = dynamicFilters?.workingHours.map((h) => h.title) ?? [];
+  const dynamicScores = dynamicFilters?.scores.map((s) => s.title) ?? [];
 
   const notify = (overrides: Partial<VehicleFilterParams>) => {
-    onFilterChange({
-      makers: selectedMakers,
-      models: selectedModels,
-      types: selectedTypes,
+    const params: VehicleFilterParams = {
+      selectedModels,
+      selectedTypes,
       sizes: selectedSizes,
+      results: selectedResults,
       yearFrom,
       yearTo,
       hourFrom,
       hourTo,
       scoreFrom,
       scoreTo,
-      cascadingModel,
-      cascadingType,
       ...overrides,
+    };
+
+    // Remove excluded fields to avoid overwriting parent state
+    exclude.forEach((field) => {
+      delete (params as Record<string, any>)[field];
     });
+
+    onFilterChange(params);
   };
 
-  const toggleItem = (
-    value: string,
-    checked: boolean,
-    list: string[],
-    setList: React.Dispatch<React.SetStateAction<string[]>>,
-    key: keyof VehicleFilterParams,
-  ) => {
+  // ── toggle helpers ────────────────────────────────────────────────────────
+  const toggleModel = (name: string, checked: boolean) => {
     const next = checked
-      ? [...list, value]
-      : list.filter((item) => item !== value);
-    setList(next);
-    notify({ [key]: next });
+      ? [...selectedModels, name]
+      : selectedModels.filter((m) => m !== name);
+    setSelectedModels(next);
+    // reset dependent filters when model selection changes
+    setSelectedTypes([]);
+    notify({ selectedModels: next, selectedTypes: [] });
   };
 
+  const toggleType = (name: string, checked: boolean) => {
+    const next = checked
+      ? [...selectedTypes, name]
+      : selectedTypes.filter((t) => t !== name);
+    setSelectedTypes(next);
+    notify({ selectedTypes: next });
+  };
+
+  const toggleSize = (name: string, checked: boolean) => {
+    const next = checked
+      ? [...selectedSizes, name]
+      : selectedSizes.filter((s) => s !== name);
+    setSelectedSizes(next);
+    notify({ sizes: next });
+  };
+
+  const toggleResult = (name: string, checked: boolean) => {
+    const next = checked
+      ? [...selectedResults, name]
+      : selectedResults.filter((r) => r !== name);
+    setSelectedResults(next);
+    notify({ results: next });
+  };
+
+  // ── reset ─────────────────────────────────────────────────────────────────
   const handleReset = () => {
-    setSelectedMakers([]);
+    setSelectedParentId(undefined);
+    setSelectedChildId(undefined);
     setSelectedModels([]);
     setSelectedTypes([]);
     setSelectedSizes([]);
+    setSelectedResults([]);
     setYearFrom(undefined);
     setYearTo(undefined);
     setHourFrom(undefined);
     setHourTo(undefined);
     setScoreFrom(undefined);
     setScoreTo(undefined);
-    setCascadingModel(undefined);
-    setCascadingType(undefined);
-    onFilterChange({});
+    onFilterChange({}); // Sending empty object to signal reset in parent
   };
-
-  // Use the models list from the standard filters API (already fetched in ProductsSection and passed as prop)
-  const dynamicModels = filters.models ?? [];
 
   return (
     <div className="space-y-5">
+      {/* header */}
       <div className="flex items-center justify-between">
         <h3 className="text-base font-semibold text-red-600">Filters</h3>
         <Button
@@ -333,136 +330,210 @@ export function ProductFilters({
       <Separator />
 
       <div className="flex flex-col gap-6">
-        {/* New Cascading Filters */}
-        <div className="space-y-6">
+        {/* ── 1. Parent Category ─────────────────────────────────────────── */}
+        {!exclude.includes("parentCategory") && (
           <div className="space-y-3">
-            <SectionTitle title="Model (Main Category)" />
-            <Combobox
-              items={dynamicModels}
-              value={cascadingModel}
-              onChange={(val) => {
-                setCascadingModel(val);
-                setCascadingType(undefined);
-                notify({ cascadingModel: val, cascadingType: undefined });
-              }}
-              placeholder="Select a Model"
-              emptyMessage="No model found."
-            />
-          </div>
-
-          {/* Types dropdown that relies on the selected Model */}
-          <CascadingTypes 
-            model={cascadingModel} 
-            value={cascadingType}
-            onChange={(val) => {
-              setCascadingType(val);
-              notify({ cascadingType: val });
-            }}
-          />
-        </div>
-
-        {/* Old Model and Type checklists replaced by cascading dropdowns above */}
-
-        {!!filters.makers.length && (
-          <div className="space-y-3">
-            <SectionTitle title="Make" />
-            <ChecklistBox
-              items={filters.makers}
-              selectedItems={selectedMakers}
-              onToggle={(value, checked) =>
-                toggleItem(
-                  value,
-                  checked,
-                  selectedMakers,
-                  setSelectedMakers,
-                  "makers",
-                )
-              }
-            />
+            <SectionTitle title="Category" />
+            {loadingParents ? (
+              <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                <Loader2 className="h-3 w-3 animate-spin" /> Loading…
+              </div>
+            ) : (
+              <Select
+                value={
+                  selectedParentId !== undefined ? String(selectedParentId) : ""
+                }
+                onValueChange={(val) => {
+                  const id = Number(val);
+                  setSelectedParentId(id);
+                  setSelectedChildId(undefined);
+                  setSelectedModels([]);
+                  setSelectedTypes([]);
+                  notify({ selectedModels: [], selectedTypes: [] });
+                }}
+              >
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Select category…" />
+                </SelectTrigger>
+                <SelectContent>
+                  {parentCategories.map((p) => (
+                    <SelectItem key={p.id} value={String(p.id)}>
+                      {p.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            )}
           </div>
         )}
 
-        {!!filters.years.length && (
+        {/* ── 2. Sub-Category ────────────────────────────────────────────── */}
+        {!exclude.includes("subCategory") && selectedParentId !== undefined && (
+          <div className="space-y-3">
+            <SectionTitle title="Sub-Category" />
+            {loadingChildren ? (
+              <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                <Loader2 className="h-3 w-3 animate-spin" /> Loading…
+              </div>
+            ) : (
+              <Select
+                value={
+                  selectedChildId !== undefined ? String(selectedChildId) : ""
+                }
+                onValueChange={(val) => {
+                  const id = Number(val);
+                  setSelectedChildId(id);
+                  setSelectedModels([]);
+                  setSelectedTypes([]);
+                  notify({ selectedModels: [], selectedTypes: [] });
+                }}
+              >
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Select sub-category…" />
+                </SelectTrigger>
+                <SelectContent>
+                  {childCategories.map((c) => (
+                    <SelectItem key={c.id} value={String(c.id)}>
+                      {c.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            )}
+          </div>
+        )}
+
+        {/* ── 3. Model checklist ─────────────────────────────────────────── */}
+        {selectedChildId !== undefined && (
+          <div className="space-y-3">
+            <SectionTitle title="Model" />
+            {loadingModels ? (
+              <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                <Loader2 className="h-3 w-3 animate-spin" /> Loading models…
+              </div>
+            ) : modelItems.length === 0 ? (
+              <p className="text-xs text-muted-foreground">
+                No models available.
+              </p>
+            ) : (
+              <ChecklistBox
+                items={modelItems.map((m) => m.name)}
+                selectedItems={selectedModels}
+                onToggle={toggleModel}
+              />
+            )}
+          </div>
+        )}
+
+        {/* ── 4. Types (auto-updated when models change) ─────────────────── */}
+        {selectedModels.length > 0 && (
+          <div className="space-y-3">
+            <SectionTitle title="Type" />
+            {loadingFiltersByModel ? (
+              <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                <Loader2 className="h-3 w-3 animate-spin" /> Updating types…
+              </div>
+            ) : dynamicTypes.length === 0 ? (
+              <p className="text-xs text-muted-foreground">
+                No types available.
+              </p>
+            ) : (
+              <ChecklistBox
+                items={dynamicTypes}
+                selectedItems={selectedTypes}
+                onToggle={toggleType}
+              />
+            )}
+          </div>
+        )}
+
+        {/* ── 5. Year range ──────────────────────────────────────────────── */}
+        {dynamicYears.length > 0 && (
           <div className="space-y-3">
             <SectionTitle title="Year" />
             <RangeSelect
-              items={filters.years}
+              items={dynamicYears}
               fromValue={yearFrom}
               toValue={yearTo}
-              onFromChange={(value) => {
-                const v = value === "all" ? undefined : value;
-                setYearFrom(v);
-                notify({ yearFrom: v });
+              onFromChange={(v) => {
+                const val = v === "all" ? undefined : v;
+                setYearFrom(val);
+                notify({ yearFrom: val });
               }}
-              onToChange={(value) => {
-                const v = value === "all" ? undefined : value;
-                setYearTo(v);
-                notify({ yearTo: v });
+              onToChange={(v) => {
+                const val = v === "all" ? undefined : v;
+                setYearTo(val);
+                notify({ yearTo: val });
               }}
             />
           </div>
         )}
 
-        {!!filters.workingHours.length && (
+        {/* ── 6. Working Hours range ─────────────────────────────────────── */}
+        {dynamicHours.length > 0 && (
           <div className="space-y-3">
             <SectionTitle title="Hour" />
             <RangeSelect
-              items={filters.workingHours}
+              items={dynamicHours}
               fromValue={hourFrom}
               toValue={hourTo}
-              onFromChange={(value) => {
-                const v = value === "all" ? undefined : value;
-                setHourFrom(v);
-                notify({ hourFrom: v });
+              onFromChange={(v) => {
+                const val = v === "all" ? undefined : v;
+                setHourFrom(val);
+                notify({ hourFrom: val });
               }}
-              onToChange={(value) => {
-                const v = value === "all" ? undefined : value;
-                setHourTo(v);
-                notify({ hourTo: v });
+              onToChange={(v) => {
+                const val = v === "all" ? undefined : v;
+                setHourTo(val);
+                notify({ hourTo: val });
               }}
             />
           </div>
         )}
 
-        {!!filters.scores.length && (
+        {/* ── 7. Score range ─────────────────────────────────────────────── */}
+        {dynamicScores.length > 0 && (
           <div className="space-y-3">
             <SectionTitle title="Evaluation Points" />
             <RangeSelect
-              items={filters.scores}
+              items={dynamicScores}
               fromValue={scoreFrom}
               toValue={scoreTo}
-              onFromChange={(value) => {
-                const v = value === "all" ? undefined : value;
-                setScoreFrom(v);
-                notify({ scoreFrom: v });
+              onFromChange={(v) => {
+                const val = v === "all" ? undefined : v;
+                setScoreFrom(val);
+                notify({ scoreFrom: val });
               }}
-              onToChange={(value) => {
-                const v = value === "all" ? undefined : value;
-                setScoreTo(v);
-                notify({ scoreTo: v });
+              onToChange={(v) => {
+                const val = v === "all" ? undefined : v;
+                setScoreTo(val);
+                notify({ scoreTo: val });
               }}
             />
           </div>
         )}
 
-        {!!filters.sizes.length && (
+        {/* ── 8. Auction Status checklist ────────────────────────────────────── */}
+        {!exclude.includes("auctionStatus") && (
           <div className="space-y-3">
-            <SectionTitle title="Size" />
+            <SectionTitle title="Auction Status" />
             <ChecklistBox
-              items={filters.sizes}
-              selectedItems={selectedSizes}
-              onToggle={(value, checked) =>
-                toggleItem(
-                  value,
-                  checked,
-                  selectedSizes,
-                  setSelectedSizes,
-                  "sizes",
-                )
-              }
+              items={["Sold", "Yet To Be Auctioned"]}
+              selectedItems={selectedResults}
+              onToggle={toggleResult}
             />
           </div>
         )}
+        {/* {dynamicSizes.length > 0 && (
+          <div className="space-y-3">
+            <SectionTitle title="Size" />
+            <ChecklistBox
+              items={dynamicSizes}
+              selectedItems={selectedSizes}
+              onToggle={toggleSize}
+            />
+          </div>
+        )} */}
       </div>
     </div>
   );
