@@ -16,7 +16,7 @@ export default function WhatsAppButton() {
     : `https://wa.me/${settings.whatsapp.replace(/\D/g, "")}`;
 
   return (
-    <div className="fixed bottom-6 left-6 z-9999 group">
+    <div className="fixed bottom-24 md:bottom-6 left-6 z-9999 group">
       <motion.a
         href={whatsappUrl}
         target="_blank"

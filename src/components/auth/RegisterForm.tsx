@@ -19,11 +19,13 @@ import {
 import { register } from "@/lib/actions";
 import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
+import { PhoneInput } from "../ui/phone-input";
 
 const registerSchema = z
   .object({
     name: z.string().min(2, { message: "Name must be at least 2 characters" }),
     email: z.string().email({ message: "Invalid email" }),
+    phone: z.string().min(7, { message: "Invalid phone number" }),
     role: z.string().min(1, { message: "Role is required" }),
     password: z
       .string()
@@ -48,6 +50,7 @@ export default function RegisterForm() {
     defaultValues: {
       name: "",
       email: "",
+      phone: "",
       password: "",
       password_confirmation: "",
       role: "",
@@ -104,6 +107,23 @@ export default function RegisterForm() {
                 className={inputStyle}
                 placeholder="your@email.com"
                 {...field}
+              />
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        {/* Phone */}
+        <FormField
+          control={form.control}
+          name="phone"
+          render={({ field }) => (
+            <FormItem className="flex flex-col items-start w-full" dir="ltr">
+              <Label className="text-left w-full">Phone Number</Label>
+              <PhoneInput
+                {...field}
+                defaultCountry="EG"
+                placeholder="Enter a phone number"
               />
               <FormMessage />
             </FormItem>
