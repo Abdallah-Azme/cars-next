@@ -119,6 +119,13 @@ function ProductSectionContent() {
   // Robust data extraction
   let vehicles: import("@/types/vehicles").VehicleData[] = [];
   let pagination = null;
+  console.log("ProductSection state:", {
+    isPending,
+    error,
+    dataExists: !!data,
+    selectedParentId,
+    selectedChildIds,
+  });
 
   if (data) {
     type ResponseData = {
@@ -152,9 +159,12 @@ function ProductSectionContent() {
     if (vehicles.length === 0 && Array.isArray(laravelRes)) {
       vehicles = laravelRes;
     }
+    console.log("DEBUG: Raw Data from API:", data);
+    console.log("DEBUG: Extracted Vehicles:", vehicles);
   }
 
   const handleFilterChange = (params: VehicleFilterParams) => {
+    console.log("Filter change triggered:", params);
     setFilterParams((prev) => {
       if (Object.keys(params).length === 0) {
         // Reset case

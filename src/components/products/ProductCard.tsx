@@ -50,6 +50,7 @@ export function ProductCard({ vehicle }: Props) {
   }, [api]);
 
   const labels = [
+    { label: "Lot Number", value: vehicle?.lotNumber },
     { label: "Vehicle Type", value: vehicle?.vehicleType },
     { label: "Chassis Id", value: vehicle?.chassisId },
     { label: "Hours", value: vehicle?.workingHours },
@@ -70,7 +71,12 @@ export function ProductCard({ vehicle }: Props) {
               {vehicle?.carMaker || "-"} {vehicle?.model || "-"}
             </div>
             <div className="flex flex-wrap items-center gap-2 text-xs">
-              <span className="text-muted-foreground">{vehicle?.auctionDay}</span>
+              <span className="font-bold text-red-600 bg-red-50 px-1.5 py-0.5 rounded">
+                Lot {vehicle?.lotNumber || "-"}
+              </span>
+              <span className="text-muted-foreground uppercase font-medium">
+                {vehicle?.auctionDay}
+              </span>
               {lastHistory && (
                 <span className={cn(
                   "px-2 py-0.5 rounded-full font-bold uppercase text-[10px] tracking-tighter",
