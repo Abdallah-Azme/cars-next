@@ -55,15 +55,15 @@ const FilterItem = ({
     <div
       onClick={() => onSelect(!isSelected)}
       className={cn(
-        "group relative flex min-w-[160px] cursor-pointer flex-col items-center gap-4 rounded-3xl border-2 p-2 transition-all duration-500",
+        "group relative flex min-w-28 cursor-pointer flex-col items-center gap-2 rounded-2xl border-2 p-2 transition-all duration-500",
         isSelected
-          ? "border-red-600 bg-red-50/50 shadow-xl ring-4 ring-red-600/5 -translate-y-1"
-          : "border-gray-100 bg-white hover:border-gray-300 hover:shadow-2xl hover:-translate-y-2",
+          ? "border-red-600 bg-red-50/50 shadow-md ring-2 ring-red-600/10 -translate-y-1"
+          : "border-gray-100 bg-white hover:border-gray-200 hover:shadow-lg hover:-translate-y-1",
       )}
     >
       <div
         className={cn(
-          "relative flex h-24 w-24 items-center justify-center overflow-hidden rounded-2xl transition-all duration-500 shadow-inner group-hover:shadow-md",
+          "relative flex size-12 items-center justify-center overflow-hidden rounded-xl transition-all duration-500 shadow-inner group-hover:shadow-md",
           isSelected
             ? "bg-red-600 text-white shadow-red-200/50"
             : "bg-gray-50 text-gray-400 group-hover:bg-red-50 group-hover:text-red-500",
@@ -73,8 +73,8 @@ const FilterItem = ({
           <Image
             src={imgSrc}
             alt={label}
-            width={100}
-            height={100}
+            width={48}
+            height={48}
             className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-125 group-hover:rotate-3"
             onError={() => {
               // Only try local fallback if some local images existed (but we saw they don't yet)
@@ -87,8 +87,8 @@ const FilterItem = ({
             }}
           />
         ) : (
-          <div className="p-4 transition-transform duration-500 group-hover:scale-110">
-            {icon || <Package className="h-10 w-10" />}
+          <div className="p-3 transition-transform duration-500 group-hover:scale-110">
+            {icon || <Package className="h-6 w-6" />}
           </div>
         )}
 
@@ -98,7 +98,7 @@ const FilterItem = ({
 
       <span
         className={cn(
-          "text-center text-[13px] font-black uppercase tracking-widest leading-none px-2 drop-shadow-sm",
+          "text-center text-[10px] font-bold uppercase drop-shadow-sm line-clamp-2 px-1",
           isSelected
             ? "text-red-700"
             : "text-gray-500 group-hover:text-gray-900",
@@ -107,14 +107,14 @@ const FilterItem = ({
         {label}
       </span>
 
-      <div className="absolute right-4 top-4">
+      <div className="absolute right-1.5 top-1.5">
         <Checkbox
           checked={isSelected}
           onCheckedChange={(checked) => onSelect(!!checked)}
           className={cn(
-            "h-6 w-6 rounded-full border-2 border-gray-200 transition-all duration-500",
+            "h-4 w-4 rounded-md border-2 border-gray-200 transition-all duration-500",
             isSelected &&
-              "border-red-600 bg-red-600 data-[state=checked]:bg-red-600 scale-125 shadow-lg shadow-red-400/30",
+              "border-red-600 bg-red-600 data-[state=checked]:bg-red-600 scale-110 shadow-sm shadow-red-400/30",
           )}
         />
       </div>

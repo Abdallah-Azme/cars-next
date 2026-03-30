@@ -1,14 +1,13 @@
 import { ProductSection } from '@/components/products/ProductsSection'
 import EmailSubscription from '@/components/shared/EmailBox'
-import PageHeader from '@/components/shared/PageHeader'
 
 const ProductPage = () => {
   return (
     <>
-      <PageHeader title="Machines"/>
-      <ProductSection />
+      <div className="pt-8">
+        <ProductSection />
+      </div>
       <EmailSubscription/>
-    
     </>
   )
 }
