@@ -7,7 +7,10 @@ import { Separator } from "@/components/ui/separator";
 import type { VehicleData } from "@/types/vehicles";
 import Link from "next/link";
 import AddToFavBtn from "./AddToFavBtn";
-import { fixImageUrl, cn } from "@/lib/utils";
+import { fixImageUrl, cn, formatWhatsAppUrl } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import { useSettingsStore } from "@/stores/settings";
+import { MessageCircle } from "lucide-react";
 import {
   Carousel,
   CarouselContent,
@@ -60,6 +63,17 @@ export function ProductCard({ vehicle }: Props) {
     { label: "Size", value: vehicle?.vehicleSize },
     { label: "Inspection", value: vehicle?.inspection },
   ];
+
+  const settings = useSettingsStore((state) => state.settings);
+
+  const handleWhatsAppContact = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    const contact = settings?.whatsapp || settings?.phone;
+    const message = `Hello, I'm interested in the ${vehicle?.carMaker || ""} ${vehicle?.model || ""} (ID: ${vehicle?.id}). Could you provide more details?`;
+    const finalUrl = formatWhatsAppUrl(contact, message);
+    if (finalUrl) window.open(finalUrl, "_blank");
+  };
 
   return (
     <Card className="overflow-hidden">
@@ -204,10 +218,11 @@ export function ProductCard({ vehicle }: Props) {
               </div>
               <div
                 className={cn(
-                  "text-sm font-black px-2 py-0.5 rounded",
+                  "text-sm font-black px-2 py-0.5 rounded flex items-center gap-1",
                   lastResult.toLowerCase().includes("sold") ? "text-green-600 bg-green-50" : "text-blue-600 bg-blue-50"
                 )}
               >
+                <span className="text-[10px] opacity-70 font-bold italic">(¥) ين</span>
                 {lastResult.toLowerCase().includes("sold") 
                   ? (vehicle.soldPrice || vehicle.startPrice || vehicle.translatedData?.startPrice || "TBD") 
                   : (vehicle.startPrice || vehicle.translatedData?.startPrice || "TBD")}
@@ -226,6 +241,27 @@ export function ProductCard({ vehicle }: Props) {
                 ? new Date(vehicle.acceptancePeriod).toLocaleDateString()
                 : "-"}
             </span>
+          </div>
+
+          <div className="mt-4 pt-4 border-t border-dashed">
+            {settings?.whatsapp || settings?.phone ? (
+              <Button 
+                onClick={handleWhatsAppContact}
+                className="w-full bg-green-600 hover:bg-green-700 text-white gap-2 transition-all active:scale-95 shadow-sm"
+              >
+                <MessageCircle className="size-4" />
+                Contact via WhatsApp
+              </Button>
+            ) : (
+              <Button 
+                disabled
+                variant="outline"
+                className="w-full gap-2 opacity-50"
+              >
+                <MessageCircle className="size-4" />
+                Contact Unavailable
+              </Button>
+            )}
           </div>
         </div>
       </CardFooter>

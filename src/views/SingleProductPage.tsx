@@ -4,6 +4,9 @@ import * as React from "react";
 import { Badge } from "@/components/ui/badge";
 import AddToFavBtn from "@/components/products/AddToFavBtn";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { MessageCircle } from "lucide-react";
+import { useSettingsStore } from "@/stores/settings";
 import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
 
@@ -21,12 +24,13 @@ import { Loader2 } from "lucide-react";
 import { useParams } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
 import { getSingleVehicle } from "@/lib/actions";
-import { fixImageUrl } from "@/lib/utils";
+import { fixImageUrl, formatWhatsAppUrl } from "@/lib/utils";
 import type { VehicleImage } from "@/types/vehicles";
 
 const SingleProductPage = () => {
   const params = useParams();
   const id = params?.id as string;
+  const settings = useSettingsStore((state) => state.settings);
 
   const { data, isLoading } = useQuery({
     queryKey: ["vehicle", id],
@@ -36,6 +40,15 @@ const SingleProductPage = () => {
 
   const [api, setApi] = React.useState<CarouselApi>();
   const [current, setCurrent] = React.useState(0);
+
+  const vehicle = data?.data?.data;
+
+  const handleWhatsAppContact = () => {
+    const contact = settings?.whatsapp || settings?.phone;
+    const message = `Hello, I'm interested in the ${vehicle?.maker || ""} ${vehicle?.model || ""} (ID: ${vehicle?.id}). Could you provide more details?`;
+    const finalUrl = formatWhatsAppUrl(contact, message);
+    if (finalUrl) window.open(finalUrl, "_blank");
+  };
 
   React.useEffect(() => {
     if (!api) return;
@@ -54,8 +67,6 @@ const SingleProductPage = () => {
       </div>
     );
   }
-
-  const vehicle = data?.data?.data;
 
   if (!vehicle) {
     return (
@@ -114,7 +125,25 @@ const SingleProductPage = () => {
           </div>
 
           {/* Favorite + CTA */}
-          <div className="flex gap-2">
+          <div className="flex items-center gap-2">
+            {settings?.whatsapp || settings?.phone ? (
+              <Button 
+                onClick={handleWhatsAppContact}
+                className="bg-green-600 hover:bg-green-700 text-white gap-2 transition-all active:scale-95 shadow-sm"
+              >
+                <MessageCircle className="size-4" />
+                Contact via WhatsApp
+              </Button>
+            ) : (
+              <Button 
+                disabled
+                variant="outline"
+                className="gap-2 opacity-50"
+              >
+                <MessageCircle className="size-4" />
+                Contact Unavailable
+              </Button>
+            )}
             <AddToFavBtn vehicle={vehicle} />
           </div>
         </div>
@@ -234,6 +263,9 @@ const SingleProductPage = () => {
                       : "text-blue-600",
                   )}
                 >
+                  <span className="mr-1 text-xs font-bold opacity-60 italic tracking-tighter">
+                    (¥) ين
+                  </span>
                   {vehicle.status?.toLowerCase().includes("sold")
                     ? vehicle.soldPrice ||
                       vehicle.startPrice ||

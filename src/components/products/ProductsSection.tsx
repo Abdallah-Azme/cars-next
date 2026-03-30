@@ -31,9 +31,9 @@ function buildVehicleQS(
       q.append("child_category_id[]", String(id)),
     );
   }
-  params.selectedModels?.forEach((v) => q.append("selection_model", v));
-  params.selectedTypes?.forEach((v) => q.append("vehicle_type", v));
-  params.sizes?.forEach((v) => q.append("vehicle_size", v));
+  params.selectedModels?.forEach((v) => q.append("selection_model[]", v));
+  params.selectedTypes?.forEach((v) => q.append("vehicle_type[]", v));
+  params.sizes?.forEach((v) => q.append("vehicle_size[]", v));
   params.results?.forEach((v) => q.append("result[]", v));
   if (params.yearFrom) q.set("year_min", params.yearFrom);
   if (params.yearTo) q.set("year_max", params.yearTo);

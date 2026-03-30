@@ -3,17 +3,16 @@
 import { useSettingsStore } from "@/stores/settings";
 import { motion } from "framer-motion";
 import Image from "next/image";
+import { formatWhatsAppUrl } from "@/lib/utils";
 
 export default function WhatsAppButton() {
   const settings = useSettingsStore((state) => state.settings);
 
-  // If there's no WhatsApp link, don't render anything
-  if (!settings?.whatsapp) return null;
-
   // If the user entered just a number, convert it to a wa.me link
-  const whatsappUrl = settings.whatsapp.startsWith("http")
-    ? settings.whatsapp
-    : `https://wa.me/${settings.whatsapp.replace(/\D/g, "")}`;
+  const whatsappUrl = formatWhatsAppUrl(settings?.whatsapp);
+
+  // If there's no WhatsApp link, don't render anything
+  if (!whatsappUrl) return null;
 
   return (
     <div className="fixed bottom-24 md:bottom-6 left-6 z-9999 group">

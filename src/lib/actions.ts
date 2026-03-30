@@ -131,13 +131,13 @@ export type VehicleFilterParams = {
 export async function getVehicles(params?: VehicleFilterParams) {
   const query = new URLSearchParams();
   if (params?.makers?.length)
-    params.makers.forEach((v) => query.append("selection_maker", v));
+    params.makers.forEach((v) => query.append("selection_maker[]", v));
   if (params?.models?.length)
-    params.models.forEach((v) => query.append("selection_model", v));
+    params.models.forEach((v) => query.append("selection_model[]", v));
   if (params?.types?.length)
-    params.types.forEach((v) => query.append("vehicle_type", v));
+    params.types.forEach((v) => query.append("vehicle_type[]", v));
   if (params?.sizes?.length)
-    params.sizes.forEach((v) => query.append("vehicle_size", v));
+    params.sizes.forEach((v) => query.append("vehicle_size[]", v));
   if (params?.yearFrom) query.set("year_min", params.yearFrom);
   if (params?.yearTo) query.set("year_max", params.yearTo);
   if (params?.hourFrom) query.set("working_hours_min", params.hourFrom);
