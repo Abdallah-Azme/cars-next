@@ -124,10 +124,13 @@ function ProductSectionContent() {
     type ResponseData = {
       data?: {
         vehicles: import("@/types/vehicles").VehicleData[];
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         pagination?: any;
       };
       vehicles?: import("@/types/vehicles").VehicleData[];
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       pagination?: any;
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       meta?: any;
     };
     const laravelRes =
@@ -234,6 +237,7 @@ function ProductSectionContent() {
         {selectedParentId !== undefined && (
           <HorizontalFilterRow
             title="Sub-Category"
+            variant="grid"
             items={childCategories.map((c) => ({
               name: c.name,
               image: c.image,

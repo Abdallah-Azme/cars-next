@@ -146,6 +146,7 @@ interface HorizontalFiltersProps {
   items: FilterItemData[];
   selectedItems: string[];
   onToggle: (item: string, checked: boolean) => void;
+  variant?: "scroll" | "grid";
 }
 
 export function HorizontalFilterRow({
@@ -153,6 +154,7 @@ export function HorizontalFilterRow({
   items,
   selectedItems,
   onToggle,
+  variant = "scroll",
 }: HorizontalFiltersProps) {
   if (!items || items.length === 0) return null;
 
@@ -169,8 +171,8 @@ export function HorizontalFilterRow({
         )}
       </div>
 
-      <ScrollArea className="w-full whitespace-nowrap pb-4">
-        <div className="flex gap-4 py-4">
+      {variant === "grid" ? (
+        <div className="flex flex-wrap gap-4 py-4">
           {items.map((item) => (
             <FilterItem
               key={item.name}
@@ -184,8 +186,25 @@ export function HorizontalFilterRow({
             />
           ))}
         </div>
-        <ScrollBar orientation="horizontal" className="h-2" />
-      </ScrollArea>
+      ) : (
+        <ScrollArea className="w-full whitespace-nowrap pb-4">
+          <div className="flex gap-4 py-4">
+            {items.map((item) => (
+              <FilterItem
+                key={item.name}
+                label={item.name}
+                apiImageUrl={item.image}
+                isSelected={selectedItems.includes(item.name)}
+                onSelect={(checked) => onToggle(item.name, checked)}
+                icon={
+                  iconMap[item.name.toUpperCase()] || <Package className="h-6 w-6" />
+                }
+              />
+            ))}
+          </div>
+          <ScrollBar orientation="horizontal" className="h-2" />
+        </ScrollArea>
+      )}
     </div>
   );
 }

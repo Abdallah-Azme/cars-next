@@ -12,6 +12,8 @@ import {
   Carousel,
   CarouselContent,
   CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
   type CarouselApi,
 } from "@/components/ui/carousel";
 
@@ -111,6 +113,14 @@ export function ProductCard({ vehicle }: Props) {
                     </CarouselItem>
                   ))}
                 </CarouselContent>
+                
+                {/* Arrow Controls */}
+                {images.length > 1 && (
+                  <>
+                    <CarouselPrevious className="left-2 opacity-0 group-hover:opacity-100 transition-opacity bg-black/50 hover:bg-black/70 text-white border-none" />
+                    <CarouselNext className="right-2 opacity-0 group-hover:opacity-100 transition-opacity bg-black/50 hover:bg-black/70 text-white border-none" />
+                  </>
+                )}
               </Carousel>
               
               {/* Dots Indicator */}
