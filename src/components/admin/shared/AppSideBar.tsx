@@ -31,6 +31,11 @@ export function AppSidebar() {
       icon: Truck,
     },
     {
+      title: "Parent Categories",
+      href: "/admin/parent-categories",
+      icon: LayoutPanelTop,
+    },
+    {
       title: "Categories",
       href: "/admin/categories",
       icon: LayoutPanelTop,

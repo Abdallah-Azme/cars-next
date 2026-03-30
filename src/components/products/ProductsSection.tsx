@@ -1,8 +1,6 @@
 "use client";
 
-import {
-  type VehicleFilterParams,
-} from "@/lib/actions";
+import { type VehicleFilterParams } from "@/lib/actions";
 import { useQuery, keepPreviousData } from "@tanstack/react-query";
 import { useState } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -11,15 +9,27 @@ import { ProductFilters } from "./ProductFilter";
 import { ProductFiltersSheet } from "./ProductFiltersSheet";
 import { ProductsGrid } from "./ProductsGrid";
 import { HorizontalFilterRow } from "./HorizontalFilters";
-import { getParentCategories, getChildCategories, type ParentCategory, type ChildCategory } from "@/lib/actions";
+import {
+  getParentCategories,
+  getChildCategories,
+  type ParentCategory,
+  type ChildCategory,
+} from "@/lib/actions";
 import { useSearchParams } from "next/navigation";
 import { useEffect, Suspense } from "react";
 
 /** Build the query string for the /api/vehicles route */
-function buildVehicleQS(params: VehicleFilterParams, page: number, perPage: number, childCategoryIds: number[]) {
+function buildVehicleQS(
+  params: VehicleFilterParams,
+  page: number,
+  perPage: number,
+  childCategoryIds: number[],
+) {
   const q = new URLSearchParams();
   if (childCategoryIds.length > 0) {
-    childCategoryIds.forEach((id) => q.append("child_category_id[]", String(id)));
+    childCategoryIds.forEach((id) =>
+      q.append("child_category_id[]", String(id)),
+    );
   }
   params.selectedModels?.forEach((v) => q.append("selection_model", v));
   params.selectedTypes?.forEach((v) => q.append("vehicle_type", v));
@@ -38,7 +48,9 @@ function buildVehicleQS(params: VehicleFilterParams, page: number, perPage: numb
 
 export function ProductSection() {
   return (
-    <Suspense fallback={<div className="container py-10">Loading machines...</div>}>
+    <Suspense
+      fallback={<div className="container py-10">Loading machines...</div>}
+    >
       <ProductSectionContent />
     </Suspense>
   );
@@ -50,12 +62,20 @@ function ProductSectionContent() {
   const [perPage, setPerPage] = useState(10);
 
   const searchParams = useSearchParams();
-  const initialParentId = searchParams.get("parentId") ? Number(searchParams.get("parentId")) : undefined;
-  const initialChildId = searchParams.get("childId") ? Number(searchParams.get("childId")) : undefined;
+  const initialParentId = searchParams.get("parentId")
+    ? Number(searchParams.get("parentId"))
+    : undefined;
+  const initialChildId = searchParams.get("childId")
+    ? Number(searchParams.get("childId"))
+    : undefined;
 
   // Category State
-  const [selectedParentId, setSelectedParentId] = useState<number | undefined>(initialParentId);
-  const [selectedChildIds, setSelectedChildIds] = useState<number[]>(initialChildId ? [initialChildId] : []);
+  const [selectedParentId, setSelectedParentId] = useState<number | undefined>(
+    initialParentId,
+  );
+  const [selectedChildIds, setSelectedChildIds] = useState<number[]>(
+    initialChildId ? [initialChildId] : [],
+  );
 
   useEffect(() => {
     if (initialParentId) setSelectedParentId(initialParentId);
@@ -102,18 +122,24 @@ function ProductSectionContent() {
 
   if (data) {
     type ResponseData = {
-      data?: { vehicles: import("@/types/vehicles").VehicleData[]; pagination?: any };
+      data?: {
+        vehicles: import("@/types/vehicles").VehicleData[];
+        pagination?: any;
+      };
       vehicles?: import("@/types/vehicles").VehicleData[];
       pagination?: any;
       meta?: any;
     };
-    const laravelRes = (data as { data?: ResponseData }).data || (data as ResponseData);
+    const laravelRes =
+      (data as { data?: ResponseData }).data || (data as ResponseData);
 
     if (laravelRes.data?.vehicles && Array.isArray(laravelRes.data.vehicles)) {
       vehicles = laravelRes.data.vehicles;
-      pagination = laravelRes.data.pagination || (data as ResponseData).pagination;
+      pagination =
+        laravelRes.data.pagination || (data as ResponseData).pagination;
     } else if (Array.isArray(laravelRes.data)) {
-      vehicles = laravelRes.data as unknown as import("@/types/vehicles").VehicleData[];
+      vehicles =
+        laravelRes.data as unknown as import("@/types/vehicles").VehicleData[];
       pagination = laravelRes.meta || laravelRes.pagination;
     } else if (Array.isArray(laravelRes.vehicles)) {
       vehicles = laravelRes.vehicles;
@@ -139,9 +165,9 @@ function ProductSectionContent() {
   };
 
   const handleParentSelect = (name: string, checked: boolean) => {
-    const cat = parentCategories.find(p => p.name === name);
+    const cat = parentCategories.find((p) => p.name === name);
     if (!cat) return;
-    
+
     if (checked) {
       setSelectedParentId(cat.id);
       setSelectedChildIds([]);
@@ -154,7 +180,7 @@ function ProductSectionContent() {
   };
 
   const handleChildSelect = (name: string, checked: boolean) => {
-    const cat = childCategories.find(c => c.name === name);
+    const cat = childCategories.find((c) => c.name === name);
     if (!cat) return;
 
     if (checked) {
@@ -186,7 +212,7 @@ function ProductSectionContent() {
             controlledParams={{
               selectedParentId,
               selectedChildIds,
-              ...filterParams
+              ...filterParams,
             }}
             exclude={["parentCategory", "subCategory"]}
           />
@@ -196,15 +222,25 @@ function ProductSectionContent() {
       <div className="mt-8 flex flex-col gap-6">
         <HorizontalFilterRow
           title="Category"
-          items={parentCategories.map(p => p.name)}
-          selectedItems={parentCategories.filter(p => p.id === selectedParentId).map(p => p.name)}
+          items={parentCategories.map((p) => ({
+            name: p.name,
+            image: p.image,
+          }))}
+          selectedItems={parentCategories
+            .filter((p) => p.id === selectedParentId)
+            .map((p) => p.name)}
           onToggle={handleParentSelect}
         />
         {selectedParentId !== undefined && (
           <HorizontalFilterRow
             title="Sub-Category"
-            items={childCategories.map(c => c.name)}
-            selectedItems={childCategories.filter(c => selectedChildIds.includes(c.id)).map(c => c.name)}
+            items={childCategories.map((c) => ({
+              name: c.name,
+              image: c.image,
+            }))}
+            selectedItems={childCategories
+              .filter((c) => selectedChildIds.includes(c.id))
+              .map((c) => c.name)}
             onToggle={handleChildSelect}
           />
         )}
@@ -219,7 +255,7 @@ function ProductSectionContent() {
               controlledParams={{
                 selectedParentId,
                 selectedChildIds,
-                ...filterParams
+                ...filterParams,
               }}
               exclude={["parentCategory", "subCategory"]}
             />
@@ -236,17 +272,38 @@ function ProductSectionContent() {
             products
           </div>
 
-          <div className={isPlaceholderData ? "opacity-50 transition-opacity" : "transition-opacity"}>
+          <div
+            className={
+              isPlaceholderData
+                ? "opacity-50 transition-opacity"
+                : "transition-opacity"
+            }
+          >
             {selectedChildIds.length === 0 ? (
               <div className="text-center py-20 bg-gray-50 rounded-3xl border-2 border-dashed border-gray-200">
                 <div className="flex flex-col items-center gap-4">
                   <div className="h-16 w-16 bg-red-100 text-red-600 rounded-full flex items-center justify-center animate-bounce">
-                    <svg className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                    <svg
+                      className="h-8 w-8"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M19 9l-7 7-7-7"
+                      />
                     </svg>
                   </div>
-                  <h3 className="text-xl font-bold text-gray-700">Please Select a Sub-Category</h3>
-                  <p className="text-gray-500 max-w-sm">Choose a specific machine type from the rows above to start browsing our inventory.</p>
+                  <h3 className="text-xl font-bold text-gray-700">
+                    Please Select a Sub-Category
+                  </h3>
+                  <p className="text-gray-500 max-w-sm">
+                    Choose a specific machine type from the rows above to start
+                    browsing our inventory.
+                  </p>
                 </div>
               </div>
             ) : error ? (

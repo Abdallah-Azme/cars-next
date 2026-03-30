@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useAuthStore } from "@/stores/user";
+import { fixImageUrl } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Camera, Loader2 } from "lucide-react";
 import { useRef, useState } from "react";
@@ -28,7 +29,7 @@ export default function ProfileInfoForm() {
   const { user, setAuth, token } = useAuthStore();
 
   const [avatarPreview, setAvatarPreview] = useState<string | null>(
-    user?.avatar || null,
+    fixImageUrl(user?.avatar) || null,
   );
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
@@ -61,36 +62,43 @@ export default function ProfileInfoForm() {
     fileInputRef.current?.click();
   };
 
-async function onSubmit(values: z.infer<typeof profileSchema>) {
-  try {
-    const formData = new FormData();
-    formData.append("name", values.name);
+  async function onSubmit(values: z.infer<typeof profileSchema>) {
+    try {
+      const formData = new FormData();
+      formData.append("name", values.name);
 
-    if (selectedFile) {
-      formData.append("avatar", selectedFile);
+      if (selectedFile) {
+        formData.append("avatar", selectedFile);
+      }
+
+      const res = await updateProfile(formData);
+
+      if (res?.ok && res.data?.data?.user) {
+        toast.success(res.data.message);
+        setAuth({ token: token!, user: res.data.data.user });
+      } else {
+        toast.error(res?.error || "Failed to update profile");
+      }
+    } catch (error) {
+      toast.error("Something went wrong");
     }
-
-
-    const res = await updateProfile(formData);
-
-    if (res?.ok && res.data?.data?.user) {
-      toast.success(res.data.message);
-      setAuth({ token: token!, user: res.data.data.user });
-    } else {
-      toast.error(res?.error || "Failed to update profile");
-    }
-  } catch (error) {
-    console.log(error);
-    toast.error("Something went wrong");
   }
-}
 
   return (
     <div className="space-y-6">
       <div className="flex flex-col items-center gap-4">
         <div className="relative group">
           <Avatar className="h-32 w-32 border-4 border-muted">
-            <AvatarImage src={avatarPreview || ""} className="object-cover" />
+            <AvatarImage
+              src={
+                avatarPreview
+                  ? avatarPreview.startsWith("data:")
+                    ? avatarPreview
+                    : fixImageUrl(avatarPreview)
+                  : ""
+              }
+              className="object-cover"
+            />
             <AvatarFallback className="text-2xl bg-red-700 text-white">
               {user?.name?.substring(0, 2).toUpperCase()}
             </AvatarFallback>
@@ -168,4 +176,3 @@ async function onSubmit(values: z.infer<typeof profileSchema>) {
     </div>
   );
 }
-

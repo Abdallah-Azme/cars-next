@@ -1,7 +1,7 @@
 import React from "react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
-import { cn } from "@/lib/utils";
+import { cn, fixImageUrl } from "@/lib/utils";
 import {
   Tractor,
   Truck,
@@ -25,16 +25,25 @@ interface FilterItemProps {
   isSelected: boolean;
   onSelect: (selected: boolean) => void;
   icon?: React.ReactNode;
+  apiImageUrl?: string | null;
 }
 
-const FilterItem = ({ label, isSelected, onSelect, icon }: FilterItemProps) => {
+const FilterItem = ({ label, isSelected, onSelect, icon, apiImageUrl }: FilterItemProps) => {
   // Normalize label for image filename (e.g. "Wheel Loader" -> "wheel-loader")
   const imageName = label.toLowerCase().replace(/\s+/g, "-");
-  const imageUrl = `/images/categories/${imageName}.jpg`;
+  const localImageUrl = `/images/categories/${imageName}.jpg`;
   const defaultImageUrl = "/images/categories/default.jpg";
 
-  const [imgSrc, setImgSrc] = React.useState(imageUrl);
+  const cleanApiUrl = fixImageUrl(apiImageUrl);
+  const initialImgSrc = cleanApiUrl || localImageUrl;
+  const [imgSrc, setImgSrc] = React.useState(initialImgSrc);
   const [imgError, setImgError] = React.useState(false);
+
+  React.useEffect(() => {
+    const nextUrl = fixImageUrl(apiImageUrl) || localImageUrl;
+    setImgSrc(nextUrl);
+    setImgError(false);
+  }, [apiImageUrl, localImageUrl]);
 
   return (
     <div
@@ -62,6 +71,8 @@ const FilterItem = ({ label, isSelected, onSelect, icon }: FilterItemProps) => {
             height={100}
             className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-125 group-hover:rotate-3"
             onError={() => {
+              // Only try local fallback if some local images existed (but we saw they don't yet)
+              // For now, let's just go straight to icon if the fixed API URL fails
               if (imgSrc !== defaultImageUrl) {
                 setImgSrc(defaultImageUrl);
               } else {
@@ -76,7 +87,7 @@ const FilterItem = ({ label, isSelected, onSelect, icon }: FilterItemProps) => {
         )}
 
         {/* Shine overlay */}
-        <div className="absolute inset-0 bg-gradient-to-tr from-white/0 via-white/5 to-white/20 opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+        <div className="absolute inset-0 bg-linear-to-tr from-white/0 via-white/5 to-white/20 opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
       </div>
 
       <span
@@ -125,9 +136,14 @@ const iconMap: Record<string, React.ReactNode> = {
   "CONSTRUCTION MACHINERY": <Construction className="h-6 w-6" />,
 };
 
+export interface FilterItemData {
+  name: string;
+  image?: string | null;
+}
+
 interface HorizontalFiltersProps {
   title: string;
-  items: string[];
+  items: FilterItemData[];
   selectedItems: string[];
   onToggle: (item: string, checked: boolean) => void;
 }
@@ -157,12 +173,13 @@ export function HorizontalFilterRow({
         <div className="flex gap-4 py-4">
           {items.map((item) => (
             <FilterItem
-              key={item}
-              label={item}
-              isSelected={selectedItems.includes(item)}
-              onSelect={(checked) => onToggle(item, checked)}
+              key={item.name}
+              label={item.name}
+              apiImageUrl={item.image}
+              isSelected={selectedItems.includes(item.name)}
+              onSelect={(checked) => onToggle(item.name, checked)}
               icon={
-                iconMap[item.toUpperCase()] || <Package className="h-6 w-6" />
+                iconMap[item.name.toUpperCase()] || <Package className="h-6 w-6" />
               }
             />
           ))}

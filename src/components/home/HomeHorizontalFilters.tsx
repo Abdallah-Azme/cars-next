@@ -53,7 +53,7 @@ export default function HomeHorizontalFilters() {
         {/* Parent Categories */}
         <HorizontalFilterRow
           title="Parent Category"
-          items={parentCategories.map(cat => cat.name)}
+          items={parentCategories.map((cat) => ({ name: cat.name, image: cat.image }))}
           selectedItems={parentCategories.filter(p => p.id === selectedParentId).map(p => p.name)}
           onToggle={handleParentSelect}
         />
@@ -63,7 +63,7 @@ export default function HomeHorizontalFilters() {
           <div className="animate-in fade-in slide-in-from-top-4 duration-500">
             <HorizontalFilterRow
               title="Select Sub-Category"
-              items={childCategories.map(cat => cat.name)}
+              items={childCategories.map((cat) => ({ name: cat.name, image: cat.image }))}
               selectedItems={[]} // Nothing selected yet
               onToggle={handleChildSelect}
             />

@@ -13,6 +13,7 @@ import {
 import { useAuthStore } from "@/stores/user";
 import { LayoutDashboard, Settings, User as UserIcon } from "lucide-react";
 import Link from "next/link";
+import { fixImageUrl } from "@/lib/utils";
 import LogoutBtn from "./LogoutBtn";
 
 const UserAvatar = () => {
@@ -23,7 +24,7 @@ const UserAvatar = () => {
       <DropdownMenuTrigger asChild>
         <div className="flex items-center gap-2 cursor-pointer outline-none">
           <Avatar className="lg:size-10 size-8 border-2 border-transparent hover:border-red-600 transition-all">
-            <AvatarImage src={user?.avatar || ""} className="object-cover" />
+            <AvatarImage src={fixImageUrl(user?.avatar) || ""} className="object-cover" />
             <AvatarFallback className="bg-red-700 text-white font-bold">
               {user?.name?.charAt(0).toUpperCase()}
               {user?.name?.charAt(1).toUpperCase()}

@@ -61,6 +61,12 @@ export async function fetchFromLaravel<T>(
 
     const data = await response.json().catch(() => null);
 
+    if (response.status === 401) {
+      const cookieStore = await cookies();
+      cookieStore.delete("auth_token");
+      cookieStore.delete("refresh_token");
+    }
+
     return {
       ok: response.ok,
       status: response.status,
@@ -114,9 +120,9 @@ export type VehicleFilterParams = {
   holdingDate?: string;
   per_page?: number;
   // New category-based filters
-  selectedModels?: string[];  // model names for /filters-by-model
-  selectedTypes?: string[];   // types chosen from filters-by-model response
-  results?: string[];         // Auction results (Sold, Yet To Be Auctioned)
+  selectedModels?: string[]; // model names for /filters-by-model
+  selectedTypes?: string[]; // types chosen from filters-by-model response
+  results?: string[]; // Auction results (Sold, Yet To Be Auctioned)
   selectedParentId?: number;
   selectedChildIds?: number[];
   [key: string]: string | number | string[] | number[] | undefined;
@@ -168,11 +174,13 @@ export type ChildCategory = {
   id: number;
   name: string;
   searchKeywords: string;
+  image?: string | null;
 };
 
 export type ParentCategory = {
   id: number;
   name: string;
+  image?: string | null;
   childrenCount: number;
   children: ChildCategory[];
 };
@@ -192,32 +200,78 @@ export type FiltersByModelData = {
 };
 
 export async function getParentCategories() {
-  return fetchFromLaravel<{ success: boolean; message: string; data: ParentCategory[] }>(
-    "/parent-categories",
-    { method: "GET", cache: "no-store" },
-  );
+  return fetchFromLaravel<{
+    success: boolean;
+    message: string;
+    data: ParentCategory[];
+  }>("/parent-categories", { method: "GET", cache: "no-store" });
 }
 
 export async function getChildCategories(parentId: number) {
-  return fetchFromLaravel<{ success: boolean; message: string; data: ChildCategory[] }>(
-    `/child-categories?parent_id=${parentId}`,
-    { method: "GET", cache: "no-store" },
-  );
+  return fetchFromLaravel<{
+    success: boolean;
+    message: string;
+    data: ChildCategory[];
+  }>(`/child-categories?parent_id=${parentId}`, {
+    method: "GET",
+    cache: "no-store",
+  });
 }
 
-export async function getModelsByChildCategory(childCategoryId: number) {
-  return fetchFromLaravel<{ success: boolean; message: string; data: ModelItem[] }>(
-    `/models?child_category_id=${childCategoryId}`,
-    { method: "GET", cache: "no-store" },
-  );
+export type ModelsData = {
+  models: ModelItem[];
+  types: { title: string; count: number }[];
+  results: string[];
+};
+
+export async function getModelsByChildCategory(childCategoryIds: number[]) {
+  const q = new URLSearchParams();
+  childCategoryIds.forEach((id) => q.append("child_category_id[]", String(id)));
+  return fetchFromLaravel<{
+    success: boolean;
+    message: string;
+    data: ModelsData;
+  }>(`/models?${q.toString()}`, { method: "GET", cache: "no-store" });
 }
 
 export async function getFiltersByModels(models: string[]) {
   const q = new URLSearchParams();
   models.forEach((m) => q.append("model[]", m));
-  return fetchFromLaravel<{ success: boolean; message: string; data: FiltersByModelData }>(
-    `/filters-by-model?${q.toString()}`,
-    { method: "GET", cache: "no-store" },
+  return fetchFromLaravel<{
+    success: boolean;
+    message: string;
+    data: FiltersByModelData;
+  }>(`/filters-by-model?${q.toString()}`, { method: "GET", cache: "no-store" });
+}
+
+export async function createParentCategory(data: FormData) {
+  return fetchFromLaravel<{
+    success: boolean;
+    message: string;
+    data: ParentCategory;
+  }>("/parent-categories", {
+    method: "POST",
+    body: data,
+  });
+}
+
+export async function updateParentCategory(id: number, data: FormData) {
+  return fetchFromLaravel<{
+    success: boolean;
+    message: string;
+    data: ParentCategory;
+  }>(`/parent-categories/${id}`, {
+    method: "POST",
+    body: data,
+  });
+}
+
+export async function deleteParentCategory(id: number) {
+  return fetchFromLaravel<{ success: boolean; message: string; data: null }>(
+    `/parent-categories/${id}`,
+    {
+      method: "DELETE",
+    },
   );
 }
 
@@ -252,7 +306,9 @@ export async function getProductsByModelAndType(params: {
   });
 
   // Normalize into VehicleSResponse shape so ProductsSection can read it uniformly
-  const normalized: import("./actions").ActionResponse<import("@/types/vehicles").VehicleSResponse> = {
+  const normalized: import("./actions").ActionResponse<
+    import("@/types/vehicles").VehicleSResponse
+  > = {
     ok: raw.ok,
     status: raw.status,
     error: raw.error,
@@ -308,6 +364,16 @@ export async function login(data: Record<string, unknown>) {
       path: "/",
       maxAge: 60 * 60 * 24 * 7, // 1 week
     });
+
+    if (res.data.data.refreshToken) {
+      (await cookies()).set("refresh_token", res.data.data.refreshToken, {
+        httpOnly: true,
+        secure: false,
+        sameSite: "lax",
+        path: "/",
+        maxAge: 60 * 60 * 24 * 30, // 30 days
+      });
+    }
   }
 
   return res;
@@ -318,7 +384,6 @@ export async function register(data: Record<string, unknown>) {
     method: "POST",
     body: JSON.stringify(data),
   });
-  console.log("x", JSON.stringify(res, null, 2));
   return res;
 }
 
@@ -357,9 +422,15 @@ export async function logout() {
     return res;
   } catch (err) {
     console.error("Logout fetch failed", err);
-    return { ok: false, status: 500, data: { message: "Internal server error" } };
+    return {
+      ok: false,
+      status: 500,
+      data: { message: "Internal server error" },
+    };
   } finally {
-    (await cookies()).delete("auth_token");
+    const cookieStore = await cookies();
+    cookieStore.delete("auth_token");
+    cookieStore.delete("refresh_token");
   }
 }
 
@@ -373,13 +444,14 @@ export async function forgotPassword(email: string) {
   const formData = new FormData();
   formData.append("email", email);
 
-  return fetchFromLaravel<{ success: boolean; message: string; data: { reset_code?: number } }>(
-    "/forgot-password",
-    {
-      method: "POST",
-      body: formData,
-    },
-  );
+  return fetchFromLaravel<{
+    success: boolean;
+    message: string;
+    data: { reset_code?: number };
+  }>("/forgot-password", {
+    method: "POST",
+    body: formData,
+  });
 }
 
 export async function verifyResetCode(data: { email: string; code: string }) {
@@ -387,13 +459,14 @@ export async function verifyResetCode(data: { email: string; code: string }) {
   formData.append("email", data.email);
   formData.append("code", data.code);
 
-  return fetchFromLaravel<{ success: boolean; message: string; data: { token: string } }>(
-    "/verify-reset-code",
-    {
-      method: "POST",
-      body: formData,
-    },
-  );
+  return fetchFromLaravel<{
+    success: boolean;
+    message: string;
+    data: { token: string };
+  }>("/verify-reset-code", {
+    method: "POST",
+    body: formData,
+  });
 }
 
 export async function resetPassword(data: Record<string, string>) {

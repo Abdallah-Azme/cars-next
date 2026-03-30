@@ -208,23 +208,9 @@ export function ProductFilters({
     enabled: !!selectedParentId,
   });
 
-  const { data: modelsData, isLoading: loadingModels } = useQuery({
+  const { data: modelsDataResponse, isLoading: loadingModels } = useQuery({
     queryKey: ["modelsByChild", selectedChildIds],
-    queryFn: async () => {
-      // If multiple sub-categories, we aggregate models
-      const results = await Promise.all(
-        selectedChildIds.map((id) => getModelsByChildCategory(id))
-      );
-      // Flatten model lists
-      const allModels: ModelItem[] = [];
-      results.forEach((res) => {
-        if (res.ok && res.data?.data) {
-          allModels.push(...res.data.data);
-        }
-      });
-      // De-duplicate by name if needed, but let's keep it simple
-      return { data: { data: allModels } };
-    },
+    queryFn: () => getModelsByChildCategory(selectedChildIds),
     enabled: selectedChildIds.length > 0,
   });
 
@@ -237,12 +223,12 @@ export function ProductFilters({
 
   const parentCategories: ParentCategory[] = parentData?.data?.data ?? [];
   const childCategories: ChildCategory[] = childData?.data?.data ?? [];
-  const modelItems: ModelItem[] = modelsData?.data?.data ?? [];
+  const modelItems: ModelItem[] = modelsDataResponse?.data?.data?.models ?? [];
   const dynamicFilters: FiltersByModelData | undefined =
     filtersByModelData?.data?.data;
 
   const dynamicTypes = dynamicFilters?.types.map((t) => t.title) ?? [];
-  const dynamicSizes = dynamicFilters?.sizes.map((s) => s.title) ?? [];
+  // const dynamicSizes = dynamicFilters?.sizes.map((s) => s.title) ?? [];
   const dynamicYears = dynamicFilters?.years.map((y) => y.title) ?? [];
   const dynamicHours = dynamicFilters?.workingHours.map((h) => h.title) ?? [];
   const dynamicScores = dynamicFilters?.scores.map((s) => s.title) ?? [];
@@ -266,7 +252,7 @@ export function ProductFilters({
 
     // Remove excluded fields to avoid overwriting parent state
     exclude.forEach((field) => {
-      delete (params as Record<string, any>)[field];
+      delete (params as Record<string, unknown>)[field];
     });
 
     onFilterChange(params);
@@ -291,6 +277,7 @@ export function ProductFilters({
     notify({ selectedTypes: next });
   };
 
+  /*
   const toggleSize = (name: string, checked: boolean) => {
     const next = checked
       ? [...selectedSizes, name]
@@ -298,6 +285,7 @@ export function ProductFilters({
     setSelectedSizes(next);
     notify({ sizes: next });
   };
+  */
 
   const toggleResult = (name: string, checked: boolean) => {
     const next = checked
@@ -525,7 +513,7 @@ export function ProductFilters({
           <div className="space-y-3">
             <SectionTitle title="Auction Status" />
             <ChecklistBox
-              items={["Sold", "Yet To Be Auctioned"]}
+              items={["Sold", "Not Sold"]}
               selectedItems={selectedResults}
               onToggle={toggleResult}
             />

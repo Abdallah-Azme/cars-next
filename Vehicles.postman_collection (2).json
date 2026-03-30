@@ -26,7 +26,7 @@
               }
             ],
             "url": {
-              "raw": "{{url}}/vehicles?child_category_id=17&per_page=39",
+              "raw": "{{url}}/vehicles?per_page=30&result[]=Sold",
               "host": [
                 "{{url}}"
               ],
@@ -112,16 +112,34 @@
                 },
                 {
                   "key": "vehicle_type[]",
-                  "value": "Wheel Loader",
+                  "value": "Mini Wheel Loader",
                   "disabled": true
                 },
                 {
-                  "key": "child_category_id",
-                  "value": "17"
+                  "key": "child_category_id[]",
+                  "value": "17",
+                  "disabled": true
+                },
+                {
+                  "key": "child_category_id[]",
+                  "value": "18",
+                  "type": "text",
+                  "disabled": true
                 },
                 {
                   "key": "per_page",
-                  "value": "39"
+                  "value": "30"
+                },
+                {
+                  "key": "result[]",
+                  "value": "Not Sold",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "result[]",
+                  "value": "Sold",
+                  "type": "text"
                 }
               ]
             }
@@ -156,7 +174,7 @@
               "variable": [
                 {
                   "key": "id",
-                  "value": "4151"
+                  "value": "10180"
                 }
               ]
             }
@@ -1617,23 +1635,24 @@
                   "key": "email",
                   "value": "contact@example.com",
                   "type": "text",
-                  "uuid": "0a777a66-b4da-402f-9164-5f04503f2a51"
+                  "uuid": "0a777a66-b4da-402f-9164-5f04503f2a51",
+                  "disabled": true
                 },
                 {
                   "key": "phone",
-                  "value": "0123456789",
+                  "value": "01065552444",
                   "type": "text",
                   "uuid": "07dd2e44-3a7a-4dc1-9275-cec1926ba6bc"
                 },
                 {
                   "key": "address",
-                  "value": "القاهرة - مصر",
+                  "value": "طنطا الملاحه-شارع مساكن المحامين",
                   "type": "text",
                   "uuid": "e42f4f09-693a-4d67-a3a8-d2948d2e8881"
                 },
                 {
                   "key": "facebook",
-                  "value": "https://facebook.com/examplepage",
+                  "value": "https://www.facebook.com/photo/?fbid=122118460119065889&set=a.122098981305065889",
                   "type": "text",
                   "uuid": "f1cb7a52-8ca0-4623-a928-63382dca66f2"
                 },
@@ -1641,11 +1660,12 @@
                   "key": "twitter",
                   "value": "https://twitter.com/exampleprofile",
                   "type": "text",
-                  "uuid": "56e11c55-e101-48a8-b4db-f3bf4177541d"
+                  "uuid": "56e11c55-e101-48a8-b4db-f3bf4177541d",
+                  "disabled": true
                 },
                 {
                   "key": "instagram",
-                  "value": "https://instagram.com/exampleprofile",
+                  "value": "https://www.instagram.com/egyptian_japanese?igsh=MWl0amxwZzl1NzgycQ==",
                   "type": "text",
                   "uuid": "01fd1e91-9b26-4e05-91d7-4dbc0bdc7a68"
                 },
@@ -1653,35 +1673,40 @@
                   "key": "linkedin",
                   "value": "https://instagram.com/exampleprofile",
                   "type": "text",
-                  "uuid": "e939a4be-6918-4325-a2a9-2c83d5075d10"
+                  "uuid": "e939a4be-6918-4325-a2a9-2c83d5075d10",
+                  "disabled": true
                 },
                 {
                   "key": "youtube",
                   "value": "https://instagram.com/exampleprofile",
                   "type": "text",
-                  "uuid": "60722025-5efc-4304-a912-153b34cca6cf"
+                  "uuid": "60722025-5efc-4304-a912-153b34cca6cf",
+                  "disabled": true
                 },
                 {
                   "key": "tiktok",
                   "value": "https://instagram.com/exampleprofile",
                   "type": "text",
-                  "uuid": "ca242ceb-c337-4b90-9974-5409fed62bcb"
+                  "uuid": "ca242ceb-c337-4b90-9974-5409fed62bcb",
+                  "disabled": true
                 },
                 {
                   "key": "snapchat",
                   "value": "https://instagram.com/exampleprofile",
                   "type": "text",
-                  "uuid": "d717cf01-403a-4ff8-8bb0-8e78b90e9676"
+                  "uuid": "d717cf01-403a-4ff8-8bb0-8e78b90e9676",
+                  "disabled": true
                 },
                 {
                   "key": "pinterest",
                   "value": "https://instagram.com/exampleprofile",
                   "type": "text",
-                  "uuid": "50175139-cde4-4d73-820e-7a3a35113fea"
+                  "uuid": "50175139-cde4-4d73-820e-7a3a35113fea",
+                  "disabled": true
                 },
                 {
                   "key": "whatsapp",
-                  "value": "https://instagram.com/exampleprofile",
+                  "value": "01061626540",
                   "type": "text",
                   "uuid": "27e0b09b-02f8-4dfb-8b80-b1fb51efe46c"
                 },
@@ -1689,7 +1714,8 @@
                   "key": "telegram",
                   "value": "https://instagram.com/exampleprofile",
                   "type": "text",
-                  "uuid": "0149f85e-5ecb-40a6-a0aa-e848df132b01"
+                  "uuid": "0149f85e-5ecb-40a6-a0aa-e848df132b01",
+                  "disabled": true
                 }
               ]
             },
@@ -1979,7 +2005,7 @@
               }
             ],
             "url": {
-              "raw": "{{url}}/child-categories?parent_id=2",
+              "raw": "{{url}}/child-categories?parent_id[]=2&parent_id[]=3&parent_id[]=1",
               "host": [
                 "{{url}}"
               ],
@@ -1988,8 +2014,18 @@
               ],
               "query": [
                 {
-                  "key": "parent_id",
+                  "key": "parent_id[]",
                   "value": "2"
+                },
+                {
+                  "key": "parent_id[]",
+                  "value": "3",
+                  "type": "text"
+                },
+                {
+                  "key": "parent_id[]",
+                  "value": "1",
+                  "type": "text"
                 }
               ]
             }
@@ -2013,7 +2049,7 @@
               }
             ],
             "url": {
-              "raw": "{{url}}/models?child_category_id=17",
+              "raw": "{{url}}/models?child_category_id[]=17",
               "host": [
                 "{{url}}"
               ],
@@ -2022,9 +2058,13 @@
               ],
               "query": [
                 {
-                  "key": "child_category_id",
-                  "value": "17",
-                  "type": "text"
+                  "key": "child_category_id[]",
+                  "value": "17"
+                },
+                {
+                  "key": "child_category_id[]",
+                  "value": "16",
+                  "disabled": true
                 }
               ]
             }
@@ -2048,7 +2088,7 @@
               }
             ],
             "url": {
-              "raw": "{{url}}/filters-by-model?model[]=Hitachi&model[]=Komatsu",
+              "raw": "{{url}}/filters-by-model?child_category_id[]=17&child_category_id[]=16",
               "host": [
                 "{{url}}"
               ],
@@ -2058,11 +2098,23 @@
               "query": [
                 {
                   "key": "model[]",
-                  "value": "Hitachi"
+                  "value": "Kubota",
+                  "disabled": true
                 },
                 {
                   "key": "model[]",
-                  "value": "Komatsu"
+                  "value": "Komatsu",
+                  "disabled": true
+                },
+                {
+                  "key": "child_category_id[]",
+                  "value": "17",
+                  "type": "text"
+                },
+                {
+                  "key": "child_category_id[]",
+                  "value": "16",
+                  "type": "text"
                 }
               ]
             }
@@ -2095,33 +2147,51 @@
               "formdata": [
                 {
                   "key": "name",
-                  "value": "Vehicles",
+                  "value": "Vehi",
                   "type": "text",
                   "uuid": "3d5b9125-cff7-4148-8dd5-32469d27de6b"
                 },
                 {
-                  "key": "children[0][name]",
+                  "key": "image",
+                  "type": "file",
+                  "uuid": "e7faa2e5-24b4-466d-bc5a-33f19312cbbb",
+                  "src": "postman-cloud:///1f0caeac-bfe8-4b20-b020-8a5a5197bd2d"
+                },
+                {
+                  "key": "children_names[0]",
                   "value": "Cars",
                   "type": "text",
                   "uuid": "1bb987d1-b808-4d7d-b5c4-30d70717eb78"
                 },
                 {
-                  "key": "children[0][search_keywords]",
+                  "key": "children_keywords[0]",
                   "value": "bmw,toyota,mercedes,audi",
                   "type": "text",
                   "uuid": "fa2d2873-df59-4915-ab2e-89705aef7ab7"
                 },
                 {
-                  "key": "children[1][name]",
+                  "key": "children_images[0]",
+                  "type": "file",
+                  "uuid": "2805b5a4-df0f-408b-8f22-470e385bf2f3",
+                  "src": "postman-cloud:///1f1282a0-1c9b-45d0-ae15-f458f3a3a05a"
+                },
+                {
+                  "key": "children_names[1]",
                   "value": "Trucks",
                   "type": "text",
                   "uuid": "b5581232-937f-42de-bb48-46cf290b1cf9"
                 },
                 {
-                  "key": "children[1][search_keywords]",
+                  "key": "children_keywords[1]",
                   "value": "volvo,scania,man",
                   "type": "text",
                   "uuid": "5b9cb880-27e1-4228-bb21-d9a37690359a"
+                },
+                {
+                  "key": "children_images[1]",
+                  "type": "file",
+                  "uuid": "251dad1f-13f8-43e8-964f-62414e46fac1",
+                  "src": "postman-cloud:///1f11bb2e-6021-41e0-b292-3e475006490a"
                 }
               ]
             },
@@ -2165,37 +2235,55 @@
                   "key": "name",
                   "value": "Vehicles Updated",
                   "type": "text",
-                  "uuid": "3d5b9125-cff7-4148-8dd5-32469d27de6b"
+                  "uuid": "3d5b9125-cff7-4148-8dd5-32469d27de6b",
+                  "disabled": true
                 },
                 {
-                  "key": "children[0][id]",
-                  "value": "24",
+                  "key": "image",
+                  "type": "file",
+                  "uuid": "e595f8fc-14ca-44d0-8acf-b5e6bbc17c86",
+                  "src": "postman-cloud:///1f128405-7ebd-4f90-b081-da1962f6d2c4",
+                  "disabled": true
+                },
+                {
+                  "key": "children_ids[0]",
+                  "value": "3",
                   "type": "text",
                   "uuid": "4615d4ed-caf2-440c-9b6e-ed363821bbd9"
                 },
                 {
-                  "key": "children[0][name]",
+                  "key": "children_names[0]",
                   "value": "Cars Updated",
                   "type": "text",
-                  "uuid": "1bb987d1-b808-4d7d-b5c4-30d70717eb78"
+                  "uuid": "1bb987d1-b808-4d7d-b5c4-30d70717eb78",
+                  "disabled": true
                 },
                 {
-                  "key": "children[0][search_keywords]",
+                  "key": "children_keywords[0]",
                   "value": "bmw,toyota",
                   "type": "text",
-                  "uuid": "fa2d2873-df59-4915-ab2e-89705aef7ab7"
+                  "uuid": "fa2d2873-df59-4915-ab2e-89705aef7ab7",
+                  "disabled": true
                 },
                 {
-                  "key": "children[1][name]",
+                  "key": "children_images[0]",
+                  "type": "file",
+                  "uuid": "d25151e5-4efd-47e7-89df-9d37bdc5f74a",
+                  "src": "postman-cloud:///1f128412-bf3a-4890-b339-caf2dfb1324d"
+                },
+                {
+                  "key": "children_names[1]",
                   "value": "Excavators",
                   "type": "text",
-                  "uuid": "b5581232-937f-42de-bb48-46cf290b1cf9"
+                  "uuid": "b5581232-937f-42de-bb48-46cf290b1cf9",
+                  "disabled": true
                 },
                 {
-                  "key": "children[1][search_keywords]",
+                  "key": "children_keywords[1]",
                   "value": "caterpillar,jcb,komatsu",
                   "type": "text",
-                  "uuid": "5b9cb880-27e1-4228-bb21-d9a37690359a"
+                  "uuid": "5b9cb880-27e1-4228-bb21-d9a37690359a",
+                  "disabled": true
                 }
               ]
             },
@@ -2211,7 +2299,7 @@
               "variable": [
                 {
                   "key": "id",
-                  "value": "4"
+                  "value": "1"
                 }
               ]
             }

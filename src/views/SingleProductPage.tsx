@@ -47,8 +47,6 @@ const SingleProductPage = () => {
     });
   }, [api]);
 
-  console.log({ data });
-
   if (isLoading) {
     return (
       <div className="flex h-[70vh] items-center justify-center">
@@ -68,7 +66,10 @@ const SingleProductPage = () => {
   }
 
   const title = `${vehicle.maker} ${vehicle.model}`;
-  const mappedImages = vehicle.images?.map((img: VehicleImage) => img.download_url).filter((url): url is string => Boolean(url)) || [];
+  const mappedImages =
+    vehicle.images
+      ?.map((img: VehicleImage) => img.download_url)
+      .filter((url): url is string => Boolean(url)) || [];
   const images = mappedImages.length > 0 ? mappedImages : [];
 
   const specs = [
@@ -105,7 +106,9 @@ const SingleProductPage = () => {
                 {vehicle.status}
               </Badge>
               <span className="text-xs text-muted-foreground">
-                {vehicle.holdingDate ? new Date(vehicle.holdingDate).toLocaleDateString() : "—"}
+                {vehicle.holdingDate
+                  ? new Date(vehicle.holdingDate).toLocaleDateString()
+                  : "—"}
               </span>
             </div>
           </div>
@@ -141,13 +144,13 @@ const SingleProductPage = () => {
                             alt={`${title} image ${i + 1}`}
                             className="object-contain absolute inset-0 w-full h-full"
                           />
-                          
+
                           {/* Logo Overlay */}
                           <div className="absolute bottom-4 right-4 z-10 select-none pointer-events-none opacity-80 transition-opacity hover:opacity-100">
                             <div className="relative h-12 w-32 md:h-16 md:w-40 overflow-hidden rounded-lg bg-white/40 backdrop-blur-md p-2 shadow-sm border border-white/40">
-                              <img 
-                                src="/logo.jpeg" 
-                                alt="Logo" 
+                              <img
+                                src="/logo.jpeg"
+                                alt="Logo"
                                 className="h-full w-full object-contain"
                               />
                             </div>
@@ -169,7 +172,7 @@ const SingleProductPage = () => {
                               "h-2 rounded-full transition-all duration-300 border shadow-sm",
                               isActive
                                 ? "bg-red-600 w-6 border-red-700"
-                                : "bg-gray-200 w-2 hover:bg-gray-300 border-gray-300"
+                                : "bg-gray-200 w-2 hover:bg-gray-300 border-gray-300",
                             )}
                             onClick={() => api?.scrollTo(i)}
                           />
@@ -188,7 +191,9 @@ const SingleProductPage = () => {
           )}
 
           {/* Right: Specs + Start price */}
-          <div className={cn("space-y-5", images.length === 0 && "lg:col-span-2")}>
+          <div
+            className={cn("space-y-5", images.length === 0 && "lg:col-span-2")}
+          >
             {/* Specs table */}
             <Card>
               <CardHeader className="pb-3">
@@ -217,15 +222,26 @@ const SingleProductPage = () => {
             <Card>
               <CardContent className="p-4">
                 <div className="text-xs text-muted-foreground uppercase font-medium tracking-wider">
-                  {vehicle.status?.toLowerCase().includes("sold") ? "Selling Price" : "Start Price"}
-                </div>
-                <div className={cn(
-                  "mt-1 text-lg font-black",
-                  vehicle.status?.toLowerCase().includes("sold") ? "text-green-600" : "text-blue-600"
-                )}>
                   {vehicle.status?.toLowerCase().includes("sold")
-                    ? (vehicle.soldPrice || vehicle.startPrice || vehicle.translatedData?.startPrice || "TBD")
-                    : (vehicle.startPrice || vehicle.translatedData?.startPrice || "TBD")}
+                    ? "Selling Price"
+                    : "Start Price"}
+                </div>
+                <div
+                  className={cn(
+                    "mt-1 text-lg font-black",
+                    vehicle.status?.toLowerCase().includes("sold")
+                      ? "text-green-600"
+                      : "text-blue-600",
+                  )}
+                >
+                  {vehicle.status?.toLowerCase().includes("sold")
+                    ? vehicle.soldPrice ||
+                      vehicle.startPrice ||
+                      vehicle.translatedData?.startPrice ||
+                      "TBD"
+                    : vehicle.startPrice ||
+                      vehicle.translatedData?.startPrice ||
+                      "TBD"}
                 </div>
                 <Separator className="my-3" />
                 <div className="text-xs text-muted-foreground">Status</div>

@@ -5,6 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { SettingsResponse } from "@/types/settings";
 import { updateSettings } from "@/lib/actions";
+import { fixImageUrl } from "@/lib/utils";
 import { toast } from "sonner";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
@@ -196,7 +197,7 @@ export function SettingsForm({ initialData, onUpdate }: SettingsFormProps) {
                 <Label htmlFor="siteLogo">Site Logo</Label>
                 {initialData.siteLogo && (
                   <div className="mb-2">
-                    <img src={initialData.siteLogo} alt="Current Logo" className="h-20 object-contain rounded border p-1" />
+                    <img src={fixImageUrl(initialData.siteLogo)} alt="Current Logo" className="h-20 object-contain rounded border p-1" />
                   </div>
                 )}
                 <Input id="siteLogo" type="file" accept="image/*" {...register("siteLogo")} />
@@ -230,7 +231,7 @@ export function SettingsForm({ initialData, onUpdate }: SettingsFormProps) {
                 <Label htmlFor="metaImage">Meta Image (OG Image)</Label>
                 {initialData.metaImage && (
                     <div className="mb-2">
-                      <img src={initialData.metaImage} alt="Current Meta Image" className="h-32 object-cover rounded border p-1" />
+                      <img src={fixImageUrl(initialData.metaImage)} alt="Current Meta Image" className="h-32 object-cover rounded border p-1" />
                     </div>
                 )}
                 <Input id="metaImage" type="file" accept="image/*" {...register("metaImage")} />
