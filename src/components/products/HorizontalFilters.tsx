@@ -28,7 +28,13 @@ interface FilterItemProps {
   apiImageUrl?: string | null;
 }
 
-const FilterItem = ({ label, isSelected, onSelect, icon, apiImageUrl }: FilterItemProps) => {
+const FilterItem = ({
+  label,
+  isSelected,
+  onSelect,
+  icon,
+  apiImageUrl,
+}: FilterItemProps) => {
   // Normalize label for image filename (e.g. "Wheel Loader" -> "wheel-loader")
   const imageName = label.toLowerCase().replace(/\s+/g, "-");
   const localImageUrl = `/images/categories/${imageName}.jpg`;
@@ -49,7 +55,7 @@ const FilterItem = ({ label, isSelected, onSelect, icon, apiImageUrl }: FilterIt
     <div
       onClick={() => onSelect(!isSelected)}
       className={cn(
-        "group relative flex min-w-[160px] cursor-pointer flex-col items-center gap-4 rounded-3xl border-2 p-6 transition-all duration-500",
+        "group relative flex min-w-[160px] cursor-pointer flex-col items-center gap-4 rounded-3xl border-2 p-2 transition-all duration-500",
         isSelected
           ? "border-red-600 bg-red-50/50 shadow-xl ring-4 ring-red-600/5 -translate-y-1"
           : "border-gray-100 bg-white hover:border-gray-300 hover:shadow-2xl hover:-translate-y-2",
@@ -181,7 +187,9 @@ export function HorizontalFilterRow({
               isSelected={selectedItems.includes(item.name)}
               onSelect={(checked) => onToggle(item.name, checked)}
               icon={
-                iconMap[item.name.toUpperCase()] || <Package className="h-6 w-6" />
+                iconMap[item.name.toUpperCase()] || (
+                  <Package className="h-6 w-6" />
+                )
               }
             />
           ))}
@@ -197,7 +205,9 @@ export function HorizontalFilterRow({
                 isSelected={selectedItems.includes(item.name)}
                 onSelect={(checked) => onToggle(item.name, checked)}
                 icon={
-                  iconMap[item.name.toUpperCase()] || <Package className="h-6 w-6" />
+                  iconMap[item.name.toUpperCase()] || (
+                    <Package className="h-6 w-6" />
+                  )
                 }
               />
             ))}

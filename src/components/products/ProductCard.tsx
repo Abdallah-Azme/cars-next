@@ -17,6 +17,8 @@ import {
   type CarouselApi,
 } from "@/components/ui/carousel";
 
+import { ZoomDialog } from "./ZoomDialog";
+
 type Props = {
   isFavorite?: boolean;
   vehicle: VehicleData;
@@ -99,17 +101,22 @@ export function ProductCard({ vehicle }: Props) {
                 <CarouselContent>
                   {images.map((img, index) => (
                     <CarouselItem key={index}>
-                      <Link
-                        href={`/products/${vehicle?.id}`}
-                        className="relative block overflow-hidden rounded-md border bg-muted aspect-4/3"
+                      <ZoomDialog
+                        src={fixImageUrl(img.download_url) || ""}
+                        alt={vehicle?.carMaker || "vehicle"}
                       >
-                        {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img
-                          src={fixImageUrl(img.download_url) || ""}
-                          alt={vehicle?.carMaker || "vehicle"}
-                          className="object-cover w-full h-full hover:scale-105 transition-all duration-300"
-                        />
-                      </Link>
+                        <Link
+                          href={`/products/${vehicle?.id}`}
+                          className="relative block overflow-hidden rounded-md border bg-muted aspect-4/3 cursor-zoom-in group/item"
+                        >
+                          <img
+                            src={fixImageUrl(img.download_url) || ""}
+                            alt={vehicle?.carMaker || "vehicle"}
+                            className="object-cover w-full h-full transition-all duration-700 group-hover/item:scale-110"
+                          />
+                          <div className="absolute inset-0 bg-black/0 group-hover/item:bg-black/10 transition-colors duration-300 pointer-events-none" />
+                        </Link>
+                      </ZoomDialog>
                     </CarouselItem>
                   ))}
                 </CarouselContent>
