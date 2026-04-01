@@ -1,3 +1,5 @@
+npm run build
+
 # الدخول لمجلد الـ standalone اللي نكست عملته
 cd .next/standalone
 

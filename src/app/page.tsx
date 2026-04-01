@@ -1,6 +1,6 @@
 import CategorySection from "@/components/categories/CategorySection";
 import MergedHero from "@/components/home/MergedHero";
-import StatsSection from "@/components/home/StateSection";
+import AboutSection from "@/components/home/AboutSection";
 import { ProductCarousel } from "@/components/products/ProductCarousel";
 import HomeHorizontalFilters from "@/components/home/HomeHorizontalFilters";
 import EmailSubscription from "@/components/shared/EmailBox";
@@ -17,7 +17,7 @@ export default function HomePage() {
       </div>
 
       <EmailSubscription />
-      <StatsSection />
+      <AboutSection />
     </main>
   );
 }

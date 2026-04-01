@@ -116,14 +116,14 @@ export function SettingsForm({ initialData, onUpdate }: SettingsFormProps) {
       const formData = new FormData();
 
       // Helper to map camelCase to snake_case for the API
-      const appendSnakeCase = (key: string, value: any) => {
+      const appendSnakeCase = (key: string, value: unknown) => {
         const snakeKey = key.replace(/[A-Z]/g, (letter) => `_${letter.toLowerCase()}`);
         if (value instanceof FileList) {
           if (value.length > 0) {
             formData.append(snakeKey, value[0]);
           }
         } else if (value !== null && value !== undefined) {
-           formData.append(snakeKey, value);
+           formData.append(snakeKey, String(value));
         }
       };
 
@@ -271,6 +271,7 @@ export function SettingsForm({ initialData, onUpdate }: SettingsFormProps) {
             </CardContent>
           </Card>
         </TabsContent>
+
 
         {/* Contact Settings */}
         <TabsContent value="contact">
