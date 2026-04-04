@@ -105,6 +105,7 @@ export function ParentCategoryForm({
   const { fields, append, remove } = useFieldArray({
     control: form.control,
     name: "children",
+    keyName: "_uuid",
   });
 
   // Watch for changes to show live previews
@@ -232,11 +233,11 @@ export function ParentCategoryForm({
             )}
             {fields.map((field, index) => {
               const childImage = childrenData?.[index]?.image;
-              const hasExistingImage = initialData?.children[index]?.image;
+              const hasExistingImage = field.id ? initialData?.children?.find(c => c.id === field.id)?.image : undefined;
 
               return (
                 <div
-                  key={field.id}
+                  key={field._uuid}
                   className="p-4 border rounded-lg space-y-4 relative bg-gray-50/50"
                 >
                   <Button
