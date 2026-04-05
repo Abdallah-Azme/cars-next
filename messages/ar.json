@@ -479,8 +479,15 @@
     "whatsappAria": "تواصل معنا عبر واتساب",
     "connectWithUs": "تواصل معنا",
     "directLine": "الخط المباشر",
+    "unselected": "غير محدد",
     "logout": "تسجيل الخروج",
     "logoutSuccess": "تم تسجيل الخروج بنجاح",
+    "notFound": {
+      "title": "الصفحة غير موجودة",
+      "description": "الصفحة التي تبحث عنها غير موجودة أو تم نقلها.",
+      "goBack": "العودة للخلف",
+      "backToHome": "العودة للرئيسية"
+    },
     "pagination": {
       "showing": "عرض",
       "of": "من",

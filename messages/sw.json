@@ -479,8 +479,15 @@
     "whatsappAria": "Wasiliana nasi kupitia WhatsApp",
     "connectWithUs": "Wasiliana Nasi",
     "directLine": "Nambari ya Moja kwa Moja",
+    "unselected": "Haijachaguliwa",
     "logout": "Ondoka",
     "logoutSuccess": "Umeondoka kwa mafanikio",
+    "notFound": {
+      "title": "Ukurasa Haijapatikana",
+      "description": "Ukurasa unaotafuta haupo au umehamishwa.",
+      "goBack": "Rudi Nyuma",
+      "backToHome": "Rudi Nyumbani"
+    },
     "pagination": {
       "showing": "Inaonyesha",
       "of": "kati ya",

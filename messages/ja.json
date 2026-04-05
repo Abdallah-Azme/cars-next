@@ -134,7 +134,7 @@
     "inventory": {
       "title": "在庫一覧",
       "header": "注目の在庫",
-      "subtitle": "幅広いラインナップ of the heavy machinery solutions.",
+      "subtitle": "重機ソリューションの幅広いラインナップをご覧ください。",
       "showing": "表示中：",
       "products": "件のアイテム",
       "noFound": "車両が見つかりませんでした",
@@ -479,8 +479,15 @@
     "whatsappAria": "WhatsAppでお問い合わせ",
     "connectWithUs": "お問い合わせ",
     "directLine": "直通ライン",
+    "unselected": "未選択",
     "logout": "ログアウト",
     "logoutSuccess": "ログアウトに成功しました",
+    "notFound": {
+      "title": "ページが見つかりません",
+      "description": "お探しのページは存在しないか、移動した可能性があります。",
+      "goBack": "戻る",
+      "backToHome": "ホームに戻る"
+    },
     "pagination": {
       "showing": "表示中",
       "of": "/",
