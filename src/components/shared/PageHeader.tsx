@@ -15,6 +15,7 @@ import {
   Send,
   Phone,
 } from "lucide-react";
+import { useLocale, useTranslations } from "next-intl";
 
 const socialPlatforms = [
   { id: "facebook", icon: Facebook, label: "Facebook" },
@@ -31,6 +32,9 @@ const socialPlatforms = [
 
 const PageHeader = ({ title }: { title: string }) => {
   const settings = useSettingsStore((state) => state.settings);
+  const locale = useLocale();
+  const t = useTranslations("Common");
+  const isRtl = locale === 'ar';
 
   const activeSocials = socialPlatforms
     .filter((p) => settings?.[p.id as keyof typeof settings])
@@ -44,29 +48,31 @@ const PageHeader = ({ title }: { title: string }) => {
       {/* Overlay */}
       <div className="absolute inset-0 bg-black/75 backdrop-blur-[2px]" />
 
-      <div className="container relative h-full flex flex-col md:flex-row items-center justify-between gap-8 py-8">
+      <div className={`container relative h-full flex flex-col md:flex-row items-center justify-between gap-8 py-8 ${isRtl ? 'md:flex-row-reverse' : ''}`}>
         {/* Title Section */}
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="flex-1 text-center md:text-left"
+          className={`flex-1 text-center ${isRtl ? 'md:text-right' : 'md:text-left'}`}
         >
           <h1 className="text-3xl md:text-6xl font-black text-white tracking-tight uppercase italic">
             {title}
           </h1>
-          <div className="h-1 w-20 bg-red-600 mt-4 mx-auto md:ml-0" />
+          <div className={`h-1 w-20 bg-red-600 mt-4 mx-auto ${isRtl ? 'md:mr-0 md:ml-auto' : 'md:ml-0'}`} />
         </motion.div>
 
         {/* Social Card overlaying the background */}
         <motion.div
-          initial={{ opacity: 0, x: 40 }}
+          initial={{ opacity: 0, x: isRtl ? -40 : 40 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}
-          className="flex flex-col gap-4 p-5 rounded-2xl border border-white/10 bg-white/5 backdrop-blur-xl w-full max-w-[320px] md:max-w-[280px]"
+          className={`flex flex-col gap-4 p-5 rounded-2xl border border-white/10 bg-white/5 backdrop-blur-xl w-full max-w-[320px] md:max-w-[280px] ${isRtl ? 'text-right' : 'text-left'}`}
         >
           <div className="space-y-1">
-            <p className="text-[10px] font-bold uppercase tracking-widest text-white/40">Connect With Us</p>
-            <div className="flex flex-wrap gap-2">
+            <p className="text-[10px] font-bold uppercase tracking-widest text-white/40">
+              {t("connectWithUs")}
+            </p>
+            <div className={`flex flex-wrap gap-2 ${isRtl ? 'flex-row-reverse' : ''}`}>
               {activeSocials.slice(0, 5).map((platform) => (
                 <a
                   key={platform.id}
@@ -86,13 +92,15 @@ const PageHeader = ({ title }: { title: string }) => {
             <div className="pt-4 border-t border-white/10">
               <a
                 href={`tel:${settings.phone}`}
-                className="flex items-center gap-3 transition-colors group"
+                className={`flex items-center gap-3 transition-colors group ${isRtl ? 'flex-row-reverse' : ''}`}
               >
                 <div className="w-8 h-8 rounded-lg bg-red-600 flex items-center justify-center text-white shadow-lg shadow-red-600/20">
                   <Phone size={14} />
                 </div>
-                <div className="flex flex-col">
-                  <span className="text-[9px] font-bold uppercase tracking-widest text-white/30">Direct Line</span>
+                <div className={`flex flex-col ${isRtl ? 'items-end' : ''}`}>
+                  <span className="text-[9px] font-bold uppercase tracking-widest text-white/30">
+                    {t("directLine")}
+                  </span>
                   <span className="text-sm font-black text-white group-hover:text-red-500 transition-colors">
                     {settings.phone}
                   </span>

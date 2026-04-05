@@ -17,6 +17,7 @@ import {
 } from "@/lib/actions";
 import { useSearchParams } from "next/navigation";
 import { useEffect, Suspense } from "react";
+import { useLocale, useTranslations } from "next-intl";
 
 /** Build the query string for the /api/vehicles route */
 function buildVehicleQS(
@@ -47,9 +48,10 @@ function buildVehicleQS(
 }
 
 export function ProductSection() {
+  const t = useTranslations("Vehicle.inventory");
   return (
     <Suspense
-      fallback={<div className="container py-10">Loading machines...</div>}
+      fallback={<div className="container py-10 text-center">{t("loading")}</div>}
     >
       <ProductSectionContent />
     </Suspense>
@@ -60,6 +62,9 @@ function ProductSectionContent() {
   const [filterParams, setFilterParams] = useState<VehicleFilterParams>({});
   const [page, setPage] = useState(1);
   const [perPage, setPerPage] = useState(10);
+  const locale = useLocale();
+  const t = useTranslations("Vehicle.inventory");
+  const isRtl = locale === 'ar';
 
   const searchParams = useSearchParams();
   const initialParentId = searchParams.get("parentId")
@@ -119,13 +124,6 @@ function ProductSectionContent() {
   // Robust data extraction
   let vehicles: import("@/types/vehicles").VehicleData[] = [];
   let pagination = null;
-  console.log("ProductSection state:", {
-    isPending,
-    error,
-    dataExists: !!data,
-    selectedParentId,
-    selectedChildIds,
-  });
 
   if (data) {
     type ResponseData = {
@@ -159,12 +157,9 @@ function ProductSectionContent() {
     if (vehicles.length === 0 && Array.isArray(laravelRes)) {
       vehicles = laravelRes;
     }
-    console.log("DEBUG: Raw Data from API:", data);
-    console.log("DEBUG: Extracted Vehicles:", vehicles);
   }
 
   const handleFilterChange = (params: VehicleFilterParams) => {
-    console.log("Filter change triggered:", params);
     setFilterParams((prev) => {
       if (Object.keys(params).length === 0) {
         // Reset case
@@ -206,16 +201,16 @@ function ProductSectionContent() {
   };
 
   return (
-    <section className="container py-10">
+    <section className={`container py-10 ${isRtl ? 'text-right' : 'text-left'}`}>
       {/* Top bar */}
       <div className="flex flex-col gap-4">
         {/* Header */}
         <div className=" flex flex-col gap-2 ">
           <h2 className="text-4xl md:text-5xl font-bold text-red-600">
-            Featured Machines
+            {t("header")}
           </h2>
           <p className=" text-gray-400">
-            Browse our wide range of heavy machinery solutions.
+            {t("subtitle")}
           </p>
         </div>
 
@@ -234,7 +229,7 @@ function ProductSectionContent() {
 
       <div className="mt-8 flex flex-col gap-6">
         <HorizontalFilterRow
-          title="Category"
+          title={t("filter.category")}
           items={parentCategories.map((p) => ({
             name: p.name,
             image: p.image,
@@ -246,7 +241,7 @@ function ProductSectionContent() {
         />
         {selectedParentId !== undefined && (
           <HorizontalFilterRow
-            title="Sub-Category"
+            title={t("filter.subCategory")}
             variant="grid"
             items={childCategories.map((c) => ({
               name: c.name,
@@ -260,9 +255,9 @@ function ProductSectionContent() {
         )}
       </div>
 
-      <div className="mt-8 grid gap-6 lg:grid-cols-[280px_1fr]">
+      <div className={`mt-8 grid gap-6 lg:grid-cols-[280px_1fr] ${isRtl ? 'lg:grid-cols-[1fr_280px]' : ''}`}>
         {/* Desktop sidebar */}
-        <aside className="hidden lg:block">
+        <aside className={`hidden lg:block ${isRtl ? 'order-2' : 'order-1'}`}>
           <div className="sticky top-30 rounded-lg border p-4">
             <ProductFilters
               onFilterChange={handleFilterChange}
@@ -277,13 +272,13 @@ function ProductSectionContent() {
         </aside>
 
         {/* Products */}
-        <div className="space-y-4">
-          <div className="text-sm text-muted-foreground">
-            Showing{" "}
+        <div className={`space-y-4 ${isRtl ? 'order-1' : 'order-2'}`}>
+          <div className={`text-sm text-muted-foreground flex items-center gap-1 ${isRtl ? 'flex-row-reverse' : ''}`}>
+            <span>{t("showing")}</span>
             <span className="font-medium text-foreground">
               {vehicles?.length}
-            </span>{" "}
-            products
+            </span>
+            <span>{t("products")}</span>
           </div>
 
           <div
@@ -312,11 +307,10 @@ function ProductSectionContent() {
                     </svg>
                   </div>
                   <h3 className="text-xl font-bold text-gray-700">
-                    Please Select a Sub-Category
+                    {t("selectSub")}
                   </h3>
                   <p className="text-gray-500 max-w-sm">
-                    Choose a specific machine type from the rows above to start
-                    browsing our inventory.
+                    {t("selectSubDesc")}
                   </p>
                 </div>
               </div>
@@ -326,7 +320,7 @@ function ProductSectionContent() {
               </div>
             ) : vehicles?.length === 0 && !isPending ? (
               <div className="text-sm text-muted-foreground py-10 text-center">
-                No Vehicles Found
+                {t("noFound")}
               </div>
             ) : isPending ? (
               <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">

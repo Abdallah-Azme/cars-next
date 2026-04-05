@@ -9,6 +9,7 @@ import { MessageCircle } from "lucide-react";
 import { useSettingsStore } from "@/stores/settings";
 import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
+import Image from "next/image";
 
 import EmailSubscription from "@/components/shared/EmailBox";
 import PageHeader from "@/components/shared/PageHeader";
@@ -26,10 +27,16 @@ import { useQuery } from "@tanstack/react-query";
 import { getSingleVehicle } from "@/lib/actions";
 import { fixImageUrl, formatWhatsAppUrl } from "@/lib/utils";
 import type { VehicleImage } from "@/types/vehicles";
+import { useLocale, useTranslations } from "next-intl";
 
 const SingleProductPage = () => {
   const params = useParams();
   const id = params?.id as string;
+  const locale = useLocale();
+  const t = useTranslations("Vehicle");
+  const ts = useTranslations("single");
+  const isRtl = locale === 'ar';
+  
   const settings = useSettingsStore((state) => state.settings);
 
   const { data, isLoading } = useQuery({
@@ -45,7 +52,9 @@ const SingleProductPage = () => {
 
   const handleWhatsAppContact = () => {
     const contact = settings?.whatsapp || settings?.phone;
-    const message = `Hello, I'm interested in the ${vehicle?.maker || ""} ${vehicle?.model || ""} (ID: ${vehicle?.id}). Could you provide more details?`;
+    const message = isRtl
+      ? `مرحباً، أنا مهتم بـ ${vehicle?.maker || ""} ${vehicle?.model || ""} (ID: ${vehicle?.id}). هل يمكنك تزويدي بمزيد من التفاصيل؟`
+      : `Hello, I'm interested in the ${vehicle?.maker || ""} ${vehicle?.model || ""} (ID: ${vehicle?.id}). Could you provide more details?`;
     const finalUrl = formatWhatsAppUrl(contact, message);
     if (finalUrl) window.open(finalUrl, "_blank");
   };
@@ -63,15 +72,18 @@ const SingleProductPage = () => {
   if (isLoading) {
     return (
       <div className="flex h-[70vh] items-center justify-center">
-        <Loader2 className="h-10 w-10 animate-spin text-red-600" />
+        <div className="flex flex-col items-center gap-4">
+          <Loader2 className="h-10 w-10 animate-spin text-red-600" />
+          <p className="text-muted-foreground animate-pulse font-medium">{ts("loading")}</p>
+        </div>
       </div>
     );
   }
 
   if (!vehicle) {
     return (
-      <div className="flex h-[70vh] items-center justify-center font-bold">
-        Vehicle Not Found
+      <div className="flex h-[70vh] items-center justify-center font-bold text-xl">
+        {ts("notFound")}
       </div>
     );
   }
@@ -83,56 +95,59 @@ const SingleProductPage = () => {
       .filter((url): url is string => Boolean(url)) || [];
   const images = mappedImages.length > 0 ? mappedImages : [];
 
+  const rawStatus = vehicle.status || "";
+  const localizedStatus = rawStatus.toLowerCase().includes("sold") ? t("status.sold") : rawStatus;
+
   const specs = [
-    { label: "Model", value: vehicle.model || "—" },
-    { label: "Year", value: vehicle.year || "—" },
+    { label: ts("labels.model"), value: vehicle.model || "—" },
+    { label: t("labels.year"), value: vehicle.year || "—" },
     {
-      label: "Hours",
-      value: vehicle.workingHours ? `${vehicle.workingHours} hr` : "—",
+      label: t("labels.hours"),
+      value: vehicle.workingHours ? `${vehicle.workingHours} ${isRtl ? 'ساعة' : 'hr'}` : "—",
     },
-    { label: "Lot Number", value: vehicle.lotNumber || "—" },
-    { label: "Size", value: vehicle.vehicleSize || "—" },
-    { label: "Inspection", value: vehicle.inspection || "—" },
-    { label: "Transmission", value: vehicle.transmission || "—" },
-    { label: "Fuel Type", value: vehicle.fuel || "—" },
-    { label: "Equipment", value: vehicle.equipment || "—" },
-    { label: "Odometer", value: vehicle.odometer || "—" },
-    { label: "Color", value: vehicle.color || "—" },
+    { label: t("labels.lotNumber"), value: vehicle.lotNumber || "—" },
+    { label: t("labels.size"), value: vehicle.vehicleSize || "—" },
+    { label: t("labels.inspection"), value: vehicle.inspection || "—" },
+    { label: ts("labels.transmission"), value: vehicle.transmission || "—" },
+    { label: ts("labels.fuelType"), value: vehicle.fuel || "—" },
+    { label: ts("labels.equipment"), value: vehicle.equipment || "—" },
+    { label: ts("labels.odometer"), value: vehicle.odometer || "—" },
+    { label: ts("labels.color"), value: vehicle.color || "—" },
   ];
 
   return (
     <>
       <PageHeader title={title} />
-      <div className="space-y-5 container my-12">
+      <div className={`space-y-5 container my-12 ${isRtl ? 'text-right' : 'text-left'}`}>
         {/* Header */}
-        <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+        <div className={`flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between ${isRtl ? 'sm:flex-row-reverse' : ''}`}>
           <div className="space-y-1">
             <h1 className="text-3xl font-bold">{title}</h1>
             <div className="text-muted-foreground">{vehicle.auctionDay}</div>
-            <div className="flex items-center gap-2">
+            <div className={`flex items-center gap-2 ${isRtl ? 'flex-row-reverse' : ''}`}>
               <Badge variant="secondary" className="rounded-full px-3">
-                Grade {vehicle.score || "—"}
+                {ts("grade")} {vehicle.score || "—"}
               </Badge>
               <Badge variant="outline" className="font-normal">
-                {vehicle.status}
+                {localizedStatus}
               </Badge>
               <span className="text-xs text-muted-foreground">
                 {vehicle.holdingDate
-                  ? new Date(vehicle.holdingDate).toLocaleDateString()
+                  ? new Date(vehicle.holdingDate).toLocaleDateString(locale)
                   : "—"}
               </span>
             </div>
           </div>
 
           {/* Favorite + CTA */}
-          <div className="flex items-center gap-2">
+          <div className={`flex items-center gap-2 ${isRtl ? 'flex-row-reverse' : ''}`}>
             {settings?.whatsapp || settings?.phone ? (
               <Button 
                 onClick={handleWhatsAppContact}
                 className="bg-green-600 hover:bg-green-700 text-white gap-2 transition-all active:scale-95 shadow-sm"
               >
                 <MessageCircle className="size-4" />
-                Contact via WhatsApp
+                {t("contact.whatsapp")}
               </Button>
             ) : (
               <Button 
@@ -141,7 +156,7 @@ const SingleProductPage = () => {
                 className="gap-2 opacity-50"
               >
                 <MessageCircle className="size-4" />
-                Contact Unavailable
+                {t("contact.unavailable")}
               </Button>
             )}
             <AddToFavBtn vehicle={vehicle} />
@@ -152,35 +167,38 @@ const SingleProductPage = () => {
         <div className="grid gap-5 lg:grid-cols-[1.15fr_0.85fr]">
           {/* Left: Carousel */}
           {images.length > 0 && (
-            <Card>
-              <CardHeader className="pb-3">
-                <div className="text-sm font-semibold text-red-600">Photos</div>
+            <Card className={isRtl ? 'order-last lg:order-0' : ''}>
+              <CardHeader className="pb-3 text-start">
+                <div className="text-sm font-semibold text-red-600">{ts("photos")}</div>
               </CardHeader>
 
               <CardContent className="pt-0">
                 <Carousel
                   setApi={setApi}
-                  opts={{ loop: true }}
+                  opts={{ loop: true, direction: isRtl ? 'rtl' : 'ltr' }}
                   className="w-full"
                 >
                   <CarouselContent>
                     {images.map((src: string, i: number) => (
                       <CarouselItem key={src + i}>
                         <div className="relative overflow-hidden rounded-lg border bg-muted aspect-4/3">
-                          {/* eslint-disable-next-line @next/next/no-img-element */}
-                          <img
+                          <Image
                             src={fixImageUrl(src)}
                             alt={`${title} image ${i + 1}`}
-                            className="object-contain absolute inset-0 w-full h-full"
+                            fill
+                            className="object-contain"
+                            sizes="(max-width: 1024px) 100vw, 60vw"
+                            priority={i === 0}
                           />
 
                           {/* Logo Overlay */}
-                          <div className="absolute bottom-4 right-4 z-10 select-none pointer-events-none opacity-80 transition-opacity hover:opacity-100">
+                          <div className={`absolute bottom-4 ${isRtl ? 'left-4' : 'right-4'} z-10 select-none pointer-events-none opacity-80 transition-opacity hover:opacity-100`}>
                             <div className="relative h-12 w-32 md:h-16 md:w-40 overflow-hidden rounded-lg bg-white/40 backdrop-blur-md p-2 shadow-sm border border-white/40">
-                              <img
+                              <Image
                                 src="/logo.jpeg"
                                 alt="Logo"
-                                className="h-full w-full object-contain"
+                                fill
+                                className="object-contain p-2"
                               />
                             </div>
                           </div>
@@ -189,9 +207,9 @@ const SingleProductPage = () => {
                     ))}
                   </CarouselContent>
 
-                  <div className="flex items-center justify-between mt-4">
+                  <div className={`flex items-center justify-between mt-4 ${isRtl ? 'flex-row-reverse' : ''}`}>
                     {/* Dots */}
-                    <div className="flex gap-2 py-2">
+                    <div className={`flex gap-2 py-2 ${isRtl ? 'flex-row-reverse' : ''}`}>
                       {images?.slice(0, 15).map((_: string, i: number) => {
                         const isActive = current === i;
                         return (
@@ -209,7 +227,7 @@ const SingleProductPage = () => {
                       })}
                     </div>
 
-                    <div className="flex items-center gap-2">
+                    <div className={`flex items-center gap-2 ${isRtl ? 'flex-row-reverse' : ''}`}>
                       <CarouselPrevious className="bg-red-600 border-none text-white size-8! static translate-x-0 translate-y-0" />
                       <CarouselNext className="bg-red-600 border-none text-white size-8! static translate-x-0 translate-y-0" />
                     </div>
@@ -225,20 +243,20 @@ const SingleProductPage = () => {
           >
             {/* Specs table */}
             <Card>
-              <CardHeader className="pb-3">
+              <CardHeader className="pb-3 text-start">
                 <div className="text-sm font-semibold text-red-600">
-                  Specifications
+                  {ts("specifications")}
                 </div>
               </CardHeader>
               <CardContent className="pt-0">
                 <div className="rounded-md border bg-muted/20 overflow-hidden">
-                  <div className="grid grid-cols-[120px_1fr]">
+                  <div className={`grid ${isRtl ? 'grid-cols-[1fr_120px]' : 'grid-cols-[120px_1fr]'}`}>
                     {specs.map((row, idx) => (
                       <div key={`${row.label}-${idx}`} className="contents">
-                        <div className="border-b px-3 py-2 text-xs font-medium bg-muted/40">
+                        <div className={`border-b px-3 py-2 text-xs font-medium bg-muted/40 ${isRtl ? 'order-2 text-right' : 'order-1 text-left'}`}>
                           {row.label}
                         </div>
-                        <div className="border-b px-3 py-2 text-xs">
+                        <div className={`border-b px-3 py-2 text-xs ${isRtl ? 'order-1 text-left' : 'order-2 text-right'}`}>
                           {row.value}
                         </div>
                       </div>
@@ -251,33 +269,34 @@ const SingleProductPage = () => {
             <Card>
               <CardContent className="p-4">
                 <div className="text-xs text-muted-foreground uppercase font-medium tracking-wider">
-                  {vehicle.status?.toLowerCase().includes("sold")
-                    ? "Selling Price"
-                    : "Start Price"}
+                  {rawStatus.toLowerCase().includes("sold")
+                    ? t("status.soldPrice")
+                    : t("status.startPrice")}
                 </div>
                 <div
                   className={cn(
-                    "mt-1 text-lg font-black",
-                    vehicle.status?.toLowerCase().includes("sold")
+                    "mt-1 text-lg font-black flex items-center gap-1",
+                    isRtl ? 'flex-row-reverse' : '',
+                    rawStatus.toLowerCase().includes("sold")
                       ? "text-green-600"
                       : "text-blue-600",
                   )}
                 >
-                  <span className="mr-1 text-xs font-bold opacity-60 italic tracking-tighter">
-                    (¥) ين
+                  <span className="text-xs font-bold opacity-60 italic tracking-tighter">
+                    {t("contact.currency")}
                   </span>
-                  {vehicle.status?.toLowerCase().includes("sold")
+                  {rawStatus.toLowerCase().includes("sold")
                     ? vehicle.soldPrice ||
                       vehicle.startPrice ||
                       vehicle.translatedData?.startPrice ||
-                      "TBD"
+                      t("status.tbd")
                     : vehicle.startPrice ||
                       vehicle.translatedData?.startPrice ||
-                      "TBD"}
+                      t("status.tbd")}
                 </div>
                 <Separator className="my-3" />
-                <div className="text-xs text-muted-foreground">Status</div>
-                <div className="mt-1 text-sm">{vehicle.status}</div>
+                <div className="text-xs text-muted-foreground">{ts("status")}</div>
+                <div className="mt-1 text-sm">{localizedStatus}</div>
               </CardContent>
             </Card>
           </div>
@@ -285,14 +304,14 @@ const SingleProductPage = () => {
 
         {/* Description */}
         <Card>
-          <CardHeader>
+          <CardHeader className="text-start">
             <div className="text-sm font-semibold text-red-600">
-              Description / Equipment
+              {ts("description")}
             </div>
           </CardHeader>
           <CardContent className="pt-0">
             <p className="text-sm text-muted-foreground">
-              {vehicle.equipment || "No description available."}
+              {vehicle.equipment || ts("noDescription")}
             </p>
           </CardContent>
         </Card>

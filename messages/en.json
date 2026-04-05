@@ -1,0 +1,505 @@
+{
+  "Navbar": {
+    "home": "Home",
+    "machines": "Inventory",
+    "categories": "Categories",
+    "favorites": "Favorites",
+    "profile": "Profile",
+    "login": "Login",
+    "signup": "Signup",
+    "register": "Signup",
+    "siteName": "Sub Coders"
+  },
+  "Footer": {
+    "description": "Logistics and heavy equipment specialists. We import high-quality machinery from Japan to Egypt for factories, dealers, and individuals.",
+    "importantLinks": "Important Links",
+    "topCategories": "Top Categories",
+    "quickContact": "Quick Contact",
+    "callUs": "Call Us",
+    "email": "Email",
+    "location": "Location",
+    "rights": "All rights reserved.",
+    "links": {
+      "home": "Home",
+      "inventory": "All Vehicles",
+      "services": "Our Services",
+      "contact": "Contact Us"
+    },
+    "categories": {
+      "construction": "Construction",
+      "excavators": "Excavators",
+      "loaders": "Loaders",
+      "cranes": "Cranes"
+    }
+  },
+  "HomePage": {
+    "heroTitle": "Premium Vehicles & Machinery",
+    "heroSubtitle": "Find the best deals on heavy equipment and cars globaly.",
+    "hero": {
+      "contactUs": "Contact Us",
+      "getQuote": "Get Quote",
+      "connectWithUs": "Connect With Us",
+      "directLine": "Direct Line"
+    },
+    "about": {
+      "badge": "About Us",
+      "title": "Our Performance in Numbers",
+      "subtitle": "Delivering strength, reliability, and excellence in every project.",
+      "exploreFleet": "Explore Our Fleet",
+      "yearsOf": "Years of",
+      "excellence": "Excellence",
+      "features": {
+        "spareParts": "Genuine Spare Parts",
+        "maintenance": "Expert Maintenance Team",
+        "rentalSales": "Flexible Rental & Sales",
+        "quality": "Global Quality Standards"
+      },
+      "stats": {
+        "experience": "Years of Experience",
+        "projects": "Completed Projects",
+        "machines": "Available Machines",
+        "satisfaction": "Client Satisfaction"
+      }
+    },
+    "newsletter": {
+      "title": "Stay Updated",
+      "subtitle": "Subscribe to receive the latest heavy equipment arrivals, rental offers, and project updates.",
+      "placeholder": "Enter your email address",
+      "button": "Subscribe",
+      "success": "Subscribed successfully!",
+      "error": "Subscription failed",
+      "emailRequired": "Email is required",
+      "invalidEmail": "Invalid email address"
+    },
+    "fleetCategories": "Our Fleet Categories",
+    "fleetCategoriesSubtitle": "Select a category to explore our available vehicles",
+    "featured": {
+      "title": "Featured",
+      "subtitle": "Machines",
+      "description": "Explore our curated selection of high-performance heavy machinery and commercial vehicles.",
+      "exploreAll": "Explore All",
+      "noVehicles": "No vehicles found in our current inventory."
+    }
+  },
+  "Vehicle": {
+    "labels": {
+      "lotNumber": "Lot Number",
+      "vehicleType": "Vehicle Type",
+      "chassisId": "Chassis Id",
+      "hours": "Hours",
+      "score": "Score",
+      "year": "Year",
+      "fuel": "Fuel",
+      "size": "Size",
+      "inspection": "Inspection",
+      "lot": "Lot"
+    },
+    "status": {
+        "sold": "Sold",
+        "soldPrice": "Selling Price",
+        "startPrice": "Start Price",
+        "tbd": "TBD",
+        "acceptanceEnds": "Acceptance Ends:",
+        "acceptancePeriod": "Acceptance Period"
+    },
+    "contact": {
+        "whatsapp": "Contact via WhatsApp",
+        "unavailable": "Contact Unavailable",
+        "currency": "¥ (JPY)"
+    },
+    "single": {
+        "notFound": "Vehicle Not Found",
+        "loading": "Loading Vehicle Details...",
+        "grade": "Grade",
+        "photos": "Photos",
+        "specifications": "Specifications",
+        "description": "Description / Equipment",
+        "noDescription": "No description available.",
+        "status": "Status",
+        "labels": {
+            "model": "Model",
+            "transmission": "Transmission",
+            "fuelType": "Fuel Type",
+            "equipment": "Equipment",
+            "odometer": "Odometer",
+            "color": "Color"
+        }
+    },
+    "favorites": {
+        "title": "Favorites",
+        "header": "Your Favorites",
+        "subtitle": "Here are the machines you've added to your favorites.",
+        "empty": "No favorites found"
+    },
+    "inventory": {
+        "title": "Machines",
+        "header": "Featured Machines",
+        "subtitle": "Browse our wide range of heavy machinery solutions.",
+        "showing": "Showing",
+        "products": "products",
+        "noFound": "No Vehicles Found",
+        "loading": "Loading machines...",
+        "selectSub": "Please Select a Sub-Category",
+        "selectSubDesc": "Choose a specific machine type from the rows above to start browsing our inventory.",
+        "filter": {
+            "title": "Filters",
+            "reset": "Reset",
+            "category": "Category",
+            "parentCategory": "Parent Category",
+            "subCategory": "Sub-Category",
+            "selectSubCategory": "Select Sub-Category",
+            "selectCategoryPlaceholder": "Select category…",
+            "model": "Model",
+            "type": "Type",
+            "year": "Year",
+            "hour": "Hour",
+            "evaluationPoints": "Evaluation Points",
+            "auctionStatus": "Auction Status",
+            "loadingModels": "Loading models…",
+            "updatingTypes": "Updating types…",
+            "noModels": "No models available.",
+            "noTypes": "No types available."
+        }
+    },
+    "categoriesPage": {
+        "title": "Categories",
+        "header": "All Categories",
+        "subtitle": "Explore our machinery by category to find exactly what you need."
+    }
+  },
+  "auth": {
+    "login": {
+        "title": "Login",
+        "header": "Login to your account",
+        "subtitle": "Enter your email below to login to your account",
+        "submit": "Login",
+        "noAccount": "Don't have an account?",
+        "forgot": "Forgot password?",
+        "success": "Login successful",
+        "failed": "Login failed"
+    },
+    "register": {
+        "title": "Signup",
+        "header": "Create an account",
+        "subtitle": "Enter your details below to create your account",
+        "submit": "Signup",
+        "hasAccount": "Already have an account?",
+        "success": "Registration successful",
+        "failed": "Registration failed"
+    },
+    "roles": {
+        "label": "Role",
+        "placeholder": "Select a role",
+        "user": "User",
+        "viewer": "Viewer",
+        "moderator": "Moderator"
+    },
+    "forgotPassword": {
+        "title": "Forgot Password",
+        "header": "Forgot Password",
+        "subtitle": "Enter your email address and we'll send you a 6-digit code to reset your password.",
+        "submit": "Send Reset Code",
+        "backToLogin": "Back to Login",
+        "success": "Reset code sent to your email.",
+        "failed": "Failed to send reset code."
+    },
+    "verifyEmail": {
+        "title": "Verify Email",
+        "header": "Verify Your Email",
+        "subtitle": "We've sent a 6-digit verification code to your email.",
+        "otpLabel": "Verification code",
+        "resendCode": "Resend Code",
+        "resending": "Resending...",
+        "resendIn": "Resend in {seconds}s",
+        "submit": "Complete Verification",
+        "verifying": "Verifying...",
+        "alreadyVerified": "Already verified?",
+        "login": "Login here",
+        "success": "Email verified successfully.",
+        "failed": "Email verification failed.",
+        "resendSuccess": "Verification code resent.",
+        "resendFailed": "Failed to resend code."
+    },
+    "resetPassword": {
+        "title": "Reset Password",
+        "header": "Set New Password",
+        "subtitle": "Security is a priority. Please choose a strong password that you haven't used before.",
+        "submit": "Reset Password",
+        "success": "Password updated successfully.",
+        "failed": "Failed to update password.",
+        "invalidToken": "Invalid or missing reset token.",
+        "goBack": "Go back to Forgot Password",
+        "newPassword": "New Password",
+        "confirmNewPassword": "Confirm New Password"
+    },
+    "verifyResetCode": {
+        "title": "Verify Reset Code",
+        "header": "Verify Reset Code",
+        "subtitle": "Enter the 6-digit code we sent to your email to continue resetting your password.",
+        "otpLabel": "6-Digit Code",
+        "resendCode": "Resend Code",
+        "resending": "Resending...",
+        "resendIn": "Resend in {seconds}s",
+        "submit": "Verify & Continue",
+        "verifying": "Verifying...",
+        "changeEmail": "Change email address",
+        "success": "Code verified successfully.",
+        "failed": "Invalid reset code.",
+        "emailRequired": "Email is required to resend reset code.",
+        "resendSuccess": "Reset code resent.",
+        "resendFailed": "Failed to resend code."
+    },
+    "profile": {
+        "title": "My Profile",
+        "info": {
+            "title": "Personal Information",
+            "description": "Update your name and profile picture.",
+            "nameLabel": "Name",
+            "emailLabel": "Email",
+            "roleLabel": "Role",
+            "emailReadOnly": "Email cannot be changed.",
+            "submit": "Update Profile",
+            "success": "Profile updated successfully.",
+            "failed": "Failed to update profile."
+        },
+        "security": {
+            "title": "Password Management",
+            "description": "Change your password to keep your account secure.",
+            "newPassword": "New Password",
+            "confirmPassword": "Confirm New Password",
+            "submit": "Change Password",
+            "success": "Password changed successfully.",
+            "failed": "Failed to change password."
+        }
+    },
+    "labels": {
+        "email": "Email",
+        "password": "Password",
+        "confirmPassword": "Confirm Password",
+        "name": "Full Name",
+        "phone": "Phone Number"
+    },
+    "validation": {
+        "email": "Invalid email address",
+        "password": "Password must be at least 6 characters",
+        "required": "This field is required",
+        "match": "Passwords do not match"
+    }
+  },
+  "admin": {
+    "sidebar": {
+      "title": "Cars Dashboard",
+      "auctions": "Auctions",
+      "parentCategories": "Parent Categories",
+      "categories": "Categories",
+      "users": "Users",
+      "settings": "Settings",
+      "logout": "Logout"
+    },
+    "products": {
+      "title": "Auctions",
+      "items": "{count} items",
+      "itemsTotal": "Total: {count} vehicles",
+      "noSessions": "No auction sessions found",
+      "startPrice": "Start price",
+      "currency": "Yen",
+      "specs": {
+        "model": "Model",
+        "year": "Year",
+        "hours": "Hours",
+        "chassis": "Chassis ID",
+        "fuel": "Fuel Type",
+        "score": "Score"
+      },
+      "single": {
+        "notFound": "Vehicle Not Found",
+        "loading": "Loading vehicle details...",
+        "specs": "Specifications",
+        "pricing": "Pricing Information",
+        "maker": "Maker",
+        "ref": "Ref",
+        "scorePrefix": "Score:",
+        "auctionDate": "Auction date:"
+      }
+    },
+    "users": {
+      "title": "User Management",
+      "cardTitle": "All Users",
+      "table": {
+        "user": "User",
+        "email": "Email",
+        "role": "Role",
+        "status": "Status",
+        "actions": "Actions"
+      },
+      "status": {
+        "active": "Active",
+        "disabled": "Disabled"
+      },
+      "actions": {
+        "activate": "Activate",
+        "disable": "Disable",
+        "activating": "Activating...",
+        "disabling": "Disabling..."
+      },
+      "success": {
+        "activated": "User activated successfully",
+        "disabled": "User disabled successfully"
+      },
+      "failed": {
+        "activated": "Failed to activate user",
+        "disabled": "Failed to disable user"
+      },
+      "noUsers": "No users found.",
+      "pagination": "Page {current} of {total}"
+    },
+    "settings": {
+      "title": "Site Settings",
+      "failedToLoad": "Failed to load settings.",
+      "saveChanges": "Save All Changes",
+      "saving": "Saving...",
+      "success": "Settings updated successfully",
+      "failed": "Failed to update settings",
+      "tabs": {
+        "general": "General",
+        "seo": "SEO",
+        "hero": "Hero",
+        "contact": "Contact",
+        "social": "Social",
+        "stats": "Stats"
+      },
+      "general": {
+        "title": "General Settings",
+        "description": "Basic website information and logo.",
+        "siteName": "Site Name",
+        "siteLogo": "Site Logo",
+        "logoHint": "Upload a new logo to replace the current one."
+      },
+      "seo": {
+        "title": "SEO Settings",
+        "description": "Optimize your site for search engines.",
+        "metaTitle": "Meta Title",
+        "metaDescription": "Meta Description",
+        "metaKeywords": "Meta Keywords",
+        "metaImage": "Meta Image (OG Image)"
+      },
+      "hero": {
+        "title": "Hero Section",
+        "description": "Content for the main hero section of the homepage.",
+        "heroTitle": "Hero Title",
+        "heroDescription": "Hero Description",
+        "button1": "Button 1 Link",
+        "button2": "Button 2 Link"
+      },
+      "contact": {
+        "title": "Contact Information",
+        "description": "Displayed in the footer and contact pages.",
+        "email": "Email",
+        "phone": "Phone",
+        "address": "Address"
+      },
+      "social": {
+        "title": "Social Media Links",
+        "description": "Links to your social media profiles."
+      },
+      "stats": {
+        "title": "Statistics Section",
+        "description": "Key performance indicators displayed on the site.",
+        "heading": "Section Heading",
+        "subtext": "Section Description",
+        "addItem": "Add Item",
+        "valueLabel": "Value (e.g. 15+)",
+        "labelLabel": "Label (e.g. Years of Experience)",
+        "noItems": "No statistics items added."
+      }
+    },
+    "parentCategories": {
+      "title": "Parent Categories",
+      "subtitle": "Manage equipment hierarchy and search keywords.",
+      "addBtn": "Add Category",
+      "modal": {
+        "edit": "Edit Category",
+        "add": "Add Category",
+        "editDesc": "Update the parent category and its children.",
+        "addDesc": "Create a new parent category with subcategories."
+      },
+      "list": {
+        "image": "Image",
+        "name": "Name",
+        "children": "Children",
+        "actions": "Actions",
+        "noImg": "No Img",
+        "noCategories": "No parent categories found.",
+        "subCount": "{count} subcategories",
+        "confirmDelete": "Are you sure you want to delete this category?",
+        "successDelete": "Category deleted",
+        "failedDelete": "Delete failed"
+      },
+      "form": {
+        "basicInfo": "Basic Information",
+        "categoryName": "Parent Category Name",
+        "categoryImg": "Parent Category Image",
+        "namePlaceholder": "Enter name",
+        "imgHint": "Recommended format: PNG, JPG (Max 5MB)",
+        "childCategories": "Child Categories",
+        "addChild": "Add Child",
+        "noChildren": "No child categories added.",
+        "childName": "Child Name",
+        "childPlaceholder": "e.g. Cars",
+        "keywords": "Keywords (comma separated)",
+        "keywordsPlaceholder": "e.g. bmw,toyota",
+        "childImg": "Child Image",
+        "cancel": "Cancel",
+        "create": "Create Category",
+        "update": "Update Category",
+        "successCreate": "Category created",
+        "successUpdate": "Category updated",
+        "failed": "Something went wrong",
+        "error": "An error occurred",
+        "newFlag": "NEW",
+        "validation": {
+          "name": "Name is required",
+          "keywords": "Keywords are required"
+        }
+      }
+    },
+    "categories": {
+      "title": "Equipment Categories",
+      "subtitle": "Browse our wide range of heavy machinery solutions.",
+      "noCategories": "No categories found",
+      "subCount": "{count} sub",
+      "subcategories": "Subcategories",
+      "allEquipment": "All Equipment Categories"
+    }
+  },
+  "Common": {
+    "loading": "Loading...",
+    "error": "Something went wrong",
+    "whatsappTitle": "Chat with us on WhatsApp!",
+    "whatsappAria": "Contact us on WhatsApp",
+    "connectWithUs": "Connect With Us",
+    "directLine": "Direct Line",
+    "logout": "Logout",
+    "logoutSuccess": "Logged out successfully",
+    "pagination": {
+      "showing": "Showing",
+      "of": "of",
+      "results": "results",
+      "firstPage": "First page",
+      "prevPage": "Previous page",
+      "nextPage": "Next page",
+      "lastPage": "Last page",
+      "perPage": "Results per page"
+    },
+    "SocialLinks": {
+      "title": "Connect",
+      "subtitle": "Follow us for the latest arrivals, industry news, and exclusive heavy machinery updates.",
+      "withUs": "With Us",
+      "networks": "Social Networks",
+      "contactInfo": "Contact Information",
+      "line": "Line",
+      "directMail": "Direct Mail",
+      "address": "Corporate Address"
+    }
+  }
+}

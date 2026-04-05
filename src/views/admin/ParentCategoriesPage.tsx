@@ -14,8 +14,13 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/admin/ui/dialog";
+import { useLocale, useTranslations } from "next-intl";
 
 const ParentCategoriesPage = () => {
+  const locale = useLocale();
+  const t = useTranslations("admin.parentCategories");
+  const isRtl = locale === 'ar';
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedCategory, setSelectedCategory] =
     useState<ParentCategory | null>(null);
@@ -46,17 +51,17 @@ const ParentCategoriesPage = () => {
   };
 
   return (
-    <div className="flex flex-col gap-6">
-      <div className="flex items-center justify-between">
+    <div className={`flex flex-col gap-6 ${isRtl ? 'text-right' : 'text-left'}`}>
+      <div className={`flex items-center justify-between ${isRtl ? 'flex-row-reverse' : ''}`}>
         <div>
-          <h1 className="text-3xl font-bold text-red-700">Parent Categories</h1>
+          <h1 className="text-3xl font-bold text-red-700">{t("title")}</h1>
           <p className="text-muted-foreground">
-            Manage equipment hierarchy and search keywords.
+            {t("subtitle")}
           </p>
         </div>
-        <Button onClick={handleCreate} className="bg-red-700">
-          <Plus className="mr-2 h-4 w-4" />
-          Add Category
+        <Button onClick={handleCreate} className={`bg-red-700 font-bold ${isRtl ? 'flex-row-reverse' : ''}`}>
+          <Plus className={`${isRtl ? 'ml-2' : 'mr-2'} h-4 w-4`} />
+          {t("addBtn")}
         </Button>
       </div>
 
@@ -73,15 +78,15 @@ const ParentCategoriesPage = () => {
       )}
 
       <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
-        <DialogContent className="sm:max-w-3xl max-h-[90vh] overflow-y-auto">
-          <DialogHeader>
+        <DialogContent className={`sm:max-w-3xl max-h-[90vh] overflow-y-auto ${isRtl ? 'text-right' : 'text-left'}`}>
+          <DialogHeader className={isRtl ? 'text-right items-end' : ''}>
             <DialogTitle>
-              {selectedCategory ? "Edit Category" : "Add Category"}
+              {selectedCategory ? t("modal.edit") : t("modal.add")}
             </DialogTitle>
             <DialogDescription>
               {selectedCategory
-                ? "Update the parent category and its children."
-                : "Create a new parent category with subcategories."}
+                ? t("modal.editDesc")
+                : t("modal.addDesc")}
             </DialogDescription>
           </DialogHeader>
           <div className="py-2">

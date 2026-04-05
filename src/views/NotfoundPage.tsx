@@ -2,9 +2,12 @@
 
 import { Button } from "@/components/ui/button";
 import { Home, ArrowLeft } from "lucide-react";
-import Link from "next/link";
+import { Link } from "@/i18n/routing";
+import { useTranslations } from "next-intl";
 
 export default function NotFoundPage() {
+
+  const t = useTranslations("Common.notFound");
   return (
     <div className=" min-h-screen flex items-center justify-center  px-4">
       <div className="text-center space-y-6 max-w-xl">
@@ -15,12 +18,12 @@ export default function NotFoundPage() {
 
         {/* Title */}
         <h2 className="text-2xl md:text-3xl font-semibold text-red-700">
-          Page Not Found
+          {t("title")}
         </h2>
 
         {/* Description */}
         <p className=" text-primary">
-          The page you’re looking for doesn’t exist or has been moved.
+          {t("description")}
         </p>
 
         {/* Buttons */}
@@ -30,7 +33,7 @@ export default function NotFoundPage() {
             onClick={() => window.history.back()}
           >
             <ArrowLeft className="mr-2 h-4 w-4" />
-            Go Back
+            {t("goBack")}
           </Button>
 
           <Button
@@ -40,7 +43,7 @@ export default function NotFoundPage() {
           >
             <Link href={"/"} >
               <Home className="mr-2 h-4 w-4" />
-              Back to Home
+              {t("backToHome")}
             </Link>
           </Button>
         </div>
@@ -48,4 +51,5 @@ export default function NotFoundPage() {
     </div>
   );
 }
+
 

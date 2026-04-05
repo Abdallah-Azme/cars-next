@@ -13,8 +13,13 @@ import { useState, useMemo } from "react";
 import { PaginationControls } from "@/components/products/Pagination";
 import { Loader2 } from "lucide-react";
 import { VehicleSResponse, AuctionSummaryItem } from "@/types/vehicles";
+import { useLocale, useTranslations } from "next-intl";
 
 const ProductPage = () => {
+  const locale = useLocale();
+  const t = useTranslations("admin.products");
+  const isRtl = locale === 'ar';
+  
   const [page, setPage] = useState(1);
   const [activeDate, setActiveDate] = useState<string | undefined>(undefined);
 
@@ -44,9 +49,9 @@ const ProductPage = () => {
   };
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className={`flex flex-col gap-4 ${isRtl ? 'text-right' : 'text-left'}`}>
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-red-700"> Auction Products</h1>
+        <h1 className="text-2xl font-bold text-red-700">{t("title")}</h1>
       </div>
 
       {isLoading && summary.length === 0 ? (
@@ -59,7 +64,7 @@ const ProductPage = () => {
           onValueChange={handleTabChange}
           className="gap-4"
         >
-          <TabsList className="mb-4 h-auto p-1 bg-muted/50 overflow-x-auto justify-start">
+          <TabsList className={`mb-4 h-auto p-1 bg-muted/50 overflow-x-auto justify-start ${isRtl ? 'flex-row-reverse' : ''}`}>
             {summary.map((tab: AuctionSummaryItem) => (
               <TabsTrigger
                 key={tab.date}
@@ -70,7 +75,9 @@ const ProductPage = () => {
                   {tab.auctionDay}
                 </span>
                 <p className="text-sm font-bold">{tab.date}</p>
-                <span className="text-[10px]">{tab.itemsCount} items</span>
+                <span className="text-[10px]">
+                  {t("items", { count: tab.itemsCount })}
+                </span>
               </TabsTrigger>
             ))}
           </TabsList>
@@ -81,11 +88,13 @@ const ProductPage = () => {
               value={tab.date}
               className="flex flex-col gap-4 mt-0"
             >
-              <div className="flex items-center justify-between">
+              <div className={`flex items-center justify-between ${isRtl ? 'flex-row-reverse' : ''}`}>
                 <p className="text-sm font-bold">
                   {tab.auctionDay} {tab.date}
                 </p>
-                <span className="text-xs">{tab.itemsCount} items total</span>
+                <span className="text-xs">
+                  {t("itemsTotal", { count: tab.itemsCount })}
+                </span>
               </div>
 
               {isLoading ? (
@@ -108,7 +117,7 @@ const ProductPage = () => {
         </Tabs>
       ) : (
         <div className="text-center py-10 text-muted-foreground">
-          No auction sessions found.
+          {t("noSessions")}
         </div>
       )}
     </div>

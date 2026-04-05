@@ -4,9 +4,13 @@ import { useSettingsStore } from "@/stores/settings";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { formatWhatsAppUrl } from "@/lib/utils";
+import { useLocale, useTranslations } from "next-intl";
 
 export default function WhatsAppButton() {
   const settings = useSettingsStore((state) => state.settings);
+  const locale = useLocale();
+  const t = useTranslations("Common");
+  const isRtl = locale === 'ar';
 
   // If the user entered just a number, convert it to a wa.me link
   const whatsappUrl = formatWhatsAppUrl(settings?.whatsapp);
@@ -15,7 +19,8 @@ export default function WhatsAppButton() {
   if (!whatsappUrl) return null;
 
   return (
-    <div className="fixed bottom-24 md:bottom-6 left-6 z-9999 group">
+    <div className={`fixed bottom-24 md:bottom-6 z-9999 group ${isRtl ? 'left-8' : 'right-8'}`}>
+
       <motion.a
         href={whatsappUrl}
         target="_blank"
@@ -25,7 +30,7 @@ export default function WhatsAppButton() {
         whileHover={{ scale: 1.1, y: -4 }}
         whileTap={{ scale: 0.9 }}
         className="relative flex h-16 w-16 items-center justify-center rounded-full bg-[#25D366] p-0 overflow-visible shadow-lg hover:shadow-[#25D366]/40 transition-shadow"
-        aria-label="Contact us on WhatsApp"
+        aria-label={t("whatsappAria")}
       >
         {/* Pulse effect */}
         <span className="absolute inset-0 animate-ping rounded-full bg-[#25D366]/40" />
@@ -40,8 +45,8 @@ export default function WhatsAppButton() {
         </div>
         
         {/* Tooltip */}
-        <div className="absolute left-full ml-3 hidden group-hover:block whitespace-nowrap rounded-lg bg-gray-900 px-3 py-1.5 text-[10px] font-bold uppercase tracking-widest text-white shadow-xl">
-          Chat with us!
+        <div className={`absolute bottom-full mb-3 hidden group-hover:block whitespace-nowrap rounded-lg bg-gray-900 px-3 py-1.5 text-[10px] font-bold uppercase tracking-widest text-white shadow-xl ${isRtl ? 'right-0' : 'left-0'}`}>
+          {t("whatsappTitle")}
         </div>
       </motion.a>
     </div>

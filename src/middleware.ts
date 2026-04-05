@@ -1,44 +1,60 @@
 import { NextRequest, NextResponse } from "next/server";
+import createMiddleware from 'next-intl/middleware';
+import { routing } from './i18n/routing';
+
+const intlMiddleware = createMiddleware(routing);
 
 /**
  * Next.js Edge Middleware — runs on every matched request BEFORE the page renders.
  *
  * Protects /admin/* routes server-side by checking for the auth_token cookie.
- * Without this, protection is purely client-side (Zustand localStorage) which:
- *  1. Causes a visible flash/redirect on every page load.
- *  2. Can be bypassed by clearing JS state.
- *
- * NOTE: This server runs over plain HTTP (no domain, no SSL).
- *       Do NOT use `secure` flag on cookies here — Edge middleware reads
- *       httpOnly cookies via request.cookies which works fine on HTTP.
+ * 
+ * Combined with next-intl middleware for locale handling.
  */
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  // Allow the admin login page through (no auth needed)
-  if (pathname === "/admin/login") {
-    return NextResponse.next();
-  }
+  // 1. Handle locale-prefixed admin routes for protection
+  // Pattern: /en/admin, /ar/admin, etc.
+  const pathParts = pathname.split('/').filter(Boolean);
+  const isLocaleAdmin = pathParts.length >= 2 && routing.locales.includes(pathParts[0]) && pathParts[1] === 'admin';
+  const isAdminRoot = pathname.startsWith('/admin');
 
-  // Protect all /admin/* routes
-  if (pathname.startsWith("/admin")) {
+  if (isLocaleAdmin || isAdminRoot) {
+    // If it's a login page (prefixed or not), allow it
+    if (pathname.includes('/admin/login')) {
+      return intlMiddleware(request);
+    }
+
     const token = request.cookies.get("auth_token")?.value;
 
     if (!token) {
-      // No token — redirect to admin login
-      const loginUrl = new URL("/admin/login", request.url);
-      // Preserve the intended destination for post-login redirect
+      // Redirect to login preserving the locale if present
+      const locale = routing.locales.includes(pathParts[0]) ? pathParts[0] : routing.defaultLocale;
+      const loginUrl = new URL(`/${locale}/admin/login`, request.url);
       loginUrl.searchParams.set("callbackUrl", pathname);
       return NextResponse.redirect(loginUrl);
     }
   }
 
-  return NextResponse.next();
+  // 2. Apply next-intl middleware for all other cases
+  return intlMiddleware(request);
 }
 
 export const config = {
   matcher: [
-    // Match all /admin/* routes, excluding static files and Next.js internals
-    "/admin/:path*",
+    // Enable a redirect to a matching locale at the root
+    '/',
+
+    // Set a cookie to remember the last locale for these paths
+    '/(en|ja|ar|sw)/:path*',
+
+    // Match all pathnames except for
+    // - /api (API routes)
+    // - /_next (Next.js internals)
+    // - /static (static files)
+    // - /_vercel (Vercel internals)
+    // - All files inside /public (e.g. /favicon.ico)
+    '/((?!api|_next|_vercel|.*\\..*).*)'
   ],
 };

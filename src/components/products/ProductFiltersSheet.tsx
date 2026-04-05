@@ -8,6 +8,7 @@ import {
 } from "@/components/ui/sheet";
 import { ProductFilters } from "./ProductFilter";
 import type { VehicleFilterParams } from "@/lib/actions";
+import { useTranslations } from "next-intl";
 
 export function ProductFiltersSheet({
   onFilterChange,
@@ -18,11 +19,12 @@ export function ProductFiltersSheet({
   exclude?: string[];
   controlledParams?: VehicleFilterParams;
 }) {
+  const t = useTranslations("Vehicle.inventory.filter");
   return (
     <Sheet>
       <SheetTrigger asChild>
         <Button variant="outline" className="w-full  bg-red-600 text-white">
-          Filters
+          {t('title')}
         </Button>
       </SheetTrigger>
 

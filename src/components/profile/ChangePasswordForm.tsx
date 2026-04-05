@@ -16,20 +16,26 @@ import { Loader2 } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import * as z from "zod";
-
-const passwordSchema = z
-  .object({
-    new_password: z.string().min(8, "Password must be at least 8 characters"),
-    new_password_confirmation: z.string(),
-  })
-  .refine((data) => data.new_password === data.new_password_confirmation, {
-    message: "Passwords don't match",
-    path: ["new_password_confirmation"],
-  });
-
-export type ChangePasswordFormValues = z.infer<typeof passwordSchema>;
+import { useLocale, useTranslations } from "next-intl";
 
 export default function ChangePasswordForm() {
+  const locale = useLocale();
+  const t = useTranslations("profile.security");
+  const tv = useTranslations("auth.validation");
+  const isRtl = locale === 'ar';
+
+  const passwordSchema = z
+    .object({
+      new_password: z.string().min(8, tv("password")),
+      new_password_confirmation: z.string(),
+    })
+    .refine((data) => data.new_password === data.new_password_confirmation, {
+      message: tv("match"),
+      path: ["new_password_confirmation"],
+    });
+
+  type ChangePasswordFormValues = z.infer<typeof passwordSchema>;
+
   const form = useForm<ChangePasswordFormValues>({
     resolver: zodResolver(passwordSchema),
     defaultValues: {
@@ -42,24 +48,29 @@ export default function ChangePasswordForm() {
   async function onSubmit(values: ChangePasswordFormValues) {
     const res = await changePassword(values);
     if (res?.ok) {
-      toast.success(res?.data?.message || "Password changed successfully");
+      toast.success(res?.data?.message || t("success"));
       form.reset();
     } else {
-      toast.error(res?.error || "Failed to change password");
+      toast.error(res?.error || t("failed"));
     }
   }
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+      <form onSubmit={form.handleSubmit(onSubmit)} className={`space-y-4 ${isRtl ? 'text-right' : 'text-left'}`}>
         <FormField
           control={form.control}
           name="new_password"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>New Password</FormLabel>
+              <FormLabel>{t("newPassword")}</FormLabel>
               <FormControl>
-                <Input type="password" placeholder="••••••••" {...field} />
+                <Input 
+                  type="password" 
+                  placeholder="••••••••" 
+                  className={`${isRtl ? 'text-right' : 'text-left'}`}
+                  {...field} 
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -71,9 +82,14 @@ export default function ChangePasswordForm() {
           name="new_password_confirmation"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Confirm New Password</FormLabel>
+              <FormLabel>{t("confirmPassword")}</FormLabel>
               <FormControl>
-                <Input type="password" placeholder="••••••••" {...field} />
+                <Input 
+                  type="password" 
+                  placeholder="••••••••" 
+                  className={`${isRtl ? 'text-right' : 'text-left'}`}
+                  {...field} 
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -86,9 +102,9 @@ export default function ChangePasswordForm() {
           disabled={isSubmitting}
         >
           {isSubmitting ? (
-            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+            <Loader2 className={`${isRtl ? 'ml-2' : 'mr-2'} h-4 w-4 animate-spin`} />
           ) : (
-            "Change Password"
+            t("submit")
           )}
         </Button>
       </form>

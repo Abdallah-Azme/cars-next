@@ -19,6 +19,7 @@ import {
   MapPin,
 } from "lucide-react";
 import { motion } from "framer-motion";
+import { useTranslations } from "next-intl";
 
 const socialPlatforms = [
   { id: "facebook", icon: Facebook, label: "Facebook" },
@@ -37,6 +38,7 @@ export default function SocialLinksSection() {
   const settings = useSettingsStore((state) => state.settings);
   const setSettings = useSettingsStore((state) => state.setSettings);
   const [loading, setLoading] = useState(!settings);
+  const t = useTranslations("Common.SocialLinks");
 
   useEffect(() => {
     if (!settings) {
@@ -69,11 +71,10 @@ export default function SocialLinksSection() {
           {/* Header */}
           <div className="text-center space-y-4">
             <h2 className="text-3xl md:text-5xl font-bold tracking-tight text-gray-900">
-              Connect <span className="text-red-600">With Us</span>
+              {t('title')} <span className="text-red-600">{t('withUs')}</span>
             </h2>
             <p className="text-gray-500 text-lg max-w-2xl mx-auto">
-              Follow us for the latest arrivals, industry news, and exclusive
-              heavy machinery updates.
+              {t('subtitle')}
             </p>
           </div>
 
@@ -81,7 +82,7 @@ export default function SocialLinksSection() {
             {/* Minimal Social Grid */}
             <div className="space-y-8">
               <h3 className="text-xl font-bold text-gray-900 border-b pb-4 border-gray-100">
-                Social Networks
+                {t('networks')}
               </h3>
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-6">
                 {activeSocials.map((platform) => {
@@ -116,7 +117,7 @@ export default function SocialLinksSection() {
               <div className="flex items-center gap-4 mb-8">
                 <div className="h-8 w-1.5 bg-red-600 rounded-full shadow-[0_0_15px_rgba(220,38,38,0.3)]" />
                 <h3 className="text-2xl font-extrabold text-gray-900 tracking-tight">
-                  Contact Information
+                  {t('contactInfo')}
                 </h3>
               </div>
 
@@ -132,7 +133,7 @@ export default function SocialLinksSection() {
                     </div>
                     <div className="flex flex-col">
                       <span className="text-[11px] font-black uppercase tracking-[0.25em] text-gray-400 mb-1 group-hover:text-red-600/70 transition-colors">
-                        Line 01
+                        {t('line')} 01
                       </span>
                       <span className="text-2xl font-black text-gray-900 leading-tight group-hover:text-red-600 transition-colors uppercase tabular-nums">
                         {settings.phone}
@@ -152,7 +153,7 @@ export default function SocialLinksSection() {
                     </div>
                     <div className="flex flex-col">
                       <span className="text-[11px] font-black uppercase tracking-[0.25em] text-gray-400 mb-1 group-hover:text-red-600/70 transition-colors">
-                        Direct Mail
+                        {t('directMail')}
                       </span>
                       <span className="text-xl font-bold text-gray-900 leading-tight group-hover:text-red-600 transition-colors break-all">
                         {settings.email}
@@ -168,7 +169,7 @@ export default function SocialLinksSection() {
                     </div>
                     <div className="flex flex-col">
                       <span className="text-[11px] font-black uppercase tracking-[0.25em] text-gray-400 mb-1">
-                        Corporate Address
+                        {t('address')}
                       </span>
                       <span className="text-xl font-bold text-gray-900 leading-tight">
                         {settings.address}

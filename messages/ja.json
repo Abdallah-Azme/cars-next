@@ -1,0 +1,505 @@
+{
+  "Navbar": {
+    "home": "ホーム",
+    "machines": "在庫一覧",
+    "categories": "カテゴリー",
+    "favorites": "お気に入り",
+    "profile": "プロフィール",
+    "login": "ログイン",
+    "signup": "新規登録",
+    "register": "新規登録",
+    "siteName": "サブ・コーダーズ"
+  },
+  "Footer": {
+    "description": "日本から高品質の重機を輸入することに特化した物流スペシャリスト。工場、ディーラー、個人向けに最適な機械を提供します。",
+    "importantLinks": "重要なリンク",
+    "topCategories": "人気カテゴリー",
+    "quickContact": "クイックコンタクト",
+    "callUs": "お電話",
+    "email": "メール",
+    "location": "所在地",
+    "rights": "不許複製・無断転載を禁じます。",
+    "links": {
+      "home": "ホーム",
+      "inventory": "全車両一覧",
+      "services": "サービス案内",
+      "contact": "お問い合わせ"
+    },
+    "categories": {
+      "construction": "建設機械",
+      "excavators": "油圧ショベル",
+      "loaders": "ホイールローダー",
+      "cranes": "クレーン"
+    }
+  },
+  "HomePage": {
+    "heroTitle": "プレミアム車両・建設機械",
+    "heroSubtitle": "世界中の高品質な重機や車両を最高の価格でご提供します。",
+    "hero": {
+      "contactUs": "お問い合わせ",
+      "getQuote": "見積依頼",
+      "connectWithUs": "SNSで繋がる",
+      "directLine": "直通電話"
+    },
+    "about": {
+      "badge": "私たちについて",
+      "title": "数字で見る実績",
+      "subtitle": "すべてのプロジェクトに力強さ、信頼性、そして卓越性をお届けします。",
+      "exploreFleet": "在庫を見る",
+      "yearsOf": "年間の",
+      "excellence": "実績",
+      "features": {
+        "spareParts": "純正スペアパーツ",
+        "maintenance": "専門のメンテナンスチーム",
+        "rentalSales": "柔軟なレンタル・販売",
+        "quality": "国際品質基準"
+      },
+      "stats": {
+        "experience": "業歴（年）",
+        "projects": "完了プロジェクト数",
+        "machines": "在庫台数",
+        "satisfaction": "顧客満足度"
+      }
+    },
+    "newsletter": {
+      "title": "最新情報を受け取る",
+      "subtitle": "最新の重機入荷情報、レンタル特典、プロジェクトのアップデートをメールでお届けします。",
+      "placeholder": "メールアドレスを入力",
+      "button": "登録する",
+      "success": "登録が完了しました！",
+      "error": "登録に失敗しました",
+      "emailRequired": "メールアドレスを入力してください",
+      "invalidEmail": "有効なメールアドレスを入力してください"
+    },
+    "fleetCategories": "機材カテゴリー",
+    "fleetCategoriesSubtitle": "カテゴリーを選択して在庫を確認する",
+    "featured": {
+      "title": "おすすめ",
+      "subtitle": "重機・車両",
+      "description": "厳選された高性能な重機や商用車のラインナップをご覧ください。",
+      "exploreAll": "すべて見る",
+      "noVehicles": "現在、該当する車両はございません。"
+    }
+  },
+  "Vehicle": {
+    "labels": {
+      "lotNumber": "ロット番号",
+      "vehicleType": "車種",
+      "chassisId": "車台番号",
+      "hours": "稼働時間",
+      "score": "評価点",
+      "year": "年式",
+      "fuel": "燃料",
+      "size": "サイズ",
+      "inspection": "点検",
+      "lot": "ロット"
+    },
+    "status": {
+      "sold": "売約済",
+      "soldPrice": "販売価格",
+      "startPrice": "開始価格",
+      "tbd": "未定",
+      "acceptanceEnds": "受付終了:",
+      "acceptancePeriod": "受付期間"
+    },
+    "contact": {
+      "whatsapp": "WhatsAppでお問い合わせ",
+      "unavailable": "現在ご利用いただけません",
+      "currency": "円 (JPY)"
+    },
+    "single": {
+      "notFound": "車両が見つかりませんでした",
+      "loading": "車両詳細を読み込み中...",
+      "grade": "評価",
+      "photos": "写真",
+      "specifications": "詳細スペック",
+      "description": "備考・装備品",
+      "noDescription": "詳細情報はありません。",
+      "status": "状態",
+      "labels": {
+        "model": "モデル",
+        "transmission": "ミッション",
+        "fuelType": "燃料タイプ",
+        "equipment": "装備品",
+        "odometer": "走行距離",
+        "color": "カラー"
+      }
+    },
+    "favorites": {
+      "title": "お気に入り",
+      "header": "お気に入りリスト",
+      "subtitle": "お気に入りに追加した機械の一覧です。",
+      "empty": "お気に入りは登録されていません"
+    },
+    "inventory": {
+      "title": "在庫一覧",
+      "header": "注目の在庫",
+      "subtitle": "幅広いラインナップ of the heavy machinery solutions.",
+      "showing": "表示中：",
+      "products": "件のアイテム",
+      "noFound": "車両が見つかりませんでした",
+      "loading": "機械を読み込み中...",
+      "selectSub": "サブカテゴリーを選択してください",
+      "selectSubDesc": "上の行から具体的な機械タイプを選択して、在庫の閲覧を開始してください。",
+      "filter": {
+        "title": "フィルター",
+        "reset": "リセット",
+        "category": "カテゴリー",
+        "parentCategory": "メインカテゴリー",
+        "subCategory": "サブカテゴリー",
+        "selectSubCategory": "サブカテゴリーを選択",
+        "selectCategoryPlaceholder": "カテゴリーを選択してください…",
+        "model": "モデル",
+        "type": "タイプ",
+        "year": "年式",
+        "hour": "稼働時間",
+        "evaluationPoints": "評価点",
+        "auctionStatus": "オークション状態",
+        "loadingModels": "モデルを読み込み中…",
+        "updatingTypes": "タイプを更新中…",
+        "noModels": "モデルがありません。",
+        "noTypes": "タイプがありません。"
+      }
+    },
+    "categoriesPage": {
+      "title": "カテゴリー",
+      "header": "全カテゴリー一覧",
+      "subtitle": "カテゴリー別に検索して、必要な機械をすぐに見つけましょう。"
+    }
+  },
+  "auth": {
+    "login": {
+      "title": "ログイン",
+      "header": "アカウントにログイン",
+      "subtitle": "メールアドレスを入力してログインしてください",
+      "submit": "ログイン",
+      "noAccount": "アカウントをお持ちでないですか？",
+      "forgot": "パスワードをお忘れですか？",
+      "success": "ログインに成功しました",
+      "failed": "ログインに失敗しました"
+    },
+    "register": {
+      "title": "新規登録",
+      "header": "アカウントを作成",
+      "subtitle": "詳細を入力してアカウントを作成してください",
+      "submit": "新規登録",
+      "hasAccount": "既にアカウントをお持ちですか？",
+      "success": "登録が完了しました",
+      "failed": "登録に失敗しました"
+    },
+    "roles": {
+      "label": "役割",
+      "placeholder": "役割を選択",
+      "user": "ユーザー",
+      "viewer": "閲覧者",
+      "moderator": "モデレーター"
+    },
+    "forgotPassword": {
+      "title": "パスワードを忘れた場合",
+      "header": "パスワードの再設定",
+      "subtitle": "メールアドレスを入力してください。パスワード再設定用の6桁のコードをお送りします。",
+      "submit": "リセットコードを送信",
+      "backToLogin": "ログインに戻る",
+      "success": "リセットコードをメールで送信しました。",
+      "failed": "コードの送信に失敗しました。"
+    },
+    "verifyEmail": {
+      "title": "メールアドレスの確認",
+      "header": "メールアドレスを確認",
+      "subtitle": "メールに6桁の確認コードを送信しました。",
+      "otpLabel": "確認コード",
+      "resendCode": "コードを再送",
+      "resending": "送信中...",
+      "resendIn": "{seconds}秒後に再送可能",
+      "submit": "確認を完了",
+      "verifying": "確認中...",
+      "alreadyVerified": "既に確認済みですか？",
+      "login": "こちらからログイン",
+      "success": "メールアドレスが確認されました。",
+      "failed": "確認に失敗しました。",
+      "resendSuccess": "確認コードを再送しました。",
+      "resendFailed": "コードの再送に失敗しました。"
+    },
+    "resetPassword": {
+      "title": "パスワードのリセット",
+      "header": "新しいパスワードの設定",
+      "subtitle": "セキュリティは最優先事項です。以前に使用したことのない強力なパスワードを選択してください。",
+      "submit": "パスワードをリセット",
+      "success": "パスワードが更新されました。",
+      "failed": "更新に失敗しました。",
+      "invalidToken": "無効または期限切れのリセットトークンです。",
+      "goBack": "「パスワードを忘れた場合」に戻る",
+      "newPassword": "新しいパスワード",
+      "confirmNewPassword": "新しいパスワード（確認）"
+    },
+    "verifyResetCode": {
+      "title": "リセットコードの確認",
+      "header": "リセットコードを確認",
+      "subtitle": "メールに送信された6桁のコードを入力して、パスワードの再設定を続けてください。",
+      "otpLabel": "6桁のコード",
+      "resendCode": "コードを再送",
+      "resending": "送信中...",
+      "resendIn": "{seconds}秒後に再送可能",
+      "submit": "確認して次へ",
+      "verifying": "確認中...",
+      "changeEmail": "メールアドレスを変更",
+      "success": "コードが確認されました。",
+      "failed": "無効なリセットコードです。",
+      "emailRequired": "コードの再送にはメールアドレスが必要です。",
+      "resendSuccess": "リセットコードを再送しました。",
+      "resendFailed": "コードの再送に失敗しました。"
+    },
+    "profile": {
+      "title": "プロフィール",
+      "info": {
+        "title": "個人情報",
+        "description": "名前とプロフィール写真を更新します。",
+        "nameLabel": "名前",
+        "emailLabel": "メールアドレス",
+        "roleLabel": "役割",
+        "emailReadOnly": "メールアドレスは変更できません。",
+        "submit": "プロフィールを更新",
+        "success": "プロフィールが更新されました。",
+        "failed": "更新に失敗しました。"
+      },
+      "security": {
+        "title": "パスワード管理",
+        "description": "アカウントの安全を保つためにパスワードを変更します。",
+        "newPassword": "新しいパスワード",
+        "confirmPassword": "新しいパスワード（確認）",
+        "submit": "パスワードを変更",
+        "success": "パスワードが変更されました。",
+        "failed": "変更に失敗しました。"
+      }
+    },
+    "labels": {
+      "email": "メールアドレス",
+      "password": "パスワード",
+      "confirmPassword": "パスワード（確認）",
+      "name": "氏名",
+      "phone": "電話番号"
+    },
+    "validation": {
+      "email": "無効なメールアドレスです",
+      "password": "パスワードは6文字以上である必要があります",
+      "required": "この項目は必須です",
+      "match": "パスワードが一致しません"
+    }
+  },
+  "admin": {
+    "sidebar": {
+      "title": "車両ダッシュボード",
+      "auctions": "オークション",
+      "parentCategories": "親カテゴリー",
+      "categories": "カテゴリー",
+      "users": "ユーザー",
+      "settings": "設定",
+      "logout": "ログアウト"
+    },
+    "products": {
+      "title": "オークション",
+      "items": "{count} 件",
+      "itemsTotal": "合計: {count} 車両",
+      "noSessions": "オークションセッションが見つかりません",
+      "startPrice": "開始価格",
+      "currency": "円",
+      "specs": {
+        "model": "モデル",
+        "year": "年式",
+        "hours": "稼働時間",
+        "chassis": "車台番号",
+        "fuel": "燃料タイプ",
+        "score": "評価"
+      },
+      "single": {
+        "notFound": "車両が見つかりませんでした",
+        "loading": "車両詳細を読み込み中...",
+        "specs": "詳細スペック",
+        "pricing": "価格情報",
+        "maker": "メーカー",
+        "ref": "参照",
+        "scorePrefix": "評価点:",
+        "auctionDate": "オークション日:"
+      }
+    },
+    "users": {
+      "title": "ユーザー管理",
+      "cardTitle": "すべてのユーザー",
+      "table": {
+        "user": "ユーザー",
+        "email": "メールアドレス",
+        "role": "役割",
+        "status": "ステータス",
+        "actions": "アクション"
+      },
+      "status": {
+        "active": "有効",
+        "disabled": "無効"
+      },
+      "actions": {
+        "activate": "有効化",
+        "disable": "無効化",
+        "activating": "有効化中...",
+        "disabling": "無効化中..."
+      },
+      "success": {
+        "activated": "ユーザーを有効化しました",
+        "disabled": "ユーザーを無効化しました"
+      },
+      "failed": {
+        "activated": "ユーザーの有効化に失敗しました",
+        "disabled": "ユーザーの無効化に失敗しました"
+      },
+      "noUsers": "ユーザーが見つかりません。",
+      "pagination": "{total} ページ中 {current} ページ目"
+    },
+    "settings": {
+      "title": "サイト設定",
+      "failedToLoad": "設定の読み込みに失敗しました。",
+      "saveChanges": "すべての変更を保存",
+      "saving": "保存中...",
+      "success": "設定を更新しました",
+      "failed": "設定の更新に失敗しました",
+      "tabs": {
+        "general": "全般",
+        "seo": "SEO",
+        "hero": "ヒーロー",
+        "contact": "連絡先",
+        "social": "ソーシャル",
+        "stats": "統計"
+      },
+      "general": {
+        "title": "一般設定",
+        "description": "ウェブサイトの基本情報とロゴ。",
+        "siteName": "サイト名",
+        "siteLogo": "サイトロゴ",
+        "logoHint": "新しいロゴをアップロードしてください。"
+      },
+      "seo": {
+        "title": "SEO設定",
+        "description": "検索エンジン向けにサイトを最適化します。",
+        "metaTitle": "メタタイトル",
+        "metaDescription": "メタディスクリプション",
+        "metaKeywords": "メタキーワード",
+        "metaImage": "メタ画像 (OG Image)"
+      },
+      "hero": {
+        "title": "ヒーローセクション",
+        "description": "ホームページのメインセクションの内容。",
+        "heroTitle": "ヒーロータイトル",
+        "heroDescription": "ヒーロー説明文",
+        "button1": "ボタン1のリンク",
+        "button2": "ボタン2のリンク"
+      },
+      "contact": {
+        "title": "連絡先情報",
+        "description": "フッターや連絡先ページに表示されます。",
+        "email": "メールアドレス",
+        "phone": "電話番号",
+        "address": "住所"
+      },
+      "social": {
+        "title": "ソーシャルメディア",
+        "description": "SNSプロフィールのリンク。"
+      },
+      "stats": {
+        "title": "統計セクション",
+        "description": "サイト上に表示される主要な業績指標。",
+        "heading": "セクション見出し",
+        "subtext": "セクション説明文",
+        "addItem": "項目を追加",
+        "valueLabel": "値 (例: 15+)",
+        "labelLabel": "ラベル (例: 業歴)",
+        "noItems": "統計項目がありません。"
+      }
+    },
+    "parentCategories": {
+      "title": "メインカテゴリー",
+      "subtitle": "機材階層と検索キーワードを管理します。",
+      "addBtn": "カテゴリーを追加",
+      "modal": {
+        "edit": "カテゴリーを編集",
+        "add": "カテゴリーを追加",
+        "editDesc": "カテゴリーとサブカテゴリーの情報を更新します。",
+        "addDesc": "新しいメインカテゴリーとサブカテゴリーを作成します。"
+      },
+      "list": {
+        "image": "画像",
+        "name": "名前",
+        "children": "サブカテゴリー",
+        "actions": "アクション",
+        "noImg": "画像なし",
+        "noCategories": "カテゴリーが見つかりません。",
+        "subCount": "{count} 個のサブカテゴリー",
+        "confirmDelete": "このカテゴリーを削除してもよろしいですか？",
+        "successDelete": "カテゴリーを削除しました",
+        "failedDelete": "削除に失敗しました"
+      },
+      "form": {
+        "basicInfo": "基本情報",
+        "categoryName": "カテゴリー名",
+        "categoryImg": "カテゴリー画像",
+        "namePlaceholder": "名前を入力",
+        "imgHint": "推奨形式: PNG, JPG (最大 5MB)",
+        "childCategories": "サブカテゴリー",
+        "addChild": "サブカテゴリーを追加",
+        "noChildren": "サブカテゴリーが登録されていません。",
+        "childName": "サブカテゴリー名",
+        "childPlaceholder": "例: 車両",
+        "keywords": "キーワード (カンマ区切り)",
+        "keywordsPlaceholder": "例: bmw,toyota",
+        "childImg": "サブカテゴリー画像",
+        "cancel": "キャンセル",
+        "create": "カテゴリー作成",
+        "update": "カテゴリー更新",
+        "successCreate": "カテゴリーを作成しました",
+        "successUpdate": "カテゴリーを更新しました",
+        "failed": "エラーが発生しました",
+        "error": "システムエラー",
+        "newFlag": "新着",
+        "validation": {
+          "name": "名前は必須です",
+          "keywords": "キーワードは必須です"
+        }
+      }
+    },
+    "categories": {
+      "title": "機材カテゴリー",
+      "subtitle": "幅広いラインナップの重機ソリューションをご覧ください。",
+      "noCategories": "カテゴリーが見つかりません",
+      "subCount": "{count} サブ",
+      "subcategories": "サブカテゴリー",
+      "allEquipment": "すべての機材カテゴリー"
+    }
+  },
+  "Common": {
+    "loading": "読み込み中...",
+    "error": "エラーが発生しました",
+    "whatsappTitle": "WhatsAppでチャットしましょう！",
+    "whatsappAria": "WhatsAppでお問い合わせ",
+    "connectWithUs": "お問い合わせ",
+    "directLine": "直通ライン",
+    "logout": "ログアウト",
+    "logoutSuccess": "ログアウトに成功しました",
+    "pagination": {
+      "showing": "表示中",
+      "of": "/",
+      "results": "件の結果",
+      "firstPage": "最初のページ",
+      "prevPage": "前のページ",
+      "nextPage": "次のページ",
+      "lastPage": "最後のページ",
+      "perPage": "ページあたりの表示件数"
+    },
+    "SocialLinks": {
+      "title": "SNSで",
+      "subtitle": "最新の入荷情報や業界ニュース、限定の重機アップデートをフォローしてください。",
+      "withUs": "繋がる",
+      "networks": "ソーシャルネットワーク",
+      "contactInfo": "連絡先情報",
+      "line": "回線",
+      "directMail": "ダイレクトメール",
+      "address": "本社所在地"
+    }
+  }
+}

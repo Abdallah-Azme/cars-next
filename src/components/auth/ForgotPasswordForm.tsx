@@ -15,17 +15,24 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { forgotPassword } from "@/lib/actions";
 import { toast } from "sonner";
-import { Loader2, ArrowLeft } from "lucide-react";
+import { Loader2, ArrowLeft, ArrowRight } from "lucide-react";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
-
-const ForgotPasswordSchema = z.object({
-  email: z.string().email({
-    message: "Please enter a valid email address.",
-  }),
-});
+import { Link } from "@/i18n/routing";
+import { useLocale, useTranslations } from "next-intl";
 
 export default function ForgotPasswordForm() {
+  const locale = useLocale();
+  const t = useTranslations("auth.forgotPassword");
+  const tl = useTranslations("auth.labels");
+  const tv = useTranslations("auth.validation");
+  const isRtl = locale === 'ar';
+
+  const ForgotPasswordSchema = z.object({
+    email: z.string().email({
+      message: tv("email"),
+    }),
+  });
+
   const router = useRouter();
   const form = useForm<z.infer<typeof ForgotPasswordSchema>>({
     resolver: zodResolver(ForgotPasswordSchema),
@@ -40,32 +47,31 @@ export default function ForgotPasswordForm() {
     const res = await forgotPassword(data.email);
 
     if (res.ok) {
-      toast.success(res.data?.message || "Reset code sent to your email.");
-      // Pass the code if available, otherwise just redirect
+      toast.success(res.data?.message || t("success"));
       const query = new URLSearchParams({ email: data.email });
       if (res.data?.data?.reset_code) {
         query.set("code", res.data.data.reset_code.toString());
       }
       router.push(`/verify-reset-code?${query.toString()}`);
     } else {
-      toast.error(res.error || "Failed to send reset code.");
+      toast.error(res.error || t("failed"));
     }
   }
 
   return (
     <div className="space-y-6">
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+        <form onSubmit={form.handleSubmit(onSubmit)} className={`space-y-4 ${isRtl ? 'text-right' : 'text-left'}`}>
           <FormField
             control={form.control}
             name="email"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Email Address</FormLabel>
+                <FormLabel>{tl("email")}</FormLabel>
                 <FormControl>
                   <Input 
                     placeholder="name@example.com" 
-                    className="h-11 focus-visible:ring-red-600" 
+                    className={`${isRtl ? 'text-right' : 'text-left'} h-11 focus-visible:ring-red-600`}
                     {...field} 
                   />
                 </FormControl>
@@ -79,15 +85,15 @@ export default function ForgotPasswordForm() {
             className="w-full h-11 bg-red-700 hover:bg-red-800 text-white font-bold transition-all shadow-md shadow-red-700/20" 
             disabled={isSubmitting}
           >
-            {isSubmitting ? <Loader2 className="h-5 w-5 animate-spin" /> : "Send Reset Code"}
+            {isSubmitting ? <Loader2 className="h-5 w-5 animate-spin" /> : t("submit")}
           </Button>
         </form>
       </Form>
 
       <div className="text-center pt-2">
-         <Link href="/login" className="text-sm font-semibold text-gray-500 hover:text-red-700 flex items-center justify-center gap-2">
-            <ArrowLeft className="w-4 h-4" />
-            Back to Login
+         <Link href="/login" className={`text-sm font-semibold text-gray-500 hover:text-red-700 flex items-center justify-center gap-2 ${isRtl ? 'flex-row-reverse' : ''}`}>
+            {isRtl ? <ArrowRight className="w-4 h-4" /> : <ArrowLeft className="w-4 h-4" />}
+            {t("backToLogin")}
          </Link>
       </div>
     </div>

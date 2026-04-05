@@ -20,12 +20,18 @@ import { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import * as z from "zod";
-
-const profileSchema = z.object({
-  name: z.string().min(2, "Name must be at least 2 characters"),
-});
+import { useLocale, useTranslations } from "next-intl";
 
 export default function ProfileInfoForm() {
+  const locale = useLocale();
+  const t = useTranslations("profile.info");
+  const tv = useTranslations("auth.validation");
+  const isRtl = locale === 'ar';
+
+  const profileSchema = z.object({
+    name: z.string().min(2, tv("required")),
+  });
+
   const { user, setAuth, token } = useAuthStore();
 
   const [avatarPreview, setAvatarPreview] = useState<string | null>(
@@ -74,13 +80,13 @@ export default function ProfileInfoForm() {
       const res = await updateProfile(formData);
 
       if (res?.ok && res.data?.data?.user) {
-        toast.success(res.data.message);
+        toast.success(res.data.message || t("success"));
         setAuth({ token: token!, user: res.data.data.user });
       } else {
-        toast.error(res?.error || "Failed to update profile");
+        toast.error(res?.error || t("failed"));
       }
     } catch (error) {
-      toast.error("Something went wrong");
+      toast.error(t("failed"));
     }
   }
 
@@ -106,7 +112,7 @@ export default function ProfileInfoForm() {
           <button
             type="button"
             onClick={handleAvatarClick}
-            className="absolute bottom-0 right-0 p-2 bg-red-600 text-white rounded-full hover:bg-red-700 transition-colors shadow-lg"
+            className={`absolute bottom-0 ${isRtl ? 'left-0' : 'right-0'} p-2 bg-red-600 text-white rounded-full hover:bg-red-700 transition-colors shadow-lg`}
           >
             <Camera size={18} />
           </button>
@@ -128,15 +134,19 @@ export default function ProfileInfoForm() {
       </div>
 
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+        <form onSubmit={form.handleSubmit(onSubmit)} className={`space-y-4 ${isRtl ? 'text-right' : 'text-left'}`}>
           <FormField
             control={form.control}
             name="name"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Name</FormLabel>
+                <FormLabel>{t("nameLabel")}</FormLabel>
                 <FormControl>
-                  <Input placeholder="Your name" {...field} />
+                  <Input 
+                    placeholder={t("nameLabel")} 
+                    className={`${isRtl ? 'text-right' : 'text-left'}`}
+                    {...field} 
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -144,19 +154,23 @@ export default function ProfileInfoForm() {
           />
 
           <div className="space-y-2">
-            <FormLabel>Email</FormLabel>
-            <Input value={user?.email || ""} disabled className="bg-muted" />
-            <p className="text-[0.8rem] text-muted-foreground">
-              Email cannot be changed.
+            <FormLabel>{t("emailLabel")}</FormLabel>
+            <Input 
+              value={user?.email || ""} 
+              disabled 
+              className={`bg-muted ${isRtl ? 'text-right' : 'text-left'}`} 
+            />
+            <p className={`text-[0.8rem] text-muted-foreground ${isRtl ? 'text-right' : 'text-left'}`}>
+              {t("emailReadOnly")}
             </p>
           </div>
 
           <div className="space-y-2">
-            <FormLabel>Role</FormLabel>
+            <FormLabel>{t("roleLabel")}</FormLabel>
             <Input
               value={user?.role || ""}
               disabled
-              className="bg-muted capitalize"
+              className={`bg-muted capitalize ${isRtl ? 'text-right' : 'text-left'}`}
             />
           </div>
 
@@ -166,9 +180,9 @@ export default function ProfileInfoForm() {
             disabled={isSubmitting}
           >
             {isSubmitting ? (
-              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              <Loader2 className={`${isRtl ? 'ml-2' : 'mr-2'} h-4 w-4 animate-spin`} />
             ) : (
-              "Update Profile"
+              t("submit")
             )}
           </Button>
         </form>

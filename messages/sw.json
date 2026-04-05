@@ -1,0 +1,505 @@
+{
+  "Navbar": {
+    "home": "Nyumbani",
+    "machines": "Mali Iliyopo",
+    "categories": "Jamii",
+    "favorites": "Vipendwa",
+    "profile": "Wasifu",
+    "login": "Ingia",
+    "signup": "Jisajili",
+    "register": "Jisajili",
+    "siteName": "Sub Coders"
+  },
+  "Footer": {
+    "description": "Wataalamu wa lojistiki na mitambo mizito. Tunaingiza mitambo ya hali ya juu kutoka Japani kwenda Misri kwa ajili ya viwanda, wafanyabiashara, na watu binafsi.",
+    "importantLinks": "Viungo Muhimu",
+    "topCategories": "Jamii Bora",
+    "quickContact": "Mawasiliano ya Haraka",
+    "callUs": "Tupigie",
+    "email": "Barua Pepe",
+    "location": "Mahali",
+    "rights": "Haki zote zimehifadhiwa.",
+    "links": {
+      "home": "Nyumbani",
+      "inventory": "Magari Yote",
+      "services": "Huduma Zetu",
+      "contact": "Wasiliana Nasi"
+    },
+    "categories": {
+      "construction": "Ujenzi",
+      "excavators": "Eksakaveta",
+      "loaders": "Loda",
+      "cranes": "Kreni"
+    }
+  },
+  "HomePage": {
+    "heroTitle": "Magari na Mitambo ya Kifahari",
+    "heroSubtitle": "Pata ofa bora zaidi za mitambo mizito na magari duniani kote.",
+    "hero": {
+      "contactUs": "Wasiliana Nasi",
+      "getQuote": "Pata Nukuu",
+      "connectWithUs": "Ungana Nasi",
+      "directLine": "Nambari ya Moja kwa Moja"
+    },
+    "about": {
+      "badge": "Kuhusu Sisi",
+      "title": "Utendaji Wetu kwa Idadi",
+      "subtitle": "Tunatoa nguvu, uaminifu, na ubora katika kila mradi.",
+      "exploreFleet": "Gundua Fleet Yetu",
+      "yearsOf": "Miaka ya",
+      "excellence": "Ubora",
+      "features": {
+        "spareParts": "Vipuri Halisi",
+        "maintenance": "Timu ya Mafundi Bingwa",
+        "rentalSales": "Kukodisha na Kuuza kwa Urahisi",
+        "quality": "Viwango vya Ubora wa Kimataifa"
+      },
+      "stats": {
+        "experience": "Miaka ya Uzoefu",
+        "projects": "Miradi Iliyokamilika",
+        "machines": "Mitambo Inayopatikana",
+        "satisfaction": "Kuridhika kwa Wateja"
+      }
+    },
+    "newsletter": {
+      "title": "Baki na Habari",
+      "subtitle": "Jiunge ili kupokea habari za hivi punde za mitambo, ofa za kukodisha, na miradi mipya.",
+      "placeholder": "Ingiza barua pepe yako",
+      "button": "Jiunge",
+      "success": "Umejiunga kwa mafanikio!",
+      "error": "Ujiungaji umeshindikana",
+      "emailRequired": "Barua pepe inahitajika",
+      "invalidEmail": "Barua pepe si sahihi"
+    },
+    "fleetCategories": "Jamii za Fleet Yetu",
+    "fleetCategoriesSubtitle": "Chagua jamii ili kugundua magari yanayopatikana",
+    "featured": {
+      "title": "Iliyoangaziwa",
+      "subtitle": "Mitambo",
+      "description": "Gundua uteuzi wetu wa mitambo mizito na magari ya biashara yenye utendaji wa juu.",
+      "exploreAll": "Gundua Zote",
+      "noVehicles": "Hakuna magari yaliyopatikana katika mali yetu ya sasa."
+    }
+  },
+  "Vehicle": {
+    "labels": {
+      "lotNumber": "Nambari ya Kura",
+      "vehicleType": "Aina ya Gari",
+      "chassisId": "Id ya Chasi",
+      "hours": "Saa",
+      "score": "Alama",
+      "year": "Mwaka",
+      "fuel": "Mafuta",
+      "size": "Ukubwa",
+      "inspection": "Ukaguzi",
+      "lot": "Kura"
+    },
+    "status": {
+      "sold": "Imeuzwa",
+      "soldPrice": "Bei ya Kuuza",
+      "startPrice": "Bei ya Kuanzia",
+      "tbd": "Inakuja",
+      "acceptanceEnds": "Kukubali Kunaisha:",
+      "acceptancePeriod": "Kipindi cha Kukubali"
+    },
+    "contact": {
+      "whatsapp": "Wasiliana kupitia WhatsApp",
+      "unavailable": "Mawasiliano Hayapatikani",
+      "currency": "Yen (JPY)"
+    },
+    "single": {
+      "notFound": "Gari Halikupatikana",
+      "loading": "Inapakia Maelezo ya Gari...",
+      "grade": "Daraja",
+      "photos": "Picha",
+      "specifications": "Maelezo ya Kiufundi",
+      "description": "Maelezo / Vifaa",
+      "noDescription": "Hakuna maelezo yanayopatikana.",
+      "status": "Hali",
+      "labels": {
+        "model": "Modeli",
+        "transmission": "Gia",
+        "fuelType": "Aina ya Mafuta",
+        "equipment": "Vifaa",
+        "odometer": "Odometa",
+        "color": "Rangi"
+      }
+    },
+    "favorites": {
+      "title": "Vipendwa",
+      "header": "Vipendwa Vyako",
+      "subtitle": "Hapa kuna mitambo uliyoongeza kwenye vipendwa vyako.",
+      "empty": "Hakuna vipendwa vilivyopatikana"
+    },
+    "inventory": {
+      "title": "Mitambo",
+      "header": "Mitambo Iliyoangaziwa",
+      "subtitle": "Vinjari anuwai yetu ya suluhisho za mitambo mizito.",
+      "showing": "Inaonyesha",
+      "products": "bidhaa",
+      "noFound": "Hakuna Magari Yaliyopatikana",
+      "loading": "Inapakia mitambo...",
+      "selectSub": "Tafadhali Chagua Jamii Ndogo",
+      "selectSubDesc": "Chagua aina maalum ya mashine kutoka safu hapo juu ili kuanza kuvinjari mali yetu.",
+      "filter": {
+        "title": "Vichujio",
+        "reset": "Weka upya",
+        "category": "Jamii",
+        "parentCategory": "Jamii Mama",
+        "subCategory": "Jamii Ndogo",
+        "selectSubCategory": "Chagua Jamii Ndogo",
+        "selectCategoryPlaceholder": "Chagua jamii…",
+        "model": "Modeli",
+        "type": "Aina",
+        "year": "Mwaka",
+        "hour": "Saa",
+        "evaluationPoints": "Alama za Tathmini",
+        "auctionStatus": "Hali ya Mnada",
+        "loadingModels": "Inapakia modeli…",
+        "updatingTypes": "Inasasisha aina…",
+        "noModels": "Hakuna modeli zinazopatikana.",
+        "noTypes": "Hakuna aina zinazopatikana."
+      }
+    },
+    "categoriesPage": {
+      "title": "Jamii",
+      "header": "Jamii Zote",
+      "subtitle": "Gundua mitambo yetu kwa jamii ili kupata kile unachohitaji."
+    }
+  },
+  "auth": {
+    "login": {
+      "title": "Ingia",
+      "header": "Ingia kwenye akaunti yako",
+      "subtitle": "Ingiza barua pepe yako hapa chini ili uingie",
+      "submit": "Ingia",
+      "noAccount": "Hauna akaunti?",
+      "forgot": "Umesahau nywila?",
+      "success": "Umeingia kwa mafanikio",
+      "failed": "Kuingia kumeshindikana"
+    },
+    "register": {
+      "title": "Jisajili",
+      "header": "Tengeneza akaunti",
+      "subtitle": "Ingiza maelezo yako hapa chini ili utengeneze akaunti",
+      "submit": "Jisajili",
+      "hasAccount": "Tayari una akaunti?",
+      "success": "Usajili umefanikiwa",
+      "failed": "Usajili umeshindikana"
+    },
+    "roles": {
+      "label": "Wadhifa",
+      "placeholder": "Chagua wadhifa",
+      "user": "Mtumiaji",
+      "viewer": "Mtazamaji",
+      "moderator": "Msimamizi"
+    },
+    "forgotPassword": {
+      "title": "Umesahau Nywila",
+      "header": "Umesahau Nywila",
+      "subtitle": "Ingiza barua pepe yako na tutakutumia kodi ya tarakimu 6 ili uweke nywila mpya.",
+      "submit": "Tuma Kodi",
+      "backToLogin": "Rudi Kwenye Ingia",
+      "success": "Kodi imetumwa kwenye barua pepe yako.",
+      "failed": "Imeshindwa kutuma kodi."
+    },
+    "verifyEmail": {
+      "title": "Thibitisha Barua Pepe",
+      "header": "Thibitisha Barua Pepe Yako",
+      "subtitle": "Tumetuma kodi ya kithibitisho ya tarakimu 6 kwenye barua pepe yako.",
+      "otpLabel": "Kodi ya kithibitisho",
+      "resendCode": "Tuma Tena Kodi",
+      "resending": "Inatuma tena...",
+      "resendIn": "Tuma tena baada ya sekunde {seconds}",
+      "submit": "Kamilisha Kithibitisho",
+      "verifying": "Inathibitisha...",
+      "alreadyVerified": "Tayari imethibitishwa?",
+      "login": "Ingia hapa",
+      "success": "Barua pepe imethibitishwa kwa mafanikio.",
+      "failed": "Kithibitisho kimeshindikana.",
+      "resendSuccess": "Kodi imetumwa tena.",
+      "resendFailed": "Imeshindwa kutuma tena kodi."
+    },
+    "resetPassword": {
+      "title": "Weka Upya Nywila",
+      "header": "Weka Nywila Mpya",
+      "subtitle": "Usalama ni kipaumbele. Tafadhali chagua nywila imara ambayo haujawahi kuitumia.",
+      "submit": "Weka Upya Nywila",
+      "success": "Nywila imesasishwa kwa mafanikio.",
+      "failed": "Imeshindwa kusasisha nywila.",
+      "invalidToken": "Kodi si sahihi au imeisha muda wake.",
+      "goBack": "Rudi kwenye Umesahau Nywila",
+      "newPassword": "Nywila Mpya",
+      "confirmNewPassword": "Thibitisha Nywila Mpya"
+    },
+    "verifyResetCode": {
+      "title": "Hakiki Kodi",
+      "header": "Hakiki Kodi",
+      "subtitle": "Ingiza kodi ya tarakimu 6 tuliyotuma kwenye barua pepe yako ili uendelee na kuweka nywila mpya.",
+      "otpLabel": "Kodi ya Tarakimu 6",
+      "resendCode": "Tuma Tena Kodi",
+      "resending": "Inatuma tena...",
+      "resendIn": "Tuma tena baada ya sekunde {seconds}",
+      "submit": "Hakiki na Uendelee",
+      "verifying": "Inahakiki...",
+      "changeEmail": "Badilisha barua pepe",
+      "success": "Kodi imehakikiwa kwa mafanikio.",
+      "failed": "Kodi si sahihi.",
+      "emailRequired": "Barua pepe inahitajika ili kutuma tena kodi.",
+      "resendSuccess": "Kodi imetumwa tena.",
+      "resendFailed": "Imeshindwa kutuma tena kodi."
+    },
+    "profile": {
+      "title": "Wasifu Wangu",
+      "info": {
+        "title": "Taarifa za Kibinafsi",
+        "description": "Sasisha jina lako na picha ya wasifu.",
+        "nameLabel": "Jina",
+        "emailLabel": "Barua Pepe",
+        "roleLabel": "Wadhifa",
+        "emailReadOnly": "Barua pepe haiwezi kubadilishwa.",
+        "submit": "Sasisha Wasifu",
+        "success": "Wasifu umesasishwa kwa mafanikio.",
+        "failed": "Imeshindwa kusasisha wasifu."
+      },
+      "security": {
+        "title": "Usimamizi wa Nywila",
+        "description": "Badilisha nywila yako ili uweke akaunti yako salama.",
+        "newPassword": "Nywila Mpya",
+        "confirmPassword": "Thibitisha Nywila Mpya",
+        "submit": "Badilisha Nywila",
+        "success": "Nywila imebadilishwa kwa mafanikio.",
+        "failed": "Imeshindwa kubadilisha nywila."
+      }
+    },
+    "labels": {
+      "email": "Barua Pepe",
+      "password": "Nywila",
+      "confirmPassword": "Thibitisha Nywila",
+      "name": "Jina Kamili",
+      "phone": "Nambari ya Simu"
+    },
+    "validation": {
+      "email": "Barua pepe isiyo sahihi",
+      "password": "Nywila lazima iwe na angalau nambari 6",
+      "required": "Sehemu hii inahitajika",
+      "match": "Nywila hazilingani"
+    }
+  },
+  "admin": {
+    "sidebar": {
+      "title": "Dashibodi ya Magari",
+      "auctions": "Minada",
+      "parentCategories": "Aina Kuu",
+      "categories": "Jamii",
+      "users": "Watumiaji",
+      "settings": "Mipangilio",
+      "logout": "Ondoka"
+    },
+    "products": {
+      "title": "Minada",
+      "items": "Vipengee {count}",
+      "itemsTotal": "Jumla: Magari {count}",
+      "noSessions": "Hakuna vipindi vya mnada vilivyopatikana",
+      "startPrice": "Bei ya kuanzia",
+      "currency": "Yen",
+      "specs": {
+        "model": "Modeli",
+        "year": "Mwaka",
+        "hours": "Saa",
+        "chassis": "Id ya Chasi",
+        "fuel": "Aina ya Mafuta",
+        "score": "Alama"
+      },
+      "single": {
+        "notFound": "Gari Halikupatikana",
+        "loading": "Inapakia maelezo ya gari...",
+        "specs": "Maelezo ya Kiufundi",
+        "pricing": "Taarifa za Bei",
+        "maker": "Mtengenezaji",
+        "ref": "Ref",
+        "scorePrefix": "Alama:",
+        "auctionDate": "Tarehe ya mnada:"
+      }
+    },
+    "users": {
+      "title": "Usimamizi wa Watumiaji",
+      "cardTitle": "Watumiaji Wote",
+      "table": {
+        "user": "Mtumiaji",
+        "email": "Barua Pepe",
+        "role": "Wajibu",
+        "status": "Hali",
+        "actions": "Vitendo"
+      },
+      "status": {
+        "active": "Inatumika",
+        "disabled": "Imelemazwa"
+      },
+      "actions": {
+        "activate": "Anzisha",
+        "disable": "Lemaza",
+        "activating": "Inaanzisha...",
+        "disabling": "Inalemaza..."
+      },
+      "success": {
+        "activated": "Mtumiaji amewezeshwa kwa mafanikio",
+        "disabled": "Mtumiaji amezimwa kwa mafanikio"
+      },
+      "failed": {
+        "activated": "Imeshindwa kumwezesha mtumiaji",
+        "disabled": "Imeshindwa kumlemaa mtumiaji"
+      },
+      "noUsers": "Hakuna watumiaji waliopatikana.",
+      "pagination": "Ukurasa {current} kati ya {total}"
+    },
+    "settings": {
+      "title": "Mipangilio ya Tovuti",
+      "failedToLoad": "Imeshindwa kupakia mipangilio.",
+      "saveChanges": "Hifadhi Mabadiliko Yote",
+      "saving": "Inahifadhi...",
+      "success": "Mipangilio imesasishwa kwa mafanikio",
+      "failed": "Imeshindwa kusasisha mipangilio",
+      "tabs": {
+        "general": "Jumla",
+        "seo": "SEO",
+        "hero": "Hero",
+        "contact": "Mawasiliano",
+        "social": "Kijamii",
+        "stats": "Takwimu"
+      },
+      "general": {
+        "title": "Mipangilio ya Jumla",
+        "description": "Taarifa za msingi za tovuti na nembo.",
+        "siteName": "Jina la Tovuti",
+        "siteLogo": "Nembo ya Tovuti",
+        "logoHint": "Pakia nembo mpya ili kuchukua nafasi ya ile ya sasa."
+      },
+      "seo": {
+        "title": "Mipangilio ya SEO",
+        "description": "Boresha tovuti yako kwa injini tafuta.",
+        "metaTitle": "Kichwa cha Meta",
+        "metaDescription": "Maelezo ya Meta",
+        "metaKeywords": "Maneno Muhimu ya Meta",
+        "metaImage": "Picha ya Meta (Picha ya OG)"
+      },
+      "hero": {
+        "title": "Sehemu ya Hero",
+        "description": "Maudhui ya sehemu kuu ya ukurasa wa nyumbani.",
+        "heroTitle": "Kichwa cha Hero",
+        "heroDescription": "Maelezo ya Hero",
+        "button1": "Kiungo cha Kitufe 1",
+        "button2": "Kiungo cha Kitufe 2"
+      },
+      "contact": {
+        "title": "Taarifa za Mawasiliano",
+        "description": "Inaonyeshwa kwenye footer and contact pages.",
+        "email": "Barua Pepe",
+        "phone": "Simu",
+        "address": "Anwani"
+      },
+      "social": {
+        "title": "Viungo vya Mitandao ya Kijamii",
+        "description": "Viungo vya wasifu wako wa mitandao ya kijamii."
+      },
+      "stats": {
+        "title": "Sehemu ya Takwimu",
+        "description": "Viashiria muhimu vya utendaji vinavyoonyeshwa kwenye tovuti.",
+        "heading": "Kichwa cha Sehemu",
+        "subtext": "Maelezo ya Sehemu",
+        "addItem": "Ongeza Kipengee",
+        "valueLabel": "Thamani (mfano 15+)",
+        "labelLabel": "Lebo (mfano Miaka ya Uzoefu)",
+        "noItems": "Hakuna vipengee vya takwimu vilivyoongezwa."
+      }
+    },
+    "parentCategories": {
+      "title": "Makundi Mama",
+      "subtitle": "Dhibiti daraja la vifaa na maneno muhimu ya utafutaji.",
+      "addBtn": "Ongeza Jamii",
+      "modal": {
+        "edit": "Hariri Jamii",
+        "add": "Ongeza Jamii",
+        "editDesc": "Sasisha jamii kuu na jamii zake ndogo.",
+        "addDesc": "Tengeneza jamii mpya kuu ikiwa na jamii ndogo."
+      },
+      "list": {
+        "image": "Picha",
+        "name": "Jina",
+        "children": "Watoto (Jamii Ndogo)",
+        "actions": "Vitendo",
+        "noImg": "Hakuna Picha",
+        "noCategories": "Hakuna jamii kuu zilizopatikana.",
+        "subCount": "Jamii ndogo {count}",
+        "confirmDelete": "Je, una uhakika unataka kufuta jamii hii?",
+        "successDelete": "Jamii imefutwa",
+        "failedDelete": "Ufutaji umeshindikana"
+      },
+      "form": {
+        "basicInfo": "Taarifa za Msingi",
+        "categoryName": "Jina la Jamii Kuu",
+        "categoryImg": "Picha ya Jamii Kuu",
+        "namePlaceholder": "Ingiza jina",
+        "imgHint": "Mfumo unaopendekezwa: PNG, JPG (Upeo 5MB)",
+        "childCategories": "Jamii Ndogo",
+        "addChild": "Ongeza Jamii Ndogo",
+        "noChildren": "Hakuna jamii ndogo zilizoongezwa.",
+        "childName": "Jina la Jamii Ndogo",
+        "childPlaceholder": "mfano Magari",
+        "keywords": "Maneno Muhimu (yaliyotenganishwa kwa koma)",
+        "keywordsPlaceholder": "mfano bmw,toyota",
+        "childImg": "Picha ya Jamii Ndogo",
+        "cancel": "Ghairi",
+        "create": "Tengeneza Jamii",
+        "update": "Sasisha Jamii",
+        "successCreate": "Jamii imetengenezwa",
+        "successUpdate": "Jamii imesasishwa",
+        "failed": "Kuna kitu kimeenda vibaya",
+        "error": "Hitilafu imetokea",
+        "newFlag": "MPYA",
+        "validation": {
+          "name": "Jina linahitajika",
+          "keywords": "Maneno muhimu yanahitajika"
+        }
+      }
+    },
+    "categories": {
+      "title": "Aina za Vifaa",
+      "subtitle": "Vinjari anuwai yetu ya suluhisho la mashine nzito.",
+      "noCategories": "Hakuna jamii zilizopatikana",
+      "subCount": "Jamii ndogo {count}",
+      "subcategories": "Jamii Ndogo",
+      "allEquipment": "Jamii Zote za Vifaa"
+    }
+  },
+  "Common": {
+    "loading": "Inapakia...",
+    "error": "Kuna tatizo limetokea",
+    "whatsappTitle": "Chati nasi kupitia WhatsApp!",
+    "whatsappAria": "Wasiliana nasi kupitia WhatsApp",
+    "connectWithUs": "Wasiliana Nasi",
+    "directLine": "Nambari ya Moja kwa Moja",
+    "logout": "Ondoka",
+    "logoutSuccess": "Umeondoka kwa mafanikio",
+    "pagination": {
+      "showing": "Inaonyesha",
+      "of": "kati ya",
+      "results": "matokeo",
+      "firstPage": "Ukurasa wa kwanza",
+      "prevPage": "Ukurasa uliopita",
+      "nextPage": "Ukurasa unaofuata",
+      "lastPage": "Ukurasa wa mwisho",
+      "perPage": "Matokeo kwa kila ukurasa"
+    },
+    "SocialLinks": {
+      "title": "Ungana",
+      "subtitle": "Tufuate kwa habari za hivi punde, habari za viwanda, na masasisho ya kipekee ya mashine nzito.",
+      "withUs": "Nasi",
+      "networks": "Mitandao ya Kijamii",
+      "contactInfo": "Taarifa za Mawasiliano",
+      "line": "Njia",
+      "directMail": "Barua Pepe ya Moja kwa Moja",
+      "address": "Anwani ya Kampuni"
+    }
+  }
+}

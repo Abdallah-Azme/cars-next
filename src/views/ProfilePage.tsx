@@ -12,22 +12,26 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { useLocale, useTranslations } from "next-intl";
 
 const ProfilePage = () => {
+  const locale = useLocale();
+  const t = useTranslations("profile");
+  const isRtl = locale === 'ar';
 
   return (
     <>
-      <PageHeader title="My Profile" />
-      <div className="container my-12">
+      <PageHeader title={t("title")} />
+      <div className={`container my-12 ${isRtl ? 'text-right' : 'text-left'}`}>
         <div className="grid gap-8 lg:grid-cols-2">
           {/* Profile Info */}
           <Card className="h-full">
-            <CardHeader>
+            <CardHeader className={`${isRtl ? 'items-start' : 'items-start'}`}>
               <CardTitle className="text-2xl font-bold flex items-center gap-2">
-                Personal Information
+                {t("info.title")}
               </CardTitle>
               <CardDescription>
-                Update your name and profile picture.
+                {t("info.description")}
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -40,10 +44,10 @@ const ProfilePage = () => {
             <Card>
               <CardHeader>
                 <CardTitle className="text-2xl font-bold">
-                  Password Management
+                  {t("security.title")}
                 </CardTitle>
                 <CardDescription>
-                  Change your password to keep your account secure.
+                  {t("security.description")}
                 </CardDescription>
               </CardHeader>
               <CardContent>

@@ -6,12 +6,14 @@ import { Input } from "@/components/ui/input";
 import { Loader2 } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
+import { useTranslations } from "next-intl";
 
 export interface EmailFormData {
   email: string;
 }
 
 export default function EmailSubscription() {
+  const t = useTranslations("HomePage.newsletter");
   const {
     register,
     handleSubmit,
@@ -22,10 +24,10 @@ export default function EmailSubscription() {
   const onSubmit = async (data: EmailFormData) => {
     const res = await subscribeNewsletter(data.email);
     if (res?.ok) {
-      toast.success(res?.data?.message || "Subscribed successfully!");
+      toast.success(res?.data?.message || t("success"));
       reset();
     } else {
-      toast.error(res?.error || "Subscription failed");
+      toast.error(res?.error || t("error"));
     }
   };
 
@@ -35,12 +37,11 @@ export default function EmailSubscription() {
         <div className=" bg-primary rounded-lg">
           <div className="py-12 px-6 md:px-16 text-center">
             <h2 className="text-3xl md:text-4xl font-bold text-red-600">
-              Stay Updated
+              {t("title")}
             </h2>
 
             <p className="mt-4 text-gray-400 max-w-2xl mx-auto">
-              Subscribe to receive the latest heavy equipment arrivals, rental
-              offers, and project updates.
+              {t("subtitle")}
             </p>
 
             <form
@@ -50,19 +51,19 @@ export default function EmailSubscription() {
               <div className="w-full text-left">
                 <Input
                   type="email"
-                  placeholder="Enter your email address"
+                  placeholder={t("placeholder")}
                   className=" text-white"
                   {...register("email", {
-                    required: "Email is required",
+                    required: t("emailRequired"),
                     pattern: {
                       value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                      message: "Invalid email address",
+                      message: t("invalidEmail"),
                     },
                   })}
                 />
                 {errors.email && (
                   <p className="text-red-500 text-sm mt-2">
-                    {errors.email.message}
+                    {errors.email.message as string}
                   </p>
                 )}
               </div>
@@ -75,7 +76,7 @@ export default function EmailSubscription() {
                 {isSubmitting ? (
                   <Loader2 className="animate-spin" />
                 ) : (
-                  "Subscribe"
+                  t("button")
                 )}
               </Button>
             </form>

@@ -13,6 +13,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
+import { useTranslations } from "next-intl";
+
 interface PaginationProps {
   pagination: Pagination;
   onPageChange: (page: number) => void;
@@ -24,6 +26,7 @@ export function PaginationControls({
   onPageChange,
   onPerPageChange,
 }: PaginationProps) {
+  const t = useTranslations("Common.pagination");
   const { current_page, last_page, per_page, total } = pagination;
 
   // Build page numbers to show (current ± 2, always show first & last)
@@ -55,22 +58,22 @@ export function PaginationControls({
       {/* Info */}
       <div className="flex items-center gap-4">
         <p className="text-sm text-muted-foreground">
-          Showing{" "}
+          {t("showing")}{" "}
           <span className="font-medium text-foreground">
             {from}–{to}
           </span>{" "}
-          of{" "}
-          <span className="font-medium text-foreground">{total}</span> results
+          {t("of")}{" "}
+          <span className="font-medium text-foreground">{total}</span> {t("results")}
         </p>
       </div>
 
       {/* Controls */}
-      <div className="flex items-center gap-1">
+      <div className="flex items-center gap-1" dir="ltr">
         {/* First */}
         <PaginationBtn
           onClick={() => onPageChange(1)}
           disabled={current_page === 1}
-          title="First page"
+          title={t("firstPage")}
         >
           <ChevronsLeft className="h-4 w-4" />
         </PaginationBtn>
@@ -79,7 +82,7 @@ export function PaginationControls({
         <PaginationBtn
           onClick={() => onPageChange(current_page - 1)}
           disabled={current_page === 1}
-          title="Previous page"
+          title={t("prevPage")}
         >
           <ChevronLeft className="h-4 w-4" />
         </PaginationBtn>
@@ -108,7 +111,7 @@ export function PaginationControls({
         <PaginationBtn
           onClick={() => onPageChange(current_page + 1)}
           disabled={current_page === last_page}
-          title="Next page"
+          title={t("nextPage")}
         >
           <ChevronRight className="h-4 w-4" />
         </PaginationBtn>
@@ -117,7 +120,7 @@ export function PaginationControls({
         <PaginationBtn
           onClick={() => onPageChange(last_page)}
           disabled={current_page === last_page}
-          title="Last page"
+          title={t("lastPage")}
         >
           <ChevronsRight className="h-4 w-4" />
         </PaginationBtn>
@@ -127,7 +130,7 @@ export function PaginationControls({
       {onPerPageChange && (
         <div className="flex items-center gap-3">
           <span className="text-sm text-muted-foreground whitespace-nowrap">
-            Results per page
+            {t("perPage")}
           </span>
           <Select
             value={String(per_page)}

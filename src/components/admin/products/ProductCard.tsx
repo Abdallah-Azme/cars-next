@@ -13,12 +13,17 @@ import {
   CarouselItem,
   type CarouselApi,
 } from "@/components/admin/ui/carousel";
+import { useLocale, useTranslations } from "next-intl";
 
 type Props = {
   vehicle: VehicleData;
 };
 
 export function ProductCard({ vehicle }: Props) {
+  const locale = useLocale();
+  const t = useTranslations("admin.products");
+  const isRtl = locale === 'ar';
+  
   const [api, setApi] = React.useState<CarouselApi>();
   const [current, setCurrent] = React.useState(0);
   const images = vehicle?.images?.filter(img => img.download_url) || [];
@@ -39,24 +44,26 @@ export function ProductCard({ vehicle }: Props) {
   }, [api]);
 
   const specs = [
-    { label: "Model", value: vehicle.model || "-" },
-    { label: "Year", value: vehicle.year || "-" },
-    { label: "Hours", value: vehicle.workingHours || "-" },
-    { label: "Chassis ID", value: vehicle.chassisId || "-" },
-    { label: "Fuel Type", value: vehicle.fuel || "-" },
-    { label: "Score", value: vehicle.score || "-" },
+    { label: t("specs.model"), value: vehicle.model || "-" },
+    { label: t("specs.year"), value: vehicle.year || "-" },
+    { label: t("specs.hours"), value: vehicle.workingHours || "-" },
+    { label: t("specs.chassis"), value: vehicle.chassisId || "-" },
+    { label: t("specs.fuel"), value: vehicle.fuel || "-" },
+    { label: t("specs.score"), value: vehicle.score || "-" },
   ];
 
   return (
-    <Card className="overflow-hidden hover:shadow-lg transition-shadow duration-300">
+    <Card className={`overflow-hidden hover:shadow-lg transition-shadow duration-300 ${isRtl ? 'text-right' : 'text-left'}`}>
       <CardContent className="px-4 py-2">
         {/* Top row: title + grade */}
-        <div className="flex items-start justify-between gap-3">
+        <div className={`flex items-start justify-between gap-3 ${isRtl ? 'flex-row-reverse' : ''}`}>
           <div className="space-y-1">
-            <div className=" font-semibold tracking-wide">
+            <div className={`font-semibold tracking-wide ${isRtl ? 'text-right' : ''}`}>
               {vehicle.carMaker} {vehicle.model}
             </div>
-            <div className="text-sm text-muted-foreground">{vehicle.auctionDay} {vehicle.holdingDate ? new Date(vehicle.holdingDate).toLocaleDateString() : ""}</div>
+            <div className={`text-sm text-muted-foreground ${isRtl ? 'text-right' : ''}`}>
+              {vehicle.auctionDay} {vehicle.holdingDate ? new Date(vehicle.holdingDate).toLocaleDateString(locale) : ""}
+            </div>
           </div>
 
           <div className="flex items-center gap-2">
@@ -145,13 +152,13 @@ export function ProductCard({ vehicle }: Props) {
           {/* Specs */}
           <Link href={`/admin/products/${vehicle.id}`} className="block">
             <div className="rounded-md border bg-muted/20 overflow-hidden">
-              <div className="grid grid-cols-[110px_1fr]">
+              <div className={`grid ${isRtl ? 'grid-cols-[1fr_130px]' : 'grid-cols-[110px_1fr]'}`}>
                 {specs.map((row, idx) => (
                   <div key={`${row.label}-${idx}`} className="contents">
-                    <div className="border-b px-3 py-2 text-xs font-medium bg-muted/60">
+                    <div className={`border-b px-3 py-2 text-xs font-medium bg-muted/60 ${isRtl ? 'order-2 text-right' : 'order-1'}`}>
                       {row.label}
                     </div>
-                    <div className="border-b px-3 py-2 text-xs">{row.value}</div>
+                    <div className={`border-b px-3 py-2 text-xs ${isRtl ? 'order-1 text-right' : 'order-2'}`}>{row.value}</div>
                   </div>
                 ))}
               </div>
@@ -163,19 +170,19 @@ export function ProductCard({ vehicle }: Props) {
       {/* Footer */}
       <CardFooter className=" border-t">
         <div className="flex w-full flex-col gap-2  ">
-          <div className="text-xs text-muted-foreground">
-            Start price
-            <span className="ml-2 text-sm font-semibold text-foreground">
-              {Number(vehicle.startPrice).toLocaleString()} Yen
+          <div className={`text-xs text-muted-foreground ${isRtl ? 'flex flex-row-reverse justify-end gap-2' : ''}`}>
+            {t("startPrice")}
+            <span className={`${isRtl ? 'mr-0 ml-2' : 'ml-2'} text-sm font-semibold text-foreground`}>
+              {Number(vehicle.startPrice).toLocaleString(locale)} {t("currency")}
             </span>
           </div>
 
-          <div className="flex items-center justify-between gap-3 ">
+          <div className={`flex items-center justify-between gap-3 ${isRtl ? 'flex-row-reverse' : ''}`}>
             <Badge variant="outline" className="font-normal capitalize">
               {vehicle.status}
             </Badge>
             <div className="text-xs text-muted-foreground">
-              {vehicle.holdingDate ? new Date(vehicle.holdingDate).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : ""}
+              {vehicle.holdingDate ? new Date(vehicle.holdingDate).toLocaleTimeString(locale, { hour: '2-digit', minute: '2-digit' }) : ""}
             </div>
           </div>
         </div>

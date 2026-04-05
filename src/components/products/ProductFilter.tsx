@@ -29,6 +29,7 @@ import {
   getFiltersByModels,
 } from "@/lib/actions";
 import { useQuery } from "@tanstack/react-query";
+import { useTranslations } from "next-intl";
 
 // ─── tiny helpers ────────────────────────────────────────────────────────────
 
@@ -80,12 +81,16 @@ function RangeSelect({
   toValue,
   onFromChange,
   onToChange,
+  tCommon,
 }: {
   items: string[];
   fromValue?: string;
   toValue?: string;
   onFromChange: (value: string) => void;
   onToChange: (value: string) => void;
+  tCommon: (arg: string) => string;
+
+
 }) {
   if (!items.length) return null;
 
@@ -93,10 +98,10 @@ function RangeSelect({
     <div className="grid grid-cols-2 gap-3">
       <Select value={fromValue} onValueChange={onFromChange}>
         <SelectTrigger className="w-full">
-          <SelectValue placeholder="Unselected" />
+          <SelectValue placeholder={tCommon('unselected')} />
         </SelectTrigger>
         <SelectContent position="popper">
-          <SelectItem value="all">Unselected</SelectItem>
+          <SelectItem value="all">{tCommon('unselected')}</SelectItem>
           {items.map((item) => (
             <SelectItem key={`from-${item}`} value={item}>
               {item}
@@ -107,10 +112,10 @@ function RangeSelect({
 
       <Select value={toValue} onValueChange={onToChange}>
         <SelectTrigger className="w-full">
-          <SelectValue placeholder="Unselected" />
+          <SelectValue placeholder={tCommon('unselected')} />
         </SelectTrigger>
         <SelectContent position="popper">
-          <SelectItem value="all">Unselected</SelectItem>
+          <SelectItem value="all">{tCommon('unselected')}</SelectItem>
           {items.map((item) => (
             <SelectItem key={`to-${item}`} value={item}>
               {item}
@@ -121,6 +126,7 @@ function RangeSelect({
     </div>
   );
 }
+
 
 // ─── main component ───────────────────────────────────────────────────────────
 
@@ -133,6 +139,8 @@ export function ProductFilters({
   exclude?: string[];
   controlledParams?: VehicleFilterParams;
 }) {
+  const t = useTranslations("Vehicle.inventory.filter");
+  const tCommon = useTranslations("Common");
   // ── category hierarchy state ──────────────────────────────────────────────
   const [selectedParentId, setSelectedParentId] = useState<number | undefined>(
     controlledParams.selectedParentId,
@@ -316,7 +324,7 @@ export function ProductFilters({
     <div className="space-y-5">
       {/* header */}
       <div className="flex items-center justify-between">
-        <h3 className="text-base font-semibold text-red-600">Filters</h3>
+        <h3 className="text-base font-semibold text-red-600">{t('title')}</h3>
         <Button
           variant="destructive"
           size="sm"
@@ -324,7 +332,7 @@ export function ProductFilters({
           onClick={handleReset}
         >
           <Trash className="h-4 w-4" />
-          Reset
+          {t('reset')}
         </Button>
       </div>
 
@@ -334,10 +342,10 @@ export function ProductFilters({
         {/* ── 1. Parent Category ─────────────────────────────────────────── */}
         {!exclude.includes("parentCategory") && (
           <div className="space-y-3">
-            <SectionTitle title="Category" />
+            <SectionTitle title={t('parentCategory')} />
             {loadingParents ? (
               <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                <Loader2 className="h-3 w-3 animate-spin" /> Loading…
+                <Loader2 className="h-3 w-3 animate-spin" /> {tCommon('loading')}
               </div>
             ) : (
               <Select
@@ -354,7 +362,7 @@ export function ProductFilters({
                 }}
               >
                 <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Select category…" />
+                  <SelectValue placeholder={t('selectCategoryPlaceholder')} />
                 </SelectTrigger>
                 <SelectContent>
                   {parentCategories.map((p) => (
@@ -371,10 +379,10 @@ export function ProductFilters({
         {/* ── 2. Sub-Category ────────────────────────────────────────────── */}
         {!exclude.includes("subCategory") && selectedParentId !== undefined && (
           <div className="space-y-3">
-            <SectionTitle title="Sub-Category" />
+            <SectionTitle title={t('subCategory')} />
             {loadingChildren ? (
               <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                <Loader2 className="h-3 w-3 animate-spin" /> Loading…
+                <Loader2 className="h-3 w-3 animate-spin" /> {tCommon('loading')}
               </div>
             ) : (
               <ChecklistBox
@@ -401,14 +409,14 @@ export function ProductFilters({
         {/* ── 3. Model checklist ─────────────────────────────────────────── */}
         {selectedChildIds.length > 0 && (
           <div className="space-y-3">
-            <SectionTitle title="Model" />
+            <SectionTitle title={t('model')} />
             {loadingModels ? (
               <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                <Loader2 className="h-3 w-3 animate-spin" /> Loading models…
+                <Loader2 className="h-3 w-3 animate-spin" /> {t('loadingModels')}
               </div>
             ) : modelItems.length === 0 ? (
               <p className="text-xs text-muted-foreground">
-                No models available.
+                {t('noModels')}
               </p>
             ) : (
               <ChecklistBox
@@ -423,14 +431,14 @@ export function ProductFilters({
         {/* ── 4. Types (auto-updated when models change) ─────────────────── */}
         {selectedModels.length > 0 && (
           <div className="space-y-3">
-            <SectionTitle title="Type" />
+            <SectionTitle title={t('type')} />
             {loadingFiltersByModel ? (
               <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                <Loader2 className="h-3 w-3 animate-spin" /> Updating types…
+                <Loader2 className="h-3 w-3 animate-spin" /> {t('updatingTypes')}
               </div>
             ) : dynamicTypes.length === 0 ? (
               <p className="text-xs text-muted-foreground">
-                No types available.
+                {t('noTypes')}
               </p>
             ) : (
               <ChecklistBox
@@ -445,7 +453,7 @@ export function ProductFilters({
         {/* ── 5. Year range ──────────────────────────────────────────────── */}
         {dynamicYears.length > 0 && (
           <div className="space-y-3">
-            <SectionTitle title="Year" />
+            <SectionTitle title={t('year')} />
             <RangeSelect
               items={dynamicYears}
               fromValue={yearFrom}
@@ -460,14 +468,16 @@ export function ProductFilters({
                 setYearTo(val);
                 notify({ yearTo: val });
               }}
+              tCommon={tCommon}
             />
+
           </div>
         )}
 
         {/* ── 6. Working Hours range ─────────────────────────────────────── */}
         {dynamicHours.length > 0 && (
           <div className="space-y-3">
-            <SectionTitle title="Hour" />
+            <SectionTitle title={t('hour')} />
             <RangeSelect
               items={dynamicHours}
               fromValue={hourFrom}
@@ -482,14 +492,16 @@ export function ProductFilters({
                 setHourTo(val);
                 notify({ hourTo: val });
               }}
+              tCommon={tCommon}
             />
+
           </div>
         )}
 
         {/* ── 7. Score range ─────────────────────────────────────────────── */}
         {dynamicScores.length > 0 && (
           <div className="space-y-3">
-            <SectionTitle title="Evaluation Points" />
+            <SectionTitle title={t('evaluationPoints')} />
             <RangeSelect
               items={dynamicScores}
               fromValue={scoreFrom}
@@ -504,14 +516,16 @@ export function ProductFilters({
                 setScoreTo(val);
                 notify({ scoreTo: val });
               }}
+              tCommon={tCommon}
             />
+
           </div>
         )}
 
         {/* ── 8. Auction Status checklist ────────────────────────────────────── */}
         {!exclude.includes("auctionStatus") && (
           <div className="space-y-3">
-            <SectionTitle title="Auction Status" />
+            <SectionTitle title={t('auctionStatus')} />
             <ChecklistBox
               items={["Sold", "Not Sold"]}
               selectedItems={selectedResults}
@@ -519,6 +533,7 @@ export function ProductFilters({
             />
           </div>
         )}
+
         {/* {dynamicSizes.length > 0 && (
           <div className="space-y-3">
             <SectionTitle title="Size" />

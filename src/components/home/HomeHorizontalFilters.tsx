@@ -5,10 +5,13 @@ import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { getParentCategories, getChildCategories, type ParentCategory, type ChildCategory } from "@/lib/actions";
 import { HorizontalFilterRow } from "@/components/products/HorizontalFilters";
+import { useTranslations } from "next-intl";
 
 export default function HomeHorizontalFilters() {
   const router = useRouter();
   const [selectedParentId, setSelectedParentId] = useState<number | undefined>();
+  const t = useTranslations("HomePage");
+  const tFilter = useTranslations("Vehicle.inventory.filter");
 
   // Fetch Parent Categories
   const { data: parentData } = useQuery({
@@ -45,14 +48,14 @@ export default function HomeHorizontalFilters() {
   return (
     <div className="container mx-auto py-12 space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
       <div className="text-center space-y-2">
-        <h2 className="text-3xl font-bold text-slate-800 dark:text-white">Our Fleet Categories</h2>
-        <p className="text-slate-500 dark:text-slate-400">Select a category to explore our available vehicles</p>
+        <h2 className="text-3xl font-bold text-slate-800 dark:text-white">{t('fleetCategories')}</h2>
+        <p className="text-slate-500 dark:text-slate-400">{t('fleetCategoriesSubtitle')}</p>
       </div>
 
       <div className="space-y-12">
         {/* Parent Categories */}
         <HorizontalFilterRow
-          title="Parent Category"
+          title={tFilter('parentCategory')}
           items={parentCategories.map((cat) => ({ name: cat.name, image: cat.image }))}
           selectedItems={parentCategories.filter(p => p.id === selectedParentId).map(p => p.name)}
           onToggle={handleParentSelect}
@@ -62,7 +65,7 @@ export default function HomeHorizontalFilters() {
         {selectedParentId && (
           <div className="animate-in fade-in slide-in-from-top-4 duration-500">
             <HorizontalFilterRow
-              title="Select Sub-Category"
+              title={tFilter('selectSubCategory')}
               items={childCategories.map((cat) => ({ name: cat.name, image: cat.image }))}
               selectedItems={[]} // Nothing selected yet
               onToggle={handleChildSelect}

@@ -1,3 +1,5 @@
+"use client";
+
 import VerifyEmailForm from "@/components/auth/VerifyEmailForm";
 import {
   Card,
@@ -7,12 +9,15 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import FallbackImage from "@/components/shared/FallbackImage";
+import { useTranslations } from "next-intl";
 
 const VerifyEmailPage = () => {
+  const t = useTranslations("auth.verifyEmail");
+
   return (
     <div className="min-h-screen container flex items-center justify-center py-12">
       <Card className="lg:w-1/3 w-full shadow-lg border-none ring-1 ring-gray-100">
-        <CardHeader className="flex flex-col items-center gap-1">
+        <CardHeader className="flex flex-col items-center gap-1 text-center">
           <FallbackImage 
             src="/logo-icon.jpeg" 
             alt="logo" 
@@ -22,10 +27,10 @@ const VerifyEmailPage = () => {
             priority
           />
           <CardTitle className="text-2xl font-bold text-center">
-            Verify Your Email
+            {t("header")}
           </CardTitle>
-          <CardDescription className="text-center">
-            We&apos;ve sent a 6-digit verification code to your email.
+          <CardDescription className="text-center px-4">
+            {t("subtitle")}
           </CardDescription>
         </CardHeader>
         <CardContent>

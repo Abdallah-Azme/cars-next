@@ -7,7 +7,7 @@ import { FormField, FormItem, FormMessage } from "@/components/ui/form";
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
-import Link from "next/link";
+import { Link } from "@/i18n/routing";
 import { useRouter } from "next/navigation";
 import {
   Select,
@@ -20,28 +20,36 @@ import { register } from "@/lib/actions";
 import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
 import { PhoneInput } from "../ui/phone-input";
-
-const registerSchema = z
-  .object({
-    name: z.string().min(2, { message: "Name must be at least 2 characters" }),
-    email: z.string().email({ message: "Invalid email" }),
-    phone: z.string().min(7, { message: "Invalid phone number" }),
-    role: z.string().min(1, { message: "Role is required" }),
-    password: z
-      .string()
-      .min(6, { message: "Password must be at least 6 characters" }),
-    password_confirmation: z
-      .string()
-      .min(6, { message: "Confirm your password" }),
-  })
-  .refine((data) => data.password === data.password_confirmation, {
-    message: "Passwords do not match",
-    path: ["password_confirmation"],
-  });
-
-export type RegisterFormValues = z.infer<typeof registerSchema>;
+import { useLocale, useTranslations } from "next-intl";
 
 export default function RegisterForm() {
+  const locale = useLocale();
+  const t = useTranslations("auth.register");
+  const tl = useTranslations("auth.labels");
+  const tr = useTranslations("auth.roles");
+  const tv = useTranslations("auth.validation");
+  const isRtl = locale === 'ar';
+
+  const registerSchema = z
+    .object({
+      name: z.string().min(2, { message: tv("required") }),
+      email: z.string().email({ message: tv("email") }),
+      phone: z.string().min(7, { message: tv("required") }),
+      role: z.string().min(1, { message: tv("required") }),
+      password: z
+        .string()
+        .min(6, { message: tv("password") }),
+      password_confirmation: z
+        .string()
+        .min(6, { message: tv("required") }),
+    })
+    .refine((data) => data.password === data.password_confirmation, {
+      message: tv("match"),
+      path: ["password_confirmation"],
+    });
+
+  type RegisterFormValues = z.infer<typeof registerSchema>;
+
   const inputStyle = " focus-visible:black";
   const router = useRouter();
 
@@ -62,7 +70,7 @@ export default function RegisterForm() {
     const res = await register(data);
     
     if (res?.ok) {
-      toast.success(res?.data?.message || "Registration successful");
+      toast.success(res?.data?.message || t("success"));
       const email = res.data?.data?.user?.email || data.email;
       const code = res.data?.data?.verificationCode;
       
@@ -72,23 +80,23 @@ export default function RegisterForm() {
       
       router.push(`/verify-email?${params.toString()}`);
     } else {
-      toast.error(res?.error || "Registration failed");
+      toast.error(res?.error || t("failed"));
     }
   };
 
   return (
     <FormProvider {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 ">
+      <form onSubmit={form.handleSubmit(onSubmit)} className={`space-y-4 ${isRtl ? 'text-right' : 'text-left'}`}>
         {/* Name */}
         <FormField
           control={form.control}
           name="name"
           render={({ field }) => (
             <FormItem>
-              <Label>Name</Label>
+              <Label>{tl("name")}</Label>
               <Input
-                className={inputStyle}
-                placeholder="Your name"
+                className={`${inputStyle} ${isRtl ? 'text-right' : 'text-left'}`}
+                placeholder={tl("name")}
                 {...field}
               />
               <FormMessage />
@@ -102,9 +110,9 @@ export default function RegisterForm() {
           name="email"
           render={({ field }) => (
             <FormItem>
-              <Label>Email</Label>
+              <Label>{tl("email")}</Label>
               <Input
-                className={inputStyle}
+                className={`${inputStyle} ${isRtl ? 'text-right' : 'text-left'}`}
                 placeholder="your@email.com"
                 {...field}
               />
@@ -119,11 +127,11 @@ export default function RegisterForm() {
           name="phone"
           render={({ field }) => (
             <FormItem className="flex flex-col items-start w-full" dir="ltr">
-              <Label className="text-left w-full">Phone Number</Label>
+              <Label className={`w-full ${isRtl ? 'text-right' : 'text-left'}`}>{tl("phone")}</Label>
               <PhoneInput
                 {...field}
                 defaultCountry="EG"
-                placeholder="Enter a phone number"
+                placeholder={tl("phone")}
               />
               <FormMessage />
             </FormItem>
@@ -135,15 +143,15 @@ export default function RegisterForm() {
           name="role"
           render={({ field }) => (
             <FormItem>
-              <Label>Role</Label>
+              <Label>{tr("label")}</Label>
               <Select onValueChange={field.onChange} defaultValue={field.value}>
-                <SelectTrigger className="w-full ">
-                  <SelectValue placeholder="Select a role" />
+                <SelectTrigger className={`w-full ${isRtl ? 'flex-row-reverse' : ''}`}>
+                  <SelectValue placeholder={tr("placeholder")} />
                 </SelectTrigger>
                 <SelectContent position="popper">
-                  <SelectItem value="User">User</SelectItem>
-                  <SelectItem value="Viewer">Viewer</SelectItem>
-                  <SelectItem value="Moderator">Moderator</SelectItem>
+                  <SelectItem value="User">{tr("user")}</SelectItem>
+                  <SelectItem value="Viewer">{tr("viewer")}</SelectItem>
+                  <SelectItem value="Moderator">{tr("moderator")}</SelectItem>
                 </SelectContent>
               </Select>
               <FormMessage />
@@ -157,9 +165,9 @@ export default function RegisterForm() {
           name="password"
           render={({ field }) => (
             <FormItem>
-              <Label>Password</Label>
+              <Label>{tl("password")}</Label>
               <Input
-                className={inputStyle}
+                className={`${inputStyle} ${isRtl ? 'text-right' : 'text-left'}`}
                 type="password"
                 placeholder="******"
                 {...field}
@@ -175,9 +183,9 @@ export default function RegisterForm() {
           name="password_confirmation"
           render={({ field }) => (
             <FormItem>
-              <Label>Confirm Password</Label>
+              <Label>{tl("confirmPassword")}</Label>
               <Input
-                className={inputStyle}
+                className={`${inputStyle} ${isRtl ? 'text-right' : 'text-left'}`}
                 type="password"
                 placeholder="******"
                 {...field}
@@ -187,16 +195,16 @@ export default function RegisterForm() {
           )}
         />
         <div>
-          <p className="text-sm font-semibold text-end ">
-            Already have an account{" "}
+          <p className={`text-sm font-semibold ${isRtl ? 'text-start' : 'text-end'}`}>
+            {t("hasAccount")}{" "}
             <Link href={"/login"} className="font-bold underline text-red-700">
-              Login
+              {useTranslations("auth.login")("submit")}
             </Link>
           </p>
         </div>
 
         <Button type="submit" className="w-full h-11" disabled={isSubmitting}>
-          {isSubmitting ? <Loader2 className="animate-spin"/> : "Signup"}
+          {isSubmitting ? <Loader2 className="animate-spin"/> : t("submit")}
         </Button>
       </form>
     </FormProvider>

@@ -1,9 +1,11 @@
 "use client";
 
 import { useSettingsStore } from "@/stores/settings";
+import { useTranslations } from "next-intl";
 
 export default function StatsSection() {
   const settings = useSettingsStore((state) => state.settings);
+  const t = useTranslations("HomePage.about");
 
   const stats = settings?.statistics?.length
     ? settings.statistics.map((s) => ({
@@ -11,10 +13,10 @@ export default function StatsSection() {
         label: s.label,
       }))
     : [
-        { number: "15+", label: "Years of Experience" },
-        { number: "250+", label: "Completed Projects" },
-        { number: "120+", label: "Available Machines" },
-        { number: "98%", label: "Client Satisfaction" },
+        { number: "15+", label: t("stats.experience") },
+        { number: "250+", label: t("stats.projects") },
+        { number: "120+", label: t("stats.machines") },
+        { number: "98%", label: t("stats.satisfaction") },
       ];
 
   return (
@@ -23,11 +25,10 @@ export default function StatsSection() {
         {/* Header */}
         <div className="text-center flex flex-col gap-2">
           <h2 className="text-3xl md:text-4xl font-bold text-red-600">
-            {settings?.statisticsHeading || "Our Performance in Numbers"}
+            {settings?.statisticsHeading || t('title')}
           </h2>
           <p className=" text-gray-400 max-w-2xl mx-auto">
-            {settings?.statisticsDescription ||
-              "Delivering strength, reliability, and excellence in every project."}
+            {settings?.statisticsDescription || t('subtitle')}
           </p>
         </div>
 
@@ -48,3 +49,4 @@ export default function StatsSection() {
     </section>
   );
 }
+

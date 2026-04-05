@@ -1,5 +1,5 @@
 "use client";
-
+ 
 import { useSearchParams, useRouter } from "next/navigation";
 import { useEffect, Suspense, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -23,15 +23,10 @@ import { verifyResetCode, forgotPassword } from "@/lib/actions";
 import { toast } from "sonner";
 import { Loader2, RefreshCw, ArrowLeft } from "lucide-react";
 import { cn } from "@/lib/utils";
-
-const FormSchema = z.object({
-  email: z.string().email(),
-  code: z.string().length(6, {
-    message: "Reset code must be exactly 6 digits.",
-  }),
-});
+import { useTranslations } from "next-intl";
 
 function VerifyResetCodeFormContent() {
+  const t = useTranslations("auth.verifyResetCode");
   const searchParams = useSearchParams();
   const router = useRouter();
   const [countdown, setCountdown] = useState(0);
@@ -39,6 +34,13 @@ function VerifyResetCodeFormContent() {
 
   const emailParam = searchParams.get("email") || "";
   const codeParam = searchParams.get("code") || "";
+
+  const FormSchema = z.object({
+    email: z.string().email(),
+    code: z.string().length(6, {
+      message: t("otpLabel"),
+    }),
+  });
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -68,18 +70,18 @@ function VerifyResetCodeFormContent() {
     const res = await verifyResetCode(data);
 
     if (res.ok && res.data?.data?.token) {
-      toast.success(res.data?.message || "Code verified successfully.");
+      toast.success(res.data?.message || t("success"));
       // Pass the secure token to the next step
       router.push(`/reset-password?token=${res.data.data.token}`);
     } else {
-      toast.error(res.error || "Invalid reset code.");
+      toast.error(res.error || t("failed"));
     }
   }
 
   async function handleResend() {
     const email = form.getValues("email");
     if (!email) {
-      toast.error("Email is required to resend reset code.");
+      toast.error(t("emailRequired"));
       return;
     }
 
@@ -88,10 +90,10 @@ function VerifyResetCodeFormContent() {
     setIsResending(false);
 
     if (res.ok) {
-      toast.success(res.data?.message || "Reset code resent.");
+      toast.success(res.data?.message || t("resendSuccess"));
       setCountdown(30);
     } else {
-      toast.error(res.error || "Failed to resend code.");
+      toast.error(res.error || t("resendFailed"));
     }
   }
 
@@ -113,7 +115,7 @@ function VerifyResetCodeFormContent() {
             render={({ field }) => (
               <FormItem className="flex flex-col items-center space-y-6">
                 <div className="flex items-center justify-between w-full px-2">
-                  <FormLabel className="text-base font-bold text-neutral-700">6-Digit Code</FormLabel>
+                  <FormLabel className="text-base font-bold text-neutral-700">{t("otpLabel")}</FormLabel>
                   <Button 
                     variant="outline" 
                     size="sm" 
@@ -127,7 +129,7 @@ function VerifyResetCodeFormContent() {
                     ) : (
                       <RefreshCw className={cn("w-3 h-3", countdown > 0 && "opacity-50")} />
                     )}
-                    {countdown > 0 ? `Resend in ${countdown}s` : "Resend Code"}
+                    {countdown > 0 ? t("resendIn", { seconds: countdown }) : t("resendCode")}
                   </Button>
                 </div>
                 <FormControl>
@@ -162,10 +164,10 @@ function VerifyResetCodeFormContent() {
             {form.formState.isSubmitting ? (
               <div className="flex items-center gap-2">
                 <Loader2 className="h-5 w-5 animate-spin" />
-                <span>Verifying...</span>
+                <span>{t("verifying")}</span>
               </div>
             ) : (
-              "Verify & Continue"
+              t("submit")
             )}
           </Button>
         </form>
@@ -174,7 +176,7 @@ function VerifyResetCodeFormContent() {
       <div className="text-center pt-2">
          <Button variant="link" onClick={() => router.push("/forgot-password")} className="p-0 h-auto font-bold text-gray-400 hover:text-red-700 underline flex items-center justify-center gap-2 mx-auto">
             <ArrowLeft className="w-4 h-4" />
-            Change email address
+            {t("changeEmail")}
          </Button>
       </div>
     </div>
@@ -182,11 +184,12 @@ function VerifyResetCodeFormContent() {
 }
 
 export default function VerifyResetCodeForm() {
+  const commonT = useTranslations("Common");
   return (
     <Suspense fallback={
       <div className="flex flex-col items-center justify-center p-12 space-y-4">
         <Loader2 className="h-8 w-8 animate-spin text-red-700" />
-        <p className="text-sm text-muted-foreground animate-pulse">Loading...</p>
+        <p className="text-sm text-muted-foreground animate-pulse">{commonT("loading")}</p>
       </div>
     }>
       <VerifyResetCodeFormContent />

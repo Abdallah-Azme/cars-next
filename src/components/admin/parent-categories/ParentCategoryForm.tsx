@@ -19,21 +19,8 @@ import { useState, useEffect } from "react";
 import { createParentCategory, updateParentCategory, ParentCategory } from "@/lib/actions";
 import { fixImageUrl } from "@/lib/utils";
 import { toast } from "sonner";
-
-const childSchema = z.object({
-  id: z.number().optional(),
-  name: z.string().min(1, "Name is required"),
-  searchKeywords: z.string().min(1, "Keywords are required"),
-  image: z.any().optional(),
-});
-
-const formSchema = z.object({
-  name: z.string().min(1, "Name is required"),
-  image: z.any().optional(),
-  children: z.array(childSchema),
-});
-
-type FormValues = z.infer<typeof formSchema>;
+import { useLocale, useTranslations } from "next-intl";
+import Image from "next/image";
 
 interface ParentCategoryFormProps {
   initialData?: ParentCategory | null;
@@ -42,7 +29,7 @@ interface ParentCategoryFormProps {
 }
 
 // Helper component for live image preview
-function ImagePreview({ file, fallbackUrl }: { file?: File | null; fallbackUrl?: string | null }) {
+function ImagePreview({ file, fallbackUrl, newFlag }: { file?: File | null; fallbackUrl?: string | null, newFlag: string }) {
   const [preview, setPreview] = useState<string | null>(null);
 
   useEffect(() => {
@@ -69,14 +56,16 @@ function ImagePreview({ file, fallbackUrl }: { file?: File | null; fallbackUrl?:
 
   return (
     <div className="relative h-20 w-20 rounded-md border overflow-hidden shadow-sm">
-      <img
+      <Image
         src={fixImageUrl(displayUrl)}
         alt="Preview"
-        className="h-full w-full object-cover"
+        fill
+        className="object-cover"
+        sizes="80px"
       />
       {preview && (
         <div className="absolute top-0 right-0 bg-red-700 text-white text-[8px] px-1 rounded-bl">
-          NEW
+          {newFlag}
         </div>
       )}
     </div>
@@ -88,7 +77,26 @@ export function ParentCategoryForm({
   onSuccess,
   onCancel,
 }: ParentCategoryFormProps) {
+  const locale = useLocale();
+  const t = useTranslations("admin.parentCategories.form");
+  const isRtl = locale === 'ar';
+  
   const [loading, setLoading] = useState(false);
+
+  const childSchema = z.object({
+    id: z.number().optional(),
+    name: z.string().min(1, t("validation.name")),
+    searchKeywords: z.string().min(1, t("validation.keywords")),
+    image: z.any().optional(),
+  });
+
+  const formSchema = z.object({
+    name: z.string().min(1, t("validation.name")),
+    image: z.any().optional(),
+    children: z.array(childSchema),
+  });
+
+  type FormValues = z.infer<typeof formSchema>;
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -108,7 +116,6 @@ export function ParentCategoryForm({
     keyName: "_uuid",
   });
 
-  // Watch for changes to show live previews
   const parentImage = useWatch({ control: form.control, name: "image" });
   const childrenData = useWatch({ control: form.control, name: "children" });
 
@@ -142,14 +149,14 @@ export function ParentCategoryForm({
       }
 
       if (res.ok) {
-        toast.success(initialData ? "Category updated" : "Category created");
+        toast.success(initialData ? t("successUpdate") : t("successCreate"));
         onSuccess();
       } else {
-        toast.error(res.error || "Something went wrong");
+        toast.error(res.error || t("failed"));
       }
     } catch (error) {
       console.error(error);
-      toast.error("An error occurred");
+      toast.error(t("error"));
     } finally {
       setLoading(false);
     }
@@ -157,10 +164,10 @@ export function ParentCategoryForm({
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+      <form onSubmit={form.handleSubmit(onSubmit)} className={`space-y-6 ${isRtl ? 'text-right' : 'text-left'}`}>
         <Card>
-          <CardHeader>
-            <CardTitle>Basic Information</CardTitle>
+          <CardHeader className={isRtl ? 'text-right' : ''}>
+            <CardTitle>{t("basicInfo")}</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <FormField
@@ -168,11 +175,11 @@ export function ParentCategoryForm({
               name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Parent Category Name</FormLabel>
+                  <FormLabel className={isRtl ? 'text-right block w-full' : ''}>{t("categoryName")}</FormLabel>
                   <FormControl>
-                    <Input placeholder="Enter name" {...field} />
+                    <Input placeholder={t("namePlaceholder")} {...field} className={isRtl ? 'text-right' : ''} />
                   </FormControl>
-                  <FormMessage />
+                  <FormMessage className={isRtl ? 'text-right' : ''} />
                 </FormItem>
               )}
             />
@@ -182,14 +189,15 @@ export function ParentCategoryForm({
               name="image"
               render={({ field: { value: _value, onChange, ...field } }) => (
                 <FormItem>
-                  <FormLabel>Parent Category Image</FormLabel>
+                  <FormLabel className={isRtl ? 'text-right block w-full' : ''}>{t("categoryImg")}</FormLabel>
                   <FormControl>
-                    <div className="flex items-center gap-6 p-2 border rounded-md bg-muted/20">
+                    <div className={`flex items-center gap-6 p-2 border rounded-md bg-muted/20 ${isRtl ? 'flex-row-reverse' : ''}`}>
                       <ImagePreview 
                         file={parentImage instanceof File ? parentImage : null} 
                         fallbackUrl={initialData?.image} 
+                        newFlag={t("newFlag")}
                       />
-                      <div className="flex-1 space-y-2">
+                      <div className={`flex-1 space-y-2 ${isRtl ? 'text-right' : ''}`}>
                         <Input
                           type="file"
                           accept="image/*"
@@ -198,14 +206,15 @@ export function ParentCategoryForm({
                             if (file) onChange(file);
                           }}
                           {...field}
+                          className={isRtl ? 'text-right' : ''}
                         />
                         <p className="text-[10px] text-muted-foreground">
-                          Recommended format: PNG, JPG (Max 5MB)
+                          {t("imgHint")}
                         </p>
                       </div>
                     </div>
                   </FormControl>
-                  <FormMessage />
+                  <FormMessage className={isRtl ? 'text-right' : ''} />
                 </FormItem>
               )}
             />
@@ -213,22 +222,23 @@ export function ParentCategoryForm({
         </Card>
 
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between">
-            <CardTitle>Child Categories</CardTitle>
+          <CardHeader className={`flex flex-row items-center justify-between ${isRtl ? 'flex-row-reverse' : ''}`}>
+            <CardTitle>{t("childCategories")}</CardTitle>
             <Button
               type="button"
               variant="outline"
               size="sm"
               onClick={() => append({ name: "", searchKeywords: "" })}
+              className={isRtl ? 'flex-row-reverse' : ''}
             >
-              <Plus className="h-4 w-4 mr-2" />
-              Add Child
+              <Plus className={`${isRtl ? 'ml-2' : 'mr-2'} h-4 w-4`} />
+              {t("addChild")}
             </Button>
           </CardHeader>
           <CardContent className="space-y-4">
             {fields.length === 0 && (
               <p className="text-center py-4 text-muted-foreground">
-                No child categories added.
+                {t("noChildren")}
               </p>
             )}
             {fields.map((field, index) => {
@@ -244,23 +254,23 @@ export function ParentCategoryForm({
                     type="button"
                     variant="ghost"
                     size="icon"
-                    className="absolute top-2 right-2 text-red-500 hover:text-red-700 hover:bg-red-50"
+                    className={`absolute top-2 ${isRtl ? 'left-2' : 'right-2'} text-red-500 hover:text-red-700 hover:bg-red-50`}
                     onClick={() => remove(index)}
                   >
                     <Trash2 className="h-4 w-4" />
                   </Button>
 
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className={`grid grid-cols-1 md:grid-cols-2 gap-4 ${isRtl ? 'flex-row-reverse' : ''}`}>
                     <FormField
                       control={form.control}
                       name={`children.${index}.name`}
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Child Name</FormLabel>
+                          <FormLabel className={isRtl ? 'text-right block w-full' : ''}>{t("childName")}</FormLabel>
                           <FormControl>
-                            <Input placeholder="e.g. Cars" {...field} />
+                            <Input placeholder={t("childPlaceholder")} {...field} className={isRtl ? 'text-right' : ''} />
                           </FormControl>
-                          <FormMessage />
+                          <FormMessage className={isRtl ? 'text-right' : ''} />
                         </FormItem>
                       )}
                     />
@@ -270,11 +280,11 @@ export function ParentCategoryForm({
                       name={`children.${index}.searchKeywords`}
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Keywords (comma separated)</FormLabel>
+                          <FormLabel className={isRtl ? 'text-right block w-full' : ''}>{t("keywords")}</FormLabel>
                           <FormControl>
-                            <Input placeholder="e.g. bmw,toyota" {...field} />
+                            <Input placeholder={t("keywordsPlaceholder")} {...field} className={isRtl ? 'text-right' : ''} />
                           </FormControl>
-                          <FormMessage />
+                          <FormMessage className={isRtl ? 'text-right' : ''} />
                         </FormItem>
                       )}
                     />
@@ -285,18 +295,19 @@ export function ParentCategoryForm({
                     name={`children.${index}.image`}
                     render={({ field: { value: _value, onChange, ...field } }) => (
                       <FormItem>
-                        <FormLabel>Child Image</FormLabel>
+                        <FormLabel className={isRtl ? 'text-right block w-full' : ''}>{t("childImg")}</FormLabel>
                         <FormControl>
-                          <div className="flex items-center gap-4 p-2 border rounded-md bg-white">
+                          <div className={`flex items-center gap-4 p-2 border rounded-md bg-white ${isRtl ? 'flex-row-reverse' : ''}`}>
                             <ImagePreview 
                               file={childImage instanceof File ? childImage : null} 
                               fallbackUrl={hasExistingImage} 
+                              newFlag={t("newFlag")}
                             />
-                            <div className="flex-1 space-y-1">
+                            <div className={`flex-1 space-y-1 ${isRtl ? 'text-right' : ''}`}>
                               <Input
                                 type="file"
                                 accept="image/*"
-                                className="h-8 py-0.5 text-xs"
+                                className={`h-8 py-0.5 text-xs ${isRtl ? 'text-right' : ''}`}
                                 onChange={(e) => {
                                   const file = e.target.files?.[0];
                                   if (file) onChange(file);
@@ -306,7 +317,7 @@ export function ParentCategoryForm({
                             </div>
                           </div>
                         </FormControl>
-                        <FormMessage />
+                        <FormMessage className={isRtl ? 'text-right' : ''} />
                       </FormItem>
                     )}
                   />
@@ -316,18 +327,18 @@ export function ParentCategoryForm({
           </CardContent>
         </Card>
 
-        <div className="flex justify-end gap-2">
+        <div className={`flex gap-2 ${isRtl ? 'justify-start flex-row-reverse' : 'justify-end'}`}>
           <Button
             type="button"
             variant="outline"
             onClick={onCancel}
             disabled={loading}
           >
-            Cancel
+            {t("cancel")}
           </Button>
-          <Button type="submit" className="bg-red-700" disabled={loading}>
-            {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-            {initialData ? "Update Category" : "Create Category"}
+          <Button type="submit" className="bg-red-700 font-bold" disabled={loading}>
+            {loading && <Loader2 className={`${isRtl ? 'ml-2' : 'mr-2'} h-4 w-4 animate-spin`} />}
+            {initialData ? t("update") : t("create")}
           </Button>
         </div>
       </form>

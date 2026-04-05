@@ -8,10 +8,13 @@ import PageHeader from "@/components/shared/PageHeader";
 import { useFavoritesStore } from "@/stores/favorites";
 import { useAuthStore } from "@/stores/user";
 import type { VehicleData } from "@/types/vehicles";
+import { useTranslations } from "next-intl";
 
-const FavoraitesPage = () => {
+const FavoritesPage = () => {
+
   const { favorites, setFavorites } = useFavoritesStore();
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+  const t = useTranslations("Vehicle.favorites");
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -31,15 +34,15 @@ const FavoraitesPage = () => {
 
   return (
     <>
-      <PageHeader title="Favorites" />
-      <div className="container py-10 flex flex-col gap-10">
+      <PageHeader title={t("title")} />
+      <div className="container py-10 flex flex-col gap-10 text-start">
         <div className="flex flex-col gap-4">
           <div className=" flex flex-col gap-2 ">
             <h2 className="text-4xl md:text-5xl font-bold text-red-600">
-              Your favorites
+              {t("header")}
             </h2>
             <p className=" text-gray-400">
-              Here are the machines you&apos;ve added to your favorites.
+              {t("subtitle")}
             </p>
           </div>
         </div>
@@ -47,7 +50,7 @@ const FavoraitesPage = () => {
         {favorites.length === 0 ? (
           <div className="flex justify-center items-center py-12">
             <p className="text-2xl font-bold text-red-600">
-              No favorites found
+              {t("empty")}
             </p>
           </div>
         ) : (
@@ -63,4 +66,5 @@ const FavoraitesPage = () => {
   );
 };
 
-export default FavoraitesPage;
+export default FavoritesPage;
+

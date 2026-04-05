@@ -7,21 +7,28 @@ import { FormField, FormItem, FormMessage } from "@/components/ui/form";
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
-import Link from "next/link";
+import { Link } from "@/i18n/routing";
 import { useRouter } from "next/navigation";
 import { login } from "@/lib/actions";
 import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
 import { useAuthStore } from "@/stores/user";
-
-const loginSchema = z.object({
-  email: z.string().email(),
-  password: z.string().min(6),
-});
-
-export type LoginFormValues = z.infer<typeof loginSchema>;
+import { useLocale, useTranslations } from "next-intl";
 
 export default function LoginForm() {
+  const locale = useLocale();
+  const t = useTranslations("auth.login");
+  const tl = useTranslations("auth.labels");
+  const tv = useTranslations("auth.validation");
+  const isRtl = locale === 'ar';
+  
+  const loginSchema = z.object({
+    email: z.string().email(tv("email")),
+    password: z.string().min(6, tv("password")),
+  });
+
+  type LoginFormValues = z.infer<typeof loginSchema>;
+
   const inputStyle = "h-11! focus-visible:black";
   const router = useRouter();
   const setAuth = useAuthStore((state) => state.setAuth);
@@ -40,7 +47,7 @@ export default function LoginForm() {
     if (res?.ok) {
       const accessToken = res?.data?.data?.accessToken;
       const user = res?.data?.data?.user;
-      toast.success(res?.data?.message || "Login successful");
+      toast.success(res?.data?.message || t("success"));
       
       setAuth({
         token: accessToken,
@@ -48,24 +55,24 @@ export default function LoginForm() {
       });
       
       router.push("/");
-      router.refresh(); // Refresh to update server-side auth state
+      router.refresh(); 
     } else {
-      toast.error(res?.error || "Login failed");
+      toast.error(res?.error || t("failed"));
     }
   };
 
   return (
     <FormProvider {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+      <form onSubmit={form.handleSubmit(onSubmit)} className={`space-y-4 ${isRtl ? 'text-right' : 'text-left'}`}>
         <FormField
           control={form.control}
           name="email"
           render={({ field }) => (
             <FormItem>
-              <Label>Email</Label>
+              <Label>{tl("email")}</Label>
               <Input
                 placeholder="your@email.com"
-                className={inputStyle}
+                className={`${inputStyle} ${isRtl ? 'text-right' : 'text-left'}`}
                 {...field}
               />
               <FormMessage />
@@ -78,11 +85,11 @@ export default function LoginForm() {
           name="password"
           render={({ field }) => (
             <FormItem>
-              <Label>Password</Label>
+              <Label>{tl("password")}</Label>
               <Input
                 type="password"
                 placeholder="******"
-                className={inputStyle}
+                className={`${inputStyle} ${isRtl ? 'text-right' : 'text-left'}`}
                 {...field}
               />
               <FormMessage />
@@ -91,24 +98,23 @@ export default function LoginForm() {
         />
 
         <div className="flex flex-col gap-2">
-          <p className="text-sm font-semibold text-end">
-            Don&apos;t have an account?{" "}
+          <p className={`text-sm font-semibold ${isRtl ? 'text-start' : 'text-end'}`}>
+            {t("noAccount")}{" "}
             <Link href={"/register"} className="font-bold underline text-red-700">
-              Signup
+              {useTranslations("auth.register")("submit")}
             </Link>
           </p>
-          <p className="text-sm font-semibold text-end">
+          <p className={`text-sm font-semibold ${isRtl ? 'text-start' : 'text-end'}`}>
             <Link href={"/forgot-password"} className="font-bold underline text-gray-500 hover:text-red-700">
-              Forgot password?
+              {t("forgot")}
             </Link>
           </p>
         </div>
         <Button type="submit" className="w-full h-11 " disabled={isSubmitting}>
-          {isSubmitting ? <Loader2 className=" animate-spin" /> : "Login"}
+          {isSubmitting ? <Loader2 className=" animate-spin" /> : t("submit")}
         </Button>
       </form>
     </FormProvider>
-
   );
 }
 

@@ -1,9 +1,9 @@
 "use client";
 
-import Link from "next/link";
 import { useSettingsStore } from "@/stores/settings";
 import { usePathname } from "next/navigation";
 import { fixImageUrl } from "@/lib/utils";
+import { Link } from "@/i18n/routing";
 import {
   Facebook,
   Twitter,
@@ -19,6 +19,8 @@ import {
   MapPin,
   Mail,
 } from "lucide-react";
+import { useLocale, useTranslations } from "next-intl";
+import Image from "next/image";
 
 const socialPlatforms = [
   { id: "facebook", icon: Facebook, label: "Facebook" },
@@ -36,21 +38,24 @@ const socialPlatforms = [
 export default function Footer() {
   const pathname = usePathname();
   const settings = useSettingsStore((state) => state.settings);
+  const locale = useLocale();
+  const t = useTranslations("Footer");
+  const isRtl = locale === 'ar';
 
-  if (pathname?.startsWith("/admin")) return null;
+  if (pathname?.includes("/admin")) return null;
 
   const importantLinks = [
-    { label: "Home", href: "/" },
-    { label: "All Vehicles", href: "/products" },
-    { label: "Our Services", href: "/#services" },
-    { label: "Contact Us", href: "/#contact" },
+    { label: t("links.home"), href: "/" },
+    { label: t("links.inventory"), href: "/products" },
+    { label: t("links.services"), href: "/#services" },
+    { label: t("links.contact"), href: "/#contact" },
   ];
 
   const categories = [
-    { label: "Construction", href: "/products?category=construction" },
-    { label: "Excavators", href: "/products?category=excavator" },
-    { label: "Loaders", href: "/products?category=loader" },
-    { label: "Cranes", href: "/products?category=crane" },
+    { label: t("categories.construction"), href: "/products?category=construction" },
+    { label: t("categories.excavators"), href: "/products?category=excavator" },
+    { label: t("categories.loaders"), href: "/products?category=loader" },
+    { label: t("categories.cranes"), href: "/products?category=crane" },
   ];
 
   const activeSocials = socialPlatforms.filter(
@@ -63,20 +68,22 @@ export default function Footer() {
   return (
     <footer className="bg-[#0f0f0f] text-white pt-20 pb-28 md:pb-10 border-t border-white/5">
       <div className="container mx-auto px-4">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16 py-4 text-center md:text-left">
+        <div className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16 py-4 text-center ${isRtl ? 'md:text-right' : 'md:text-left'}`}>
           {/* Brand Column */}
           <div className="space-y-6">
             <Link
               href="/"
-              className="inline-block transition-transform hover:scale-105 mx-auto md:mx-0"
+              className={`inline-block transition-transform hover:scale-105 mx-auto ${isRtl ? 'md:mr-0' : 'md:ml-0'}`}
             >
-              <div className="flex items-center justify-center md:justify-start gap-3">
+              <div className={`flex items-center justify-center gap-3 ${isRtl ? 'md:justify-start flex-row-reverse' : 'md:justify-start'}`}>
                 {settings?.siteLogo ? (
                   <div className="relative w-12 h-12">
-                    <img
+                    <Image
                       src={fixImageUrl(settings.siteLogo)}
                       alt={settings?.siteName || "Logo"}
-                      className="w-full h-full object-contain"
+                      fill
+                      className="object-contain"
+                      sizes="48px"
                     />
                   </div>
                 ) : (
@@ -91,12 +98,10 @@ export default function Footer() {
                 </span>
               </div>
             </Link>
-            <p className="text-gray-400 text-sm leading-relaxed max-w-sm mx-auto md:mx-0" dir="rtl">
-              {settings?.metaDescription && settings.metaDescription !== "meta_description" 
-                ? settings.metaDescription 
-                : "للخدمات اللوجيستية ومتخصصون في استيراد المعدات الثقيلة وتجهيز المصانع من اليابان للمصانع والتجار والأفراد – من مزادات اليابان لحد عندك في مصر."}
+            <p className="text-gray-400 text-sm leading-relaxed max-w-sm mx-auto md:mx-0">
+              {t("description")}
             </p>
-            <div className="grid grid-cols-5 gap-2 md:flex md:flex-wrap md:gap-3 pt-2 justify-items-center md:justify-start max-w-[250px] mx-auto md:max-w-none md:mx-0">
+            <div className={`grid grid-cols-5 gap-2 md:flex md:flex-wrap md:gap-3 pt-2 justify-items-center max-w-[250px] mx-auto md:max-w-none md:mx-0 ${isRtl ? 'md:justify-start flex-row-reverse' : 'md:justify-start'}`}>
               {activeSocials.map((platform) => (
                 <a
                   key={platform.id}
@@ -114,15 +119,15 @@ export default function Footer() {
 
           {/* Important Links */}
           <div className="space-y-6">
-            <h4 className="text-lg font-bold tracking-tight border-l-4 md:border-l-4 border-red-600 pl-4 inline-block md:block mb-4">
-              Important Links
+            <h4 className={`text-lg font-bold tracking-tight border-red-600 inline-block md:block mb-4 ${isRtl ? 'border-r-4 pr-4' : 'border-l-4 pl-4'}`}>
+              {t('importantLinks')}
             </h4>
             <ul className="space-y-4">
               {importantLinks.map((link) => (
                 <li key={link.label}>
                   <Link
                     href={link.href}
-                    className="text-gray-500 hover:text-red-600 hover:translate-x-1 transition-all inline-block text-sm font-medium"
+                    className={`text-gray-500 hover:text-red-600 transition-all inline-block text-sm font-medium ${isRtl ? 'hover:-translate-x-1' : 'hover:translate-x-1'}`}
                   >
                     {link.label}
                   </Link>
@@ -133,15 +138,15 @@ export default function Footer() {
 
           {/* Categories */}
           <div className="space-y-6">
-            <h4 className="text-lg font-bold tracking-tight border-l-4 md:border-l-4 border-red-600 pl-4 inline-block md:block mb-4">
-              Top Categories
+            <h4 className={`text-lg font-bold tracking-tight border-red-600 inline-block md:block mb-4 ${isRtl ? 'border-r-4 pr-4' : 'border-l-4 pl-4'}`}>
+              {t('topCategories')}
             </h4>
             <ul className="space-y-4">
               {categories.map((link) => (
                 <li key={link.label}>
                   <Link
                     href={link.href}
-                    className="text-gray-500 hover:text-red-600 hover:translate-x-1 transition-all inline-block text-sm font-medium"
+                    className={`text-gray-500 hover:text-red-600 transition-all inline-block text-sm font-medium ${isRtl ? 'hover:-translate-x-1' : 'hover:translate-x-1'}`}
                   >
                     {link.label}
                   </Link>
@@ -152,18 +157,18 @@ export default function Footer() {
 
           {/* Contact Info */}
           <div className="space-y-6">
-            <h4 className="text-lg font-bold tracking-tight border-l-4 md:border-l-4 border-red-600 pl-4 inline-block md:block mb-4">
-              Quick Contact
+            <h4 className={`text-lg font-bold tracking-tight border-red-600 inline-block md:block mb-4 ${isRtl ? 'border-r-4 pr-4' : 'border-l-4 pl-4'}`}>
+              {t('quickContact')}
             </h4>
-            <div className="space-y-5 flex flex-col items-center md:items-start">
+            <div className={`space-y-5 flex flex-col items-center ${isRtl ? 'md:items-end' : 'md:items-start'}`}>
               {settings?.phone && (
-                <div className="flex flex-col items-center md:flex-row md:items-start gap-3 md:gap-4 group">
+                <div className={`flex flex-col items-center gap-3 md:gap-4 group ${isRtl ? 'md:flex-row-reverse' : 'md:flex-row'}`}>
                   <div className="w-10 h-10 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-red-500 group-hover:bg-red-600 group-hover:text-white transition-colors">
                     <Phone size={18} />
                   </div>
-                  <div className="flex flex-col items-center md:items-start text-center md:text-left">
+                  <div className={`flex flex-col items-center text-center ${isRtl ? 'md:text-right md:items-end' : 'md:text-left md:items-start'}`}>
                     <span className="text-[10px] font-black uppercase tracking-widest text-gray-500">
-                      Call Us
+                      {t('callUs')}
                     </span>
                     <a
                       href={`tel:${settings.phone}`}
@@ -176,13 +181,13 @@ export default function Footer() {
               )}
               
               {settings?.email && (
-                <div className="flex flex-col items-center md:flex-row md:items-start gap-3 md:gap-4 group">
+                <div className={`flex flex-col items-center gap-3 md:gap-4 group ${isRtl ? 'md:flex-row-reverse' : 'md:flex-row'}`}>
                   <div className="w-10 h-10 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-red-500 group-hover:bg-red-600 group-hover:text-white transition-colors">
                     <Mail size={18} />
                   </div>
-                  <div className="flex flex-col items-center md:items-start text-center md:text-left">
+                  <div className={`flex flex-col items-center text-center ${isRtl ? 'md:text-right md:items-end' : 'md:text-left md:items-start'}`}>
                     <span className="text-[10px] font-black uppercase tracking-widest text-gray-500">
-                      Email
+                      {t('email')}
                     </span>
                     <a
                       href={`mailto:${settings.email}`}
@@ -195,16 +200,16 @@ export default function Footer() {
               )}
 
               {settings?.address && (
-                <div className="flex flex-col items-center md:flex-row md:items-start gap-3 md:gap-4 group">
+                <div className={`flex flex-col items-center gap-3 md:gap-4 group ${isRtl ? 'md:flex-row-reverse' : 'md:flex-row'}`}>
                   <div className="w-10 h-10 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-red-500">
                     <MapPin size={18} />
                   </div>
-                  <div className="flex flex-col items-center md:items-start text-center md:text-left">
+                  <div className={`flex flex-col items-center text-center ${isRtl ? 'md:text-right md:items-end' : 'md:text-left md:items-start'}`}>
                     <span className="text-[10px] font-black uppercase tracking-widest text-gray-500">
-                      Location
+                      {t('location')}
                     </span>
-                    <span className="text-sm font-bold text-gray-300" dir={settings?.address?.match(/[أ-ي]/) ? "rtl" : "ltr"}>
-                      {settings?.address || "Japan"}
+                    <span className="text-sm font-bold text-gray-300">
+                      {settings.address}
                     </span>
                   </div>
                 </div>
@@ -220,7 +225,7 @@ export default function Footer() {
             <span className="text-gray-500 underline underline-offset-4 decoration-red-600/30 font-black">
               {settings?.siteName || "Sub Coders"}
             </span>
-            . All rights reserved.
+            . {t('rights')}
           </p>
         </div>
       </div>

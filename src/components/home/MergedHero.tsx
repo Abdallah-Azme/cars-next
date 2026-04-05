@@ -15,12 +15,19 @@ import {
   Pin,
   Send,
   ArrowRight,
+  ArrowLeft,
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { useLocale, useTranslations } from "next-intl";
 
 export default function MergedHero() {
   const settings = useSettingsStore((state) => state.settings);
+  const locale = useLocale();
+  const t = useTranslations("HomePage.hero");
+  const tHome = useTranslations("HomePage");
+
+  const isRtl = locale === 'ar';
 
   const socialPlatforms = [
     { id: "facebook", icon: Facebook, label: "Facebook", color: "rgba(24,119,242,0.25)", border: "rgba(24,119,242,0.45)" },
@@ -43,8 +50,8 @@ export default function MergedHero() {
     }));
 
   const heroImage = "/hero-egypt.jpg";
-  const heroTitle = settings?.heroTitle || "Powerful Heavy Equipment";
-  const heroDescription = settings?.heroDescription || "Follow us on social media or contact us directly for the latest offers and updates.";
+  const heroTitle = settings?.heroTitle || tHome("heroTitle");
+  const heroDescription = settings?.heroDescription || tHome("heroSubtitle");
 
   return (
     <section className="relative w-full h-[90vh] min-h-[500px] overflow-hidden">
@@ -59,12 +66,12 @@ export default function MergedHero() {
       />
 
       {/* Dark overlay for readability */}
-      <div className="absolute inset-0 bg-linear-to-r from-black/60 via-black/25 to-transparent" />
+      <div className={`absolute inset-0 bg-linear-to-${isRtl ? 'l' : 'r'} from-black/60 via-black/25 to-transparent`} />
 
-      {/* Hero Content panel — overlaid on the left */}
-      <div className="absolute inset-y-0 left-0 flex items-center px-6 md:px-12 lg:px-16">
+      {/* Hero Content panel — overlaid on the side */}
+      <div className={`absolute inset-y-0 ${isRtl ? 'right-0' : 'left-0'} flex items-center px-6 md:px-12 lg:px-16`}>
         <motion.div
-          initial={{ opacity: 0, x: -40 }}
+          initial={{ opacity: 0, x: isRtl ? 40 : -40 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.6, ease: "easeOut" }}
           className="w-full max-w-[400px] space-y-6"
@@ -92,15 +99,19 @@ export default function MergedHero() {
             {settings?.heroButton1Link && (
               <Link href={settings.heroButton1Link} className="grow cursor-pointer outline-none">
                  <ButtonWrapper color="bg-red-600 hover:bg-red-700">
-                    Contact Us
-                    <ArrowRight className="size-4 ml-2" />
+                    {t('contactUs')}
+                    {isRtl ? (
+                      <ArrowLeft className="size-4 mr-2" />
+                    ) : (
+                      <ArrowRight className="size-4 ml-2" />
+                    )}
                  </ButtonWrapper>
               </Link>
             )}
             {settings?.heroButton2Link && (
               <Link href={settings.heroButton2Link} className="grow cursor-pointer outline-none">
                  <ButtonWrapper color="bg-white/10 hover:bg-white/20 border border-white/20">
-                    Get Quote
+                    {t('getQuote')}
                  </ButtonWrapper>
               </Link>
             )}
@@ -108,7 +119,7 @@ export default function MergedHero() {
 
           {/* Social Links */}
           <div className="pt-4">
-            <p className="text-[10px] font-bold uppercase tracking-widest text-white/40 mb-3">Connect With Us</p>
+            <p className="text-[10px] font-bold uppercase tracking-widest text-white/40 mb-3">{t('connectWithUs')}</p>
             <div className="flex flex-wrap gap-2">
               {activeSocials.slice(0, 5).map((platform) => (
                 <motion.a
@@ -156,7 +167,7 @@ export default function MergedHero() {
               </div>
               <div className="flex flex-col">
                 <span className="text-[10px] font-bold uppercase tracking-widest text-white/40">
-                  Direct Line
+                  {t('directLine')}
                 </span>
                 <span className="text-base font-black text-white">{settings.phone}</span>
               </div>

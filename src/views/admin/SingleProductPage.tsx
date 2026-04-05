@@ -19,8 +19,13 @@ import {
 } from "@/components/admin/ui/carousel";
 import { SingleVehicleResponse } from "@/types/vehicles";
 import * as React from "react";
+import { useLocale, useTranslations } from "next-intl";
 
 export default function SingleProductPage() {
+  const locale = useLocale();
+  const t = useTranslations("admin.products");
+  const isRtl = locale === 'ar';
+  
   const params = useParams();
   const id = params?.id as string;
   const [api, setApi] = React.useState<CarouselApi>();
@@ -55,6 +60,7 @@ export default function SingleProductPage() {
     return (
       <div className="flex h-[70vh] items-center justify-center">
         <Loader2 className="h-10 w-10 animate-spin text-red-600" />
+        <span className="ml-2">{t("single.loading")}</span>
       </div>
     );
   }
@@ -64,7 +70,7 @@ export default function SingleProductPage() {
   if (!vehicle) {
     return (
       <div className="flex h-[70vh] items-center justify-center font-bold">
-        Vehicle Not Found
+        {t("single.notFound")}
       </div>
     );
   }
@@ -74,24 +80,23 @@ export default function SingleProductPage() {
   const images = mappedImages.length > 0 ? mappedImages : [];
   
   const specs = [
-    { label: "Model", value: vehicle.model || "—" },
-    { label: "Maker", value: vehicle.carMaker || "—" },
-    { label: "Year", value: vehicle.year || "—" },
-    { label: "Hours", value: vehicle.workingHours || "—" },
-    { label: "Chassis ID", value: vehicle.chassisId || "—" },
-    { label: "Fuel Type", value: vehicle.fuel || "—" },
-    { label: "Score", value: vehicle.score || "—" },
-    { label: "Status", value: vehicle.status || "—" },
-    { label: "Ref", value: vehicle.lotNumber || "—" },
+    { label: t("specs.model"), value: vehicle.model || "—" },
+    { label: t("single.maker"), value: vehicle.carMaker || "—" },
+    { label: t("specs.year"), value: vehicle.year || "—" },
+    { label: t("specs.hours"), value: vehicle.workingHours || "—" },
+    { label: t("specs.chassis"), value: vehicle.chassisId || "—" },
+    { label: t("specs.fuel"), value: vehicle.fuel || "—" },
+    { label: t("specs.score"), value: vehicle.score || "—" },
+    { label: t("single.ref"), value: vehicle.lotNumber || "—" },
   ];
 
   return (
-    <div className="container mx-auto py-6 space-y-6">
-      <div className="flex items-center justify-between">
+    <div className={`container mx-auto py-6 space-y-6 ${isRtl ? 'text-right' : 'text-left'}`}>
+      <div className={`flex items-center justify-between ${isRtl ? 'flex-row-reverse' : ''}`}>
         <h1 className="text-3xl font-bold text-red-700">{title}</h1>
-        <div className="flex items-center gap-2">
+        <div className={`flex items-center gap-2 ${isRtl ? 'flex-row-reverse' : ''}`}>
            <Badge variant="secondary" className="text-lg px-4 py-1">
-            Score: {vehicle.score || "—"}
+            {t("single.scorePrefix")} {vehicle.score || "—"}
           </Badge>
           <Badge variant="outline" className="capitalize">
             {vehicle.status}
@@ -159,15 +164,15 @@ export default function SingleProductPage() {
 
                   {images.length > 1 && (
                     <>
-                      <CarouselPrevious className="left-2" />
-                      <CarouselNext className="right-2" />
+                      <CarouselPrevious className={isRtl ? 'right-2 left-auto' : 'left-2'} />
+                      <CarouselNext className={isRtl ? 'left-2 right-auto' : 'right-2'} />
                     </>
                   )}
                 </Carousel>
               </CardContent>
             </Card>
 
-            <div className="grid grid-cols-4 gap-2">
+            <div className={`grid grid-cols-4 gap-2 ${isRtl ? 'flex-row-reverse' : ''}`}>
               {images.slice(0, 4).map((src, i) => (
                 <div
                   key={`thumb-${i}`}
@@ -188,13 +193,13 @@ export default function SingleProductPage() {
         {/* Details Section */}
         <div className="space-y-6">
           <Card className="shadow-sm">
-            <CardHeader className="bg-muted/30 pb-3 border-b">
-              <h2 className="text-xl font-semibold">Specifications</h2>
+            <CardHeader className={`bg-muted/30 pb-3 border-b ${isRtl ? 'text-right' : ''}`}>
+              <h2 className="text-xl font-semibold">{t("single.specs")}</h2>
             </CardHeader>
             <CardContent className="p-0">
               <div className="grid grid-cols-1 sm:grid-cols-2 divide-y sm:divide-y-0">
                 {specs.map((item, idx) => (
-                  <div key={item.label} className={`flex justify-between items-center p-4 ${idx % 2 === 0 ? 'bg-white' : 'bg-muted/5'} hover:bg-red-50 transition-colors`}>
+                  <div key={item.label} className={`flex justify-between items-center p-4 ${idx % 2 === 0 ? 'bg-white' : 'bg-muted/5'} hover:bg-red-50 transition-colors ${isRtl ? 'flex-row-reverse' : ''}`}>
                     <span className="text-sm font-medium text-muted-foreground">{item.label}</span>
                     <span className="text-sm font-bold">{item.value}</span>
                   </div>
@@ -204,19 +209,19 @@ export default function SingleProductPage() {
           </Card>
 
           <Card className="shadow-sm border-red-100">
-            <CardHeader className="bg-red-50 pb-3 border-b border-red-100">
-              <h2 className="text-xl font-semibold text-red-900">Pricing Information</h2>
+            <CardHeader className={`bg-red-50 pb-3 border-b border-red-100 ${isRtl ? 'text-right' : ''}`}>
+              <h2 className="text-xl font-semibold text-red-900">{t("single.pricing")}</h2>
             </CardHeader>
             <CardContent className="p-4 space-y-4">
-              <div className="flex justify-between items-baseline">
-                <span className="text-muted-foreground font-medium">Start Price</span>
+              <div className={`flex justify-between items-baseline ${isRtl ? 'flex-row-reverse' : ''}`}>
+                <span className="text-muted-foreground font-medium">{t("startPrice")}</span>
                 <span className="text-2xl font-bold text-red-600">
-                  {Number(vehicle.startPrice).toLocaleString()} Yen
+                  {Number(vehicle.startPrice).toLocaleString(locale)} {t("currency")}
                 </span>
               </div>
               <Separator className="bg-red-100" />
-              <div className="rounded-lg bg-red-50/50 p-4 border border-red-100 italic text-sm text-red-800">
-                Auction date: {vehicle.auctionDay} {vehicle.holdingDate ? new Date(vehicle.holdingDate).toLocaleDateString() : ""}
+              <div className={`rounded-lg bg-red-50/50 p-4 border border-red-100 italic text-sm text-red-800 ${isRtl ? 'text-right' : ''}`}>
+                {t("single.auctionDate")} {vehicle.auctionDay} {vehicle.holdingDate ? new Date(vehicle.holdingDate).toLocaleDateString(locale) : ""}
               </div>
             </CardContent>
           </Card>

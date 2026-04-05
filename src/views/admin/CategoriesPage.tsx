@@ -6,8 +6,13 @@ import { PaginationControls } from "@/components/products/Pagination";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { CategoriesSResponse } from "@/types/categories";
+import { useLocale, useTranslations } from "next-intl";
 
 const CategoriesPage = () => {
+  const locale = useLocale();
+  const t = useTranslations("admin.categories");
+  const isRtl = locale === 'ar';
+  
   const [page, setPage] = useState(1);
   const { data, isLoading } = useQuery<CategoriesSResponse>({
     queryKey: ["categories", page],
@@ -22,10 +27,10 @@ const CategoriesPage = () => {
   const pagination = data?.pagination;
 
   return (
-    <div className="flex flex-col gap-4 container mx-auto py-6">
+    <div className={`flex flex-col gap-4 container mx-auto py-6 ${isRtl ? 'text-right' : 'text-left'}`}>
       <div className="flex items-center justify-between">
         <h1 className="text-3xl font-bold text-red-700">
-          Equipment Categories
+          {t("title")}
         </h1>
       </div>
 
@@ -37,7 +42,7 @@ const CategoriesPage = () => {
         <>
           <CategoriesPageSimple categories={categories} />
           {pagination && pagination.last_page > 1 && (
-            <div className="mt-8 flex justify-end">
+            <div className={`mt-8 flex ${isRtl ? 'justify-start' : 'justify-end'}`}>
               <PaginationControls
                 pagination={pagination}
                 onPageChange={setPage}

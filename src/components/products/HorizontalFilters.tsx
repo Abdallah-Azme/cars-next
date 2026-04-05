@@ -17,7 +17,9 @@ import {
   Package,
 } from "lucide-react";
 
+import { useTranslations } from "next-intl";
 import Image from "next/image";
+
 
 interface FilterItemProps {
   label: string;
@@ -162,6 +164,7 @@ export function HorizontalFilterRow({
   onToggle,
   variant = "scroll",
 }: HorizontalFiltersProps) {
+  const t = useTranslations("Common");
   if (!items || items.length === 0) return null;
 
   return (
@@ -172,10 +175,11 @@ export function HorizontalFilterRow({
         </h3>
         {selectedItems.length > 0 && (
           <span className="text-[10px] font-bold text-red-600 bg-red-50 px-2 py-1 rounded-full border border-red-100 uppercase">
-            {selectedItems.length} Selected
+            {selectedItems.length} {t("selected")}
           </span>
         )}
       </div>
+
 
       {variant === "grid" ? (
         <div className="flex flex-wrap gap-4 py-4">
