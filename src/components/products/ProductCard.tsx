@@ -61,15 +61,12 @@ export function ProductCard({ vehicle }: Props) {
   }, [api]);
 
   const labels = [
-    { label: t("labels.lotNumber"), value: vehicle?.lotNumber },
     { label: t("labels.vehicleType"), value: vehicle?.vehicleType },
     { label: t("labels.chassisId"), value: vehicle?.chassisId },
     { label: t("labels.hours"), value: vehicle?.workingHours },
     { label: t("labels.score"), value: vehicle?.score },
     { label: t("labels.year"), value: vehicle?.year },
     { label: t("labels.fuel"), value: vehicle?.fuel },
-    { label: t("labels.size"), value: vehicle?.vehicleSize },
-    { label: t("labels.inspection"), value: vehicle?.inspection },
   ];
 
   const settings = useSettingsStore((state) => state.settings);
@@ -95,9 +92,6 @@ export function ProductCard({ vehicle }: Props) {
               {vehicle?.carMaker || "-"} {vehicle?.model || "-"}
             </div>
             <div className={`flex flex-wrap items-center gap-2 text-xs ${isRtl ? 'flex-row-reverse' : ''}`}>
-              <span className="font-bold text-red-600 bg-red-50 px-1.5 py-0.5 rounded">
-                {t("labels.lot")} {vehicle?.lotNumber || "-"}
-              </span>
               <span className="text-muted-foreground uppercase font-medium">
                 {vehicle?.auctionDay}
               </span>
@@ -231,10 +225,20 @@ export function ProductCard({ vehicle }: Props) {
                   rawResult.toLowerCase().includes("sold") ? "text-green-600 bg-green-50" : "text-blue-600 bg-blue-50"
                 )}
               >
-                <span className="text-[10px] opacity-70 font-bold italic">{t("contact.currency")}</span>
-                {rawResult.toLowerCase().includes("sold") 
-                  ? (vehicle.soldPrice || vehicle.startPrice || vehicle.translatedData?.startPrice || t("status.tbd")) 
-                  : (vehicle.startPrice || vehicle.translatedData?.startPrice || t("status.tbd"))}
+                {(() => {
+                  const price = rawResult.toLowerCase().includes("sold") 
+                    ? (vehicle.soldPrice || vehicle.startPrice || vehicle.translatedData?.startPrice) 
+                    : (vehicle.startPrice || vehicle.translatedData?.startPrice);
+                  
+                  if (!price) return <span>{t("status.tbd")}</span>;
+                  
+                  return (
+                    <>
+                      <span className="text-[10px] opacity-70 font-bold italic">{t("contact.currency")}</span>
+                      {price}
+                    </>
+                  );
+                })()}
               </div>
             </div>
           ) : (

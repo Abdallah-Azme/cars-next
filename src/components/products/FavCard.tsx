@@ -23,8 +23,6 @@ export function FavCard({ vehicle }: Props) {
     { label: t("labels.score"), value: vehicle?.score },
     { label: t("labels.year"), value: vehicle?.year },
     { label: t("labels.fuel"), value: vehicle?.fuel },
-    { label: t("labels.size"), value: vehicle?.vehicleSize },
-    { label: t("labels.inspection"), value: vehicle?.inspection },
   ];
 
   return (

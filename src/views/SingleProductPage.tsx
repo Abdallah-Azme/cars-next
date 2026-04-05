@@ -105,9 +105,6 @@ const SingleProductPage = () => {
       label: t("labels.hours"),
       value: vehicle.workingHours ? `${vehicle.workingHours} ${isRtl ? 'ساعة' : 'hr'}` : "—",
     },
-    { label: t("labels.lotNumber"), value: vehicle.lotNumber || "—" },
-    { label: t("labels.size"), value: vehicle.vehicleSize || "—" },
-    { label: t("labels.inspection"), value: vehicle.inspection || "—" },
     { label: ts("labels.transmission"), value: vehicle.transmission || "—" },
     { label: ts("labels.fuelType"), value: vehicle.fuel || "—" },
     { label: ts("labels.equipment"), value: vehicle.equipment || "—" },
@@ -282,17 +279,22 @@ const SingleProductPage = () => {
                       : "text-blue-600",
                   )}
                 >
-                  <span className="text-xs font-bold opacity-60 italic tracking-tighter">
-                    {t("contact.currency")}
-                  </span>
-                  {rawStatus.toLowerCase().includes("sold")
-                    ? vehicle.soldPrice ||
-                      vehicle.startPrice ||
-                      vehicle.translatedData?.startPrice ||
-                      t("status.tbd")
-                    : vehicle.startPrice ||
-                      vehicle.translatedData?.startPrice ||
-                      t("status.tbd")}
+                  {(() => {
+                    const price = rawStatus.toLowerCase().includes("sold")
+                      ? (vehicle.soldPrice || vehicle.startPrice || vehicle.translatedData?.startPrice)
+                      : (vehicle.startPrice || vehicle.translatedData?.startPrice);
+
+                    if (!price) return <span>{t("status.tbd")}</span>;
+
+                    return (
+                      <>
+                        <span className="text-xs font-bold opacity-60 italic tracking-tighter">
+                          {t("contact.currency")}
+                        </span>
+                        {price}
+                      </>
+                    );
+                  })()}
                 </div>
                 <Separator className="my-3" />
                 <div className="text-xs text-muted-foreground">{ts("status")}</div>
