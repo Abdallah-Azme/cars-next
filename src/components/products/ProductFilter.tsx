@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import {
   Select,
   SelectContent,
@@ -51,26 +50,24 @@ function ChecklistBox({
   onToggle: (value: string, checked: boolean) => void;
 }) {
   return (
-    <div className="rounded-md border bg-background">
-      <ScrollArea className="p-3 max-h-60 overflow-y-auto">
-        <div className="space-y-2">
-          {items.map((item) => {
-            const id = `chk-${item.replace(/\s+/g, "-").toLowerCase()}`;
-            return (
-              <div key={item} className="flex items-center gap-2">
-                <Checkbox
-                  id={id}
-                  checked={selectedItems.includes(item)}
-                  onCheckedChange={(checked) => onToggle(item, !!checked)}
-                />
-                <Label htmlFor={id} className="text-sm font-normal">
-                  {item}
-                </Label>
-              </div>
-            );
-          })}
-        </div>
-      </ScrollArea>
+    <div className="rounded-md border bg-background p-4">
+      <div className="space-y-2">
+        {items.map((item) => {
+          const id = `chk-${item.replace(/\s+/g, "-").toLowerCase()}`;
+          return (
+            <div key={item} className="flex items-center gap-2">
+              <Checkbox
+                id={id}
+                checked={selectedItems.includes(item)}
+                onCheckedChange={(checked) => onToggle(item, !!checked)}
+              />
+              <Label htmlFor={id} className="text-sm font-normal">
+                {item}
+              </Label>
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 }
@@ -323,6 +320,7 @@ export function ProductFilters({
   return (
     <div className="space-y-5">
       {/* header */}
+
       <div className="flex items-center justify-between">
         <h3 className="text-base font-semibold text-red-600">{t('title')}</h3>
         <Button

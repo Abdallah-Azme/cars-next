@@ -71,15 +71,15 @@
       "emailRequired": "メールアドレスを入力してください",
       "invalidEmail": "有効なメールアドレスを入力してください"
     },
-    "fleetCategories": "機材カテゴリー",
-    "fleetCategoriesSubtitle": "カテゴリーを選択して在庫を確認する",
     "featured": {
       "title": "おすすめ",
       "subtitle": "重機・車両",
       "description": "厳選された高性能な重機や商用車のラインナップをご覧ください。",
       "exploreAll": "すべて見る",
       "noVehicles": "現在、該当する車両はございません。"
-    }
+    },
+    "fleetCategories": "機材カテゴリー",
+    "fleetCategoriesSubtitle": "カテゴリーを選択して在庫を確認する"
   },
   "Vehicle": {
     "labels": {

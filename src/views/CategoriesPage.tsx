@@ -40,7 +40,7 @@ const CategoriesPage = () => {
       <CategoriesPageSimple categories={categories} />
 
       {/* Pagination */}
-      {pagination && (
+      {pagination && pagination.last_page > 1 && (
         <div className="container">
           <PaginationControls pagination={pagination} onPageChange={setPage} />
         </div>

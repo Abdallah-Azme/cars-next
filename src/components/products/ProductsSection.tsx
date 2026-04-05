@@ -4,6 +4,7 @@ import { type VehicleFilterParams } from "@/lib/actions";
 import { useQuery, keepPreviousData } from "@tanstack/react-query";
 import { useState } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { PaginationControls } from "./Pagination";
 import { ProductFilters } from "./ProductFilter";
 import { ProductFiltersSheet } from "./ProductFiltersSheet";
@@ -17,7 +18,7 @@ import {
 } from "@/lib/actions";
 import { useSearchParams } from "next/navigation";
 import { useEffect, Suspense } from "react";
-import { useLocale, useTranslations } from "next-intl";
+import { useTranslations } from "next-intl";
 
 /** Build the query string for the /api/vehicles route */
 function buildVehicleQS(
@@ -62,10 +63,7 @@ function ProductSectionContent() {
   const [filterParams, setFilterParams] = useState<VehicleFilterParams>({});
   const [page, setPage] = useState(1);
   const [perPage, setPerPage] = useState(10);
-  const locale = useLocale();
   const t = useTranslations("Vehicle.inventory");
-  const isRtl = locale === 'ar';
-
   const searchParams = useSearchParams();
   const initialParentId = searchParams.get("parentId")
     ? Number(searchParams.get("parentId"))
@@ -201,7 +199,7 @@ function ProductSectionContent() {
   };
 
   return (
-    <section className={`container py-10 ${isRtl ? 'text-right' : 'text-left'}`}>
+    <section className="container py-10 text-start">
       {/* Top bar */}
       <div className="flex flex-col gap-4">
         {/* Header */}
@@ -255,31 +253,35 @@ function ProductSectionContent() {
         )}
       </div>
 
-      <div className={`mt-8 grid gap-6 lg:grid-cols-[280px_1fr] ${isRtl ? 'lg:grid-cols-[1fr_280px]' : ''}`}>
+      <div className="mt-8 grid gap-6 lg:grid-cols-[280px_1fr]">
         {/* Desktop sidebar */}
-        <aside className={`hidden lg:block ${isRtl ? 'order-2' : 'order-1'}`}>
-          <div className="sticky top-30 rounded-lg border p-4">
-            <ProductFilters
-              onFilterChange={handleFilterChange}
-              controlledParams={{
-                selectedParentId,
-                selectedChildIds,
-                ...filterParams,
-              }}
-              exclude={["parentCategory", "subCategory"]}
-            />
+        <aside className="hidden lg:block">
+          <div className="sticky top-30 rounded-lg border p-4 bg-background">
+            <ScrollArea className="h-[calc(100vh-160px)] pr-4">
+              <ProductFilters
+                onFilterChange={handleFilterChange}
+                controlledParams={{
+                  selectedParentId,
+                  selectedChildIds,
+                  ...filterParams,
+                }}
+                exclude={["parentCategory", "subCategory"]}
+              />
+            </ScrollArea>
           </div>
         </aside>
 
         {/* Products */}
-        <div className={`space-y-4 ${isRtl ? 'order-1' : 'order-2'}`}>
-          <div className={`text-sm text-muted-foreground flex items-center gap-1 ${isRtl ? 'flex-row-reverse' : ''}`}>
-            <span>{t("showing")}</span>
-            <span className="font-medium text-foreground">
-              {vehicles?.length}
-            </span>
-            <span>{t("products")}</span>
-          </div>
+        <div className="space-y-4">
+          {selectedChildIds.length > 0 && (
+            <div className="text-sm text-muted-foreground flex items-center gap-1">
+              <span>{t("showing")}</span>
+              <span className="font-medium text-foreground">
+                {pagination?.total ?? vehicles?.length ?? 0}
+              </span>
+              <span>{t("products")}</span>
+            </div>
+          )}
 
           <div
             className={
@@ -334,7 +336,7 @@ function ProductSectionContent() {
           </div>
 
           {/* Pagination */}
-          {pagination && (
+          {selectedChildIds.length > 0 && pagination && pagination.last_page > 1 && (
             <PaginationControls
               pagination={pagination}
               onPageChange={setPage}

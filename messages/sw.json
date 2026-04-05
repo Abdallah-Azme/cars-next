@@ -71,15 +71,15 @@
       "emailRequired": "Barua pepe inahitajika",
       "invalidEmail": "Barua pepe si sahihi"
     },
-    "fleetCategories": "Jamii za Fleet Yetu",
-    "fleetCategoriesSubtitle": "Chagua jamii ili kugundua magari yanayopatikana",
     "featured": {
       "title": "Iliyoangaziwa",
       "subtitle": "Mitambo",
       "description": "Gundua uteuzi wetu wa mitambo mizito na magari ya biashara yenye utendaji wa juu.",
       "exploreAll": "Gundua Zote",
       "noVehicles": "Hakuna magari yaliyopatikana katika mali yetu ya sasa."
-    }
+    },
+    "fleetCategories": "Jamii za Fleet Yetu",
+    "fleetCategoriesSubtitle": "Chagua jamii ili kugundua magari yanayopatikana"
   },
   "Vehicle": {
     "labels": {

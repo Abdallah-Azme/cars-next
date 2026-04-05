@@ -71,15 +71,15 @@
       "emailRequired": "Email is required",
       "invalidEmail": "Invalid email address"
     },
-    "fleetCategories": "Our Fleet Categories",
-    "fleetCategoriesSubtitle": "Select a category to explore our available vehicles",
     "featured": {
       "title": "Featured",
       "subtitle": "Machines",
       "description": "Explore our curated selection of high-performance heavy machinery and commercial vehicles.",
       "exploreAll": "Explore All",
       "noVehicles": "No vehicles found in our current inventory."
-    }
+    },
+    "fleetCategories": "Our Fleet Categories",
+    "fleetCategoriesSubtitle": "Select a category to explore our available vehicles"
   },
   "Vehicle": {
     "labels": {
@@ -95,195 +95,195 @@
       "lot": "Lot"
     },
     "status": {
-        "sold": "Sold",
-        "soldPrice": "Selling Price",
-        "startPrice": "Start Price",
-        "tbd": "TBD",
-        "acceptanceEnds": "Acceptance Ends:",
-        "acceptancePeriod": "Acceptance Period"
+      "sold": "Sold",
+      "soldPrice": "Selling Price",
+      "startPrice": "Start Price",
+      "tbd": "TBD",
+      "acceptanceEnds": "Acceptance Ends:",
+      "acceptancePeriod": "Acceptance Period"
     },
     "contact": {
-        "whatsapp": "Contact via WhatsApp",
-        "unavailable": "Contact Unavailable",
-        "currency": "¥ (JPY)"
+      "whatsapp": "Contact via WhatsApp",
+      "unavailable": "Contact Unavailable",
+      "currency": "¥ (JPY)"
     },
     "single": {
-        "notFound": "Vehicle Not Found",
-        "loading": "Loading Vehicle Details...",
-        "grade": "Grade",
-        "photos": "Photos",
-        "specifications": "Specifications",
-        "description": "Description / Equipment",
-        "noDescription": "No description available.",
-        "status": "Status",
-        "labels": {
-            "model": "Model",
-            "transmission": "Transmission",
-            "fuelType": "Fuel Type",
-            "equipment": "Equipment",
-            "odometer": "Odometer",
-            "color": "Color"
-        }
+      "notFound": "Vehicle Not Found",
+      "loading": "Loading Vehicle Details...",
+      "grade": "Grade",
+      "photos": "Photos",
+      "specifications": "Specifications",
+      "description": "Description / Equipment",
+      "noDescription": "No description available.",
+      "status": "Status",
+      "labels": {
+        "model": "Model",
+        "transmission": "Transmission",
+        "fuelType": "Fuel Type",
+        "equipment": "Equipment",
+        "odometer": "Odometer",
+        "color": "Color"
+      }
     },
     "favorites": {
-        "title": "Favorites",
-        "header": "Your Favorites",
-        "subtitle": "Here are the machines you've added to your favorites.",
-        "empty": "No favorites found"
+      "title": "Favorites",
+      "header": "Your Favorites",
+      "subtitle": "Here are the machines you've added to your favorites.",
+      "empty": "No favorites found"
     },
     "inventory": {
-        "title": "Machines",
-        "header": "Featured Machines",
-        "subtitle": "Browse our wide range of heavy machinery solutions.",
-        "showing": "Showing",
-        "products": "products",
-        "noFound": "No Vehicles Found",
-        "loading": "Loading machines...",
-        "selectSub": "Please Select a Sub-Category",
-        "selectSubDesc": "Choose a specific machine type from the rows above to start browsing our inventory.",
-        "filter": {
-            "title": "Filters",
-            "reset": "Reset",
-            "category": "Category",
-            "parentCategory": "Parent Category",
-            "subCategory": "Sub-Category",
-            "selectSubCategory": "Select Sub-Category",
-            "selectCategoryPlaceholder": "Select category…",
-            "model": "Model",
-            "type": "Type",
-            "year": "Year",
-            "hour": "Hour",
-            "evaluationPoints": "Evaluation Points",
-            "auctionStatus": "Auction Status",
-            "loadingModels": "Loading models…",
-            "updatingTypes": "Updating types…",
-            "noModels": "No models available.",
-            "noTypes": "No types available."
-        }
+      "title": "Machines",
+      "header": "Featured Machines",
+      "subtitle": "Browse our wide range of heavy machinery solutions.",
+      "showing": "Showing",
+      "products": "products",
+      "noFound": "No Vehicles Found",
+      "loading": "Loading machines...",
+      "selectSub": "Please Select a Sub-Category",
+      "selectSubDesc": "Choose a specific machine type from the rows above to start browsing our inventory.",
+      "filter": {
+        "title": "Filters",
+        "reset": "Reset",
+        "category": "Category",
+        "parentCategory": "Parent Category",
+        "subCategory": "Sub-Category",
+        "selectSubCategory": "Select Sub-Category",
+        "selectCategoryPlaceholder": "Select category…",
+        "model": "Model",
+        "type": "Type",
+        "year": "Year",
+        "hour": "Hour",
+        "evaluationPoints": "Evaluation Points",
+        "auctionStatus": "Auction Status",
+        "loadingModels": "Loading models…",
+        "updatingTypes": "Updating types…",
+        "noModels": "No models available.",
+        "noTypes": "No types available."
+      }
     },
     "categoriesPage": {
-        "title": "Categories",
-        "header": "All Categories",
-        "subtitle": "Explore our machinery by category to find exactly what you need."
+      "title": "Categories",
+      "header": "All Categories",
+      "subtitle": "Explore our machinery by category to find exactly what you need."
     }
   },
   "auth": {
     "login": {
-        "title": "Login",
-        "header": "Login to your account",
-        "subtitle": "Enter your email below to login to your account",
-        "submit": "Login",
-        "noAccount": "Don't have an account?",
-        "forgot": "Forgot password?",
-        "success": "Login successful",
-        "failed": "Login failed"
+      "title": "Login",
+      "header": "Login to your account",
+      "subtitle": "Enter your email below to login to your account",
+      "submit": "Login",
+      "noAccount": "Don't have an account?",
+      "forgot": "Forgot password?",
+      "success": "Login successful",
+      "failed": "Login failed"
     },
     "register": {
-        "title": "Signup",
-        "header": "Create an account",
-        "subtitle": "Enter your details below to create your account",
-        "submit": "Signup",
-        "hasAccount": "Already have an account?",
-        "success": "Registration successful",
-        "failed": "Registration failed"
+      "title": "Signup",
+      "header": "Create an account",
+      "subtitle": "Enter your details below to create your account",
+      "submit": "Signup",
+      "hasAccount": "Already have an account?",
+      "success": "Registration successful",
+      "failed": "Registration failed"
     },
     "roles": {
-        "label": "Role",
-        "placeholder": "Select a role",
-        "user": "User",
-        "viewer": "Viewer",
-        "moderator": "Moderator"
+      "label": "Role",
+      "placeholder": "Select a role",
+      "user": "User",
+      "viewer": "Viewer",
+      "moderator": "Moderator"
     },
     "forgotPassword": {
-        "title": "Forgot Password",
-        "header": "Forgot Password",
-        "subtitle": "Enter your email address and we'll send you a 6-digit code to reset your password.",
-        "submit": "Send Reset Code",
-        "backToLogin": "Back to Login",
-        "success": "Reset code sent to your email.",
-        "failed": "Failed to send reset code."
+      "title": "Forgot Password",
+      "header": "Forgot Password",
+      "subtitle": "Enter your email address and we'll send you a 6-digit code to reset your password.",
+      "submit": "Send Reset Code",
+      "backToLogin": "Back to Login",
+      "success": "Reset code sent to your email.",
+      "failed": "Failed to send reset code."
     },
     "verifyEmail": {
-        "title": "Verify Email",
-        "header": "Verify Your Email",
-        "subtitle": "We've sent a 6-digit verification code to your email.",
-        "otpLabel": "Verification code",
-        "resendCode": "Resend Code",
-        "resending": "Resending...",
-        "resendIn": "Resend in {seconds}s",
-        "submit": "Complete Verification",
-        "verifying": "Verifying...",
-        "alreadyVerified": "Already verified?",
-        "login": "Login here",
-        "success": "Email verified successfully.",
-        "failed": "Email verification failed.",
-        "resendSuccess": "Verification code resent.",
-        "resendFailed": "Failed to resend code."
+      "title": "Verify Email",
+      "header": "Verify Your Email",
+      "subtitle": "We've sent a 6-digit verification code to your email.",
+      "otpLabel": "Verification code",
+      "resendCode": "Resend Code",
+      "resending": "Resending...",
+      "resendIn": "Resend in {seconds}s",
+      "submit": "Complete Verification",
+      "verifying": "Verifying...",
+      "alreadyVerified": "Already verified?",
+      "login": "Login here",
+      "success": "Email verified successfully.",
+      "failed": "Email verification failed.",
+      "resendSuccess": "Verification code resent.",
+      "resendFailed": "Failed to resend code."
     },
     "resetPassword": {
-        "title": "Reset Password",
-        "header": "Set New Password",
-        "subtitle": "Security is a priority. Please choose a strong password that you haven't used before.",
-        "submit": "Reset Password",
-        "success": "Password updated successfully.",
-        "failed": "Failed to update password.",
-        "invalidToken": "Invalid or missing reset token.",
-        "goBack": "Go back to Forgot Password",
-        "newPassword": "New Password",
-        "confirmNewPassword": "Confirm New Password"
+      "title": "Reset Password",
+      "header": "Set New Password",
+      "subtitle": "Security is a priority. Please choose a strong password that you haven't used before.",
+      "submit": "Reset Password",
+      "success": "Password updated successfully.",
+      "failed": "Failed to update password.",
+      "invalidToken": "Invalid or missing reset token.",
+      "goBack": "Go back to Forgot Password",
+      "newPassword": "New Password",
+      "confirmNewPassword": "Confirm New Password"
     },
     "verifyResetCode": {
-        "title": "Verify Reset Code",
-        "header": "Verify Reset Code",
-        "subtitle": "Enter the 6-digit code we sent to your email to continue resetting your password.",
-        "otpLabel": "6-Digit Code",
-        "resendCode": "Resend Code",
-        "resending": "Resending...",
-        "resendIn": "Resend in {seconds}s",
-        "submit": "Verify & Continue",
-        "verifying": "Verifying...",
-        "changeEmail": "Change email address",
-        "success": "Code verified successfully.",
-        "failed": "Invalid reset code.",
-        "emailRequired": "Email is required to resend reset code.",
-        "resendSuccess": "Reset code resent.",
-        "resendFailed": "Failed to resend code."
+      "title": "Verify Reset Code",
+      "header": "Verify Reset Code",
+      "subtitle": "Enter the 6-digit code we sent to your email to continue resetting your password.",
+      "otpLabel": "6-Digit Code",
+      "resendCode": "Resend Code",
+      "resending": "Resending...",
+      "resendIn": "Resend in {seconds}s",
+      "submit": "Verify & Continue",
+      "verifying": "Verifying...",
+      "changeEmail": "Change email address",
+      "success": "Code verified successfully.",
+      "failed": "Invalid reset code.",
+      "emailRequired": "Email is required to resend reset code.",
+      "resendSuccess": "Reset code resent.",
+      "resendFailed": "Failed to resend code."
     },
     "profile": {
-        "title": "My Profile",
-        "info": {
-            "title": "Personal Information",
-            "description": "Update your name and profile picture.",
-            "nameLabel": "Name",
-            "emailLabel": "Email",
-            "roleLabel": "Role",
-            "emailReadOnly": "Email cannot be changed.",
-            "submit": "Update Profile",
-            "success": "Profile updated successfully.",
-            "failed": "Failed to update profile."
-        },
-        "security": {
-            "title": "Password Management",
-            "description": "Change your password to keep your account secure.",
-            "newPassword": "New Password",
-            "confirmPassword": "Confirm New Password",
-            "submit": "Change Password",
-            "success": "Password changed successfully.",
-            "failed": "Failed to change password."
-        }
+      "title": "My Profile",
+      "info": {
+        "title": "Personal Information",
+        "description": "Update your name and profile picture.",
+        "nameLabel": "Name",
+        "emailLabel": "Email",
+        "roleLabel": "Role",
+        "emailReadOnly": "Email cannot be changed.",
+        "submit": "Update Profile",
+        "success": "Profile updated successfully.",
+        "failed": "Failed to update profile."
+      },
+      "security": {
+        "title": "Password Management",
+        "description": "Change your password to keep your account secure.",
+        "newPassword": "New Password",
+        "confirmPassword": "Confirm New Password",
+        "submit": "Change Password",
+        "success": "Password changed successfully.",
+        "failed": "Failed to change password."
+      }
     },
     "labels": {
-        "email": "Email",
-        "password": "Password",
-        "confirmPassword": "Confirm Password",
-        "name": "Full Name",
-        "phone": "Phone Number"
+      "email": "Email",
+      "password": "Password",
+      "confirmPassword": "Confirm Password",
+      "name": "Full Name",
+      "phone": "Phone Number"
     },
     "validation": {
-        "email": "Invalid email address",
-        "password": "Password must be at least 6 characters",
-        "required": "This field is required",
-        "match": "Passwords do not match"
+      "email": "Invalid email address",
+      "password": "Password must be at least 6 characters",
+      "required": "This field is required",
+      "match": "Passwords do not match"
     }
   },
   "admin": {
