@@ -223,7 +223,7 @@ export function ProductFilters({
     useQuery({
       queryKey: ["filtersByModel", selectedModels],
       queryFn: () => getFiltersByModels(selectedModels),
-      enabled: selectedModels.length > 0,
+      enabled: true,
     });
 
   const parentCategories: ParentCategory[] = parentData?.data?.data ?? [];
@@ -426,8 +426,8 @@ export function ProductFilters({
           </div>
         )}
 
-        {/* ── 4. Types (auto-updated when models change) ─────────────────── */}
-        {selectedModels.length > 0 && (
+        {/* ── 4. Types ─────────────────── */}
+        {dynamicTypes.length > 0 && (
           <div className="space-y-3">
             <SectionTitle title={t('type')} />
             {loadingFiltersByModel ? (
