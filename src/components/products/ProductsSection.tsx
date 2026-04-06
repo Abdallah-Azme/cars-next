@@ -2,6 +2,7 @@
 
 import { type VehicleFilterParams } from "@/lib/actions";
 import { useQuery, keepPreviousData } from "@tanstack/react-query";
+import { useProductsByType } from "@/hooks/use-products-by-type";
 import { useState } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -64,6 +65,9 @@ function ProductSectionContent() {
   const [page, setPage] = useState(1);
   const [perPage, setPerPage] = useState(10);
   const t = useTranslations("Vehicle.inventory");
+  
+  const activeType = filterParams.selectedTypes?.[0];
+  const isByTypeMode = !!activeType;
   const searchParams = useSearchParams();
   const initialParentId = searchParams.get("parentId")
     ? Number(searchParams.get("parentId"))
@@ -99,7 +103,9 @@ function ProductSectionContent() {
   const parentCategories: ParentCategory[] = parentData?.data?.data ?? [];
   const childCategories: ChildCategory[] = childData?.data?.data ?? [];
 
-  const { data, isPending, isPlaceholderData, error } = useQuery({
+  const hasResultsFilter = (filterParams.results?.length ?? 0) > 0;
+
+  const vehiclesQuery = useQuery({
     queryKey: ["vehicles", filterParams, page, perPage, selectedChildIds],
     queryFn: async () => {
       try {
@@ -115,15 +121,32 @@ function ProductSectionContent() {
         throw err;
       }
     },
-    enabled: !!selectedParentId && selectedChildIds.length > 0, // Don't fetch until a sub-category is selected
+    // Fire when: type mode is off AND (a sub-category is selected OR a result filter is active)
+    enabled: !isByTypeMode && (hasResultsFilter || (!!selectedParentId && selectedChildIds.length > 0)),
     placeholderData: keepPreviousData,
   });
+
+  const byTypeQuery = useProductsByType({
+    type: activeType,
+    model: filterParams.selectedModels?.[0],
+    page,
+    perPage,
+    enabled: isByTypeMode,
+  });
+
+  const isPending = isByTypeMode ? byTypeQuery.isPending : vehiclesQuery.isPending;
+  const isPlaceholderData = isByTypeMode ? byTypeQuery.isPlaceholderData : vehiclesQuery.isPlaceholderData;
+  const error = isByTypeMode ? byTypeQuery.error : vehiclesQuery.error;
+  const data = vehiclesQuery.data;
 
   // Robust data extraction
   let vehicles: import("@/types/vehicles").VehicleData[] = [];
   let pagination = null;
 
-  if (data) {
+  if (isByTypeMode) {
+    vehicles = byTypeQuery.data?.vehicles ?? [];
+    pagination = byTypeQuery.data?.pagination ?? null;
+  } else if (data) {
     type ResponseData = {
       data?: {
         vehicles: import("@/types/vehicles").VehicleData[];
@@ -273,7 +296,7 @@ function ProductSectionContent() {
 
         {/* Products */}
         <div className="space-y-4">
-          {selectedChildIds.length > 0 && (
+          {(selectedChildIds.length > 0 || isByTypeMode || hasResultsFilter) && (
             <div className="text-sm text-muted-foreground flex items-center gap-1">
               <span>{t("showing")}</span>
               <span className="font-medium text-foreground">
@@ -290,7 +313,7 @@ function ProductSectionContent() {
                 : "transition-opacity"
             }
           >
-            {selectedChildIds.length === 0 ? (
+            {selectedChildIds.length === 0 && !isByTypeMode && !hasResultsFilter ? (
               <div className="text-center py-20 bg-gray-50 rounded-3xl border-2 border-dashed border-gray-200">
                 <div className="flex flex-col items-center gap-4">
                   <div className="h-16 w-16 bg-red-100 text-red-600 rounded-full flex items-center justify-center animate-bounce">
@@ -336,7 +359,7 @@ function ProductSectionContent() {
           </div>
 
           {/* Pagination */}
-          {selectedChildIds.length > 0 && pagination && pagination.last_page > 1 && (
+          {(selectedChildIds.length > 0 || isByTypeMode || hasResultsFilter) && pagination && pagination.last_page > 1 && (
             <PaginationControls
               pagination={pagination}
               onPageChange={setPage}

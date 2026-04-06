@@ -50,15 +50,20 @@ function ChecklistBox({
   searchable = false,
   maxHeight = "h-64",
 }: {
-  items: string[];
+  items: (string | { label: string; value: string })[];
   selectedItems: string[];
   onToggle: (value: string, checked: boolean) => void;
   searchable?: boolean;
   maxHeight?: string;
 }) {
   const [search, setSearch] = useState("");
-  const filtered = items.filter((i) =>
-    i.toLowerCase().includes(search.toLowerCase()),
+  
+  const normalizedItems = items.map((i) =>
+    typeof i === "string" ? { label: i, value: i } : i,
+  );
+
+  const filtered = normalizedItems.filter((i) =>
+    i.label.toLowerCase().includes(search.toLowerCase()),
   );
 
   return (
@@ -74,16 +79,16 @@ function ChecklistBox({
       <ScrollArea className={cn(maxHeight, "pr-4 overflow-hidden")} >
         <div className="space-y-2">
           {filtered.map((item) => {
-            const id = `chk-${item.replace(/\s+/g, "-").toLowerCase()}`;
+            const id = `chk-${item.value.replace(/\s+/g, "-").toLowerCase()}`;
             return (
-              <div key={item} className="flex items-center gap-2 py-0.5">
+              <div key={item.value} className="flex items-center gap-2 py-0.5">
                 <Checkbox
                   id={id}
-                  checked={selectedItems.includes(item)}
-                  onCheckedChange={(checked) => onToggle(item, !!checked)}
+                  checked={selectedItems.includes(item.value)}
+                  onCheckedChange={(checked) => onToggle(item.value, !!checked)}
                 />
                 <Label htmlFor={id} className="text-sm font-normal cursor-pointer">
-                  {item}
+                  {item.label}
                 </Label>
               </div>
             );
@@ -253,6 +258,12 @@ export function ProductFilters({
       enabled: true,
     });
 
+  const { data: allTypesData } = useQuery({
+    queryKey: ["filtersByModel", []],
+    queryFn: () => getFiltersByModels([]),
+    enabled: true,
+  });
+
   const parentCategories: ParentCategory[] = parentData?.data?.data ?? [];
   const childCategories: ChildCategory[] = childData?.data?.data ?? [];
   const modelItems: ModelItem[] = modelsDataResponse?.data?.data?.models ?? [];
@@ -260,6 +271,8 @@ export function ProductFilters({
     filtersByModelData?.data?.data;
 
   const dynamicTypes = dynamicFilters?.types.map((t) => t.title) ?? [];
+  const allTypes = allTypesData?.data?.data?.types.map((t) => t.title) ?? [];
+  const displayTypes = dynamicTypes.length > 0 ? dynamicTypes : allTypes;
   // const dynamicSizes = dynamicFilters?.sizes.map((s) => s.title) ?? [];
   const dynamicYears = dynamicFilters?.years.map((y) => y.title) ?? [];
   // const dynamicHours = dynamicFilters?.workingHours.map((h) => h.title) ?? [];
@@ -455,20 +468,20 @@ export function ProductFilters({
         )}
 
         {/* ── 4. Types ─────────────────── */}
-        {dynamicTypes.length > 0 && (
+        {displayTypes.length > 0 && (
           <div className="space-y-3">
             <SectionTitle title={t('type')} />
-            {loadingFiltersByModel ? (
+            {loadingFiltersByModel && selectedModels.length > 0 ? (
               <div className="flex items-center gap-2 text-xs text-muted-foreground">
                 <Loader2 className="h-3 w-3 animate-spin" /> {t('updatingTypes')}
               </div>
-            ) : dynamicTypes.length === 0 ? (
+            ) : displayTypes.length === 0 ? (
               <p className="text-xs text-muted-foreground">
                 {t('noTypes')}
               </p>
             ) : (
               <ChecklistBox
-                items={dynamicTypes}
+                items={displayTypes}
                 selectedItems={selectedTypes}
                 onToggle={toggleType}
                 searchable
@@ -558,7 +571,11 @@ export function ProductFilters({
           <div className="space-y-3">
             <SectionTitle title={t('auctionStatus')} />
             <ChecklistBox
-              items={["Sold", "Not Sold"]}
+              items={[
+                { label: "Sold", value: "Sold" },
+                { label: "Not Sold", value: "Not Sold" },
+                { label: "Soon in Auction", value: "Yet To Be Auctioned" },
+              ]}
               selectedItems={selectedResults}
               onToggle={toggleResult}
             />

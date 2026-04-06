@@ -122,6 +122,7 @@ export type VehicleFilterParams = {
   // New category-based filters
   selectedModels?: string[]; // model names for /filters-by-model
   selectedTypes?: string[]; // types chosen from filters-by-model response
+  type?: string; // single type string sent to /by-model-type
   results?: string[]; // Auction results (Sold, Yet To Be Auctioned)
   selectedParentId?: number;
   selectedChildIds?: number[];
