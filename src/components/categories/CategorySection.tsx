@@ -8,44 +8,71 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 
-import CategoryCard from "./CategoryCard";
-import { getCategories } from "@/lib/actions";
+import SubCategoryCard from "./SubCategoryCard";
+import { getParentCategories } from "@/lib/actions";
 import { useQuery } from "@tanstack/react-query";
-import type { Category } from "@/types/categories";
+import type { ParentCategory } from "@/lib/actions";
 
 export default function CategorySection() {
-  const { data } = useQuery({
-    queryKey: ["categories"],
-    queryFn: () => getCategories(),
+  const { data, isLoading, error } = useQuery({
+    queryKey: ["parentCategories"],
+    queryFn: () => getParentCategories(),
   });
 
-  const categories = data?.data?.data ?? [];
+  const parentCategories: ParentCategory[] = data?.data?.data ?? [];
+
+  // Flatten out all subcategories
+  const subCategories = parentCategories.flatMap((parent) =>
+    (parent.children || []).map((child) => ({
+      ...child,
+      parentId: parent.id,
+    }))
+  );
+
+  if (isLoading) {
+    return <div className="py-20 text-center">Loading categories...</div>;
+  }
+
+  if (error) {
+    return <div className="py-20 text-center text-red-500">Error loading categories</div>;
+  }
+
+  if (subCategories.length === 0) {
+     return <div className="py-20 text-center">No categories found.</div>;
+  }
 
   return (
-    <section className="bg-transparent py-4 my-8">
-      <div className="container">
+    <section className="bg-slate-50/50 dark:bg-slate-900/50 py-10 my-8 border-y border-slate-100 dark:border-slate-800">
+      <div className="container relative group/section space-y-8">
+        <div className="flex flex-col gap-2">
+          <h2 className="text-3xl md:text-4xl font-bold text-red-600">
+            Browse by Subcategory
+          </h2>
+          <p className="text-gray-400">
+            Find the perfect vehicle or equipment from our extensive subcategories
+          </p>
+        </div>
         {/* Slider */}
         <Carousel
-          opts={{ align: "center", loop: true }}
+          opts={{ align: "center", loop: true, dragFree: true }}
           className="w-full flex flex-col gap-6"
         >
-          <div className="flex items-center justify-center gap-4">
-            {/* Header */}
-            <div className="flex items-center gap-2">
-              <CarouselPrevious className="bg-red-600 border-none text-white size-8! static translate-x-0 translate-y-0" />
-              <CarouselNext className="bg-red-600 border-none text-white size-8! static translate-x-0 translate-y-0" />
-            </div>
-          </div>
-          <CarouselContent className="justify-center">
-            {categories.map((category: Category, index: number) => (
+          <CarouselContent className="items-center -ml-4">
+            {subCategories.map((sub, index) => (
               <CarouselItem
                 key={index}
-                className="basis-1/3 sm:basis-1/4 lg:basis-1/5 xl:basis-1/6 flex justify-center"
+                className="pl-4 basis-[60%] sm:basis-1/3 md:basis-1/4 lg:basis-1/5 xl:basis-1/6 flex justify-center"
               >
-                <CategoryCard category={category} />
+                <SubCategoryCard category={sub} parentId={sub.parentId} />
               </CarouselItem>
             ))}
           </CarouselContent>
+          
+          {/* Navigation Arrows, hidden by default shown on hover */}
+          <div className="absolute top-1/2 -translate-y-1/2 left-0 right-0 flex justify-between pointer-events-none opacity-0 group-hover/section:opacity-100 transition-opacity duration-300 w-[calc(100%+4rem)] -ml-8">
+            <CarouselPrevious className="pointer-events-auto bg-white/80 hover:bg-white text-blue-600 border-none shadow-md size-12" />
+            <CarouselNext className="pointer-events-auto bg-white/80 hover:bg-white text-blue-600 border-none shadow-md size-12" />
+          </div>
         </Carousel>
       </div>
     </section>

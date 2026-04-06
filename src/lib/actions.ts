@@ -175,6 +175,7 @@ export type ChildCategory = {
   name: string;
   searchKeywords: string;
   image?: string | null;
+  vehiclesCount?: number;
 };
 
 export type ParentCategory = {

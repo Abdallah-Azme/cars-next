@@ -262,8 +262,8 @@ export function ProductFilters({
   const dynamicTypes = dynamicFilters?.types.map((t) => t.title) ?? [];
   // const dynamicSizes = dynamicFilters?.sizes.map((s) => s.title) ?? [];
   const dynamicYears = dynamicFilters?.years.map((y) => y.title) ?? [];
-  const dynamicHours = dynamicFilters?.workingHours.map((h) => h.title) ?? [];
-  const dynamicScores = dynamicFilters?.scores.map((s) => s.title) ?? [];
+  // const dynamicHours = dynamicFilters?.workingHours.map((h) => h.title) ?? [];
+  // const dynamicScores = dynamicFilters?.scores.map((s) => s.title) ?? [];
 
   const notify = (overrides: Partial<VehicleFilterParams>) => {
     const params: VehicleFilterParams = {
@@ -502,6 +502,7 @@ export function ProductFilters({
         )}
 
         {/* ── 6. Working Hours range ─────────────────────────────────────── */}
+        {/*
         {dynamicHours.length > 0 && (
           <div className="space-y-3">
             <SectionTitle title={t('hour')} />
@@ -524,8 +525,10 @@ export function ProductFilters({
 
           </div>
         )}
+        */}
 
         {/* ── 7. Score range ─────────────────────────────────────────────── */}
+        {/*
         {dynamicScores.length > 0 && (
           <div className="space-y-3">
             <SectionTitle title={t('evaluationPoints')} />
@@ -548,6 +551,7 @@ export function ProductFilters({
 
           </div>
         )}
+        */}
 
         {/* ── 8. Auction Status checklist ────────────────────────────────────── */}
         {!exclude.includes("auctionStatus") && (
