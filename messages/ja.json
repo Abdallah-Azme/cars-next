@@ -480,6 +480,7 @@
     "connectWithUs": "お問い合わせ",
     "directLine": "直通ライン",
     "unselected": "未選択",
+    "selected": "選択済み",
     "logout": "ログアウト",
     "logoutSuccess": "ログアウトに成功しました",
     "notFound": {

@@ -480,6 +480,7 @@
     "connectWithUs": "Connect With Us",
     "directLine": "Direct Line",
     "unselected": "Unselected",
+    "selected": "Selected",
     "logout": "Logout",
     "logoutSuccess": "Logged out successfully",
     "notFound": {

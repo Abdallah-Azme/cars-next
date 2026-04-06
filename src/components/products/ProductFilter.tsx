@@ -4,6 +4,9 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
+import { Input } from "@/components/ui/input";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { cn } from "@/lib/utils";
 import {
   Select,
   SelectContent,
@@ -44,30 +47,54 @@ function ChecklistBox({
   items,
   selectedItems,
   onToggle,
+  searchable = false,
+  maxHeight = "h-64",
 }: {
   items: string[];
   selectedItems: string[];
   onToggle: (value: string, checked: boolean) => void;
+  searchable?: boolean;
+  maxHeight?: string;
 }) {
+  const [search, setSearch] = useState("");
+  const filtered = items.filter((i) =>
+    i.toLowerCase().includes(search.toLowerCase()),
+  );
+
   return (
-    <div className="rounded-md border bg-background p-4">
-      <div className="space-y-2">
-        {items.map((item) => {
-          const id = `chk-${item.replace(/\s+/g, "-").toLowerCase()}`;
-          return (
-            <div key={item} className="flex items-center gap-2">
-              <Checkbox
-                id={id}
-                checked={selectedItems.includes(item)}
-                onCheckedChange={(checked) => onToggle(item, !!checked)}
-              />
-              <Label htmlFor={id} className="text-sm font-normal">
-                {item}
-              </Label>
-            </div>
-          );
-        })}
-      </div>
+    <div className="rounded-md border bg-background p-4 space-y-3 overflow-hidden">
+      {searchable && (
+        <Input
+          placeholder="Search..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          className="h-8 text-xs focus-visible:ring-red-600"
+        />
+      )}
+      <ScrollArea className={cn(maxHeight, "pr-4 overflow-hidden")} >
+        <div className="space-y-2">
+          {filtered.map((item) => {
+            const id = `chk-${item.replace(/\s+/g, "-").toLowerCase()}`;
+            return (
+              <div key={item} className="flex items-center gap-2 py-0.5">
+                <Checkbox
+                  id={id}
+                  checked={selectedItems.includes(item)}
+                  onCheckedChange={(checked) => onToggle(item, !!checked)}
+                />
+                <Label htmlFor={id} className="text-sm font-normal cursor-pointer">
+                  {item}
+                </Label>
+              </div>
+            );
+          })}
+          {filtered.length === 0 && (
+            <p className="text-xs text-muted-foreground py-2 text-center">
+              No results found
+            </p>
+          )}
+        </div>
+      </ScrollArea>
     </div>
   );
 }
@@ -421,6 +448,7 @@ export function ProductFilters({
                 items={modelItems.map((m) => m.name)}
                 selectedItems={selectedModels}
                 onToggle={toggleModel}
+                searchable
               />
             )}
           </div>
@@ -443,6 +471,7 @@ export function ProductFilters({
                 items={dynamicTypes}
                 selectedItems={selectedTypes}
                 onToggle={toggleType}
+                searchable
               />
             )}
           </div>
