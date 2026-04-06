@@ -13,13 +13,13 @@ export default function SubCategoryCard({
   return (
     <Link
       href={`/products?parentId=${parentId}&childId=${category.id}`}
-      className="group relative block w-full max-w-[280px] aspect-4/3 rounded-[2.5rem] overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 hover:-translate-y-1"
+      className="group relative block w-full max-w-[350px] aspect-4/3 rounded-[2.5rem] overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 hover:-translate-y-1"
     >
       <FallbackImage
         src={category.image || ""}
         alt={category.name || "subcategory"}
-        width={400}
-        height={300}
+        width={600}
+        height={450}
         className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
       />
       {/* Gradient Overlay for text readability */}

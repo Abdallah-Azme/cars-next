@@ -61,7 +61,7 @@ export default function CategorySection() {
             {subCategories.map((sub, index) => (
               <CarouselItem
                 key={index}
-                className="pl-4 basis-[60%] sm:basis-1/3 md:basis-1/4 lg:basis-1/5 xl:basis-1/6 flex justify-center"
+                className="pl-4 basis-[80%] sm:basis-1/2 md:basis-1/3 lg:basis-1/4 xl:basis-1/5 flex justify-center"
               >
                 <SubCategoryCard category={sub} parentId={sub.parentId} />
               </CarouselItem>
