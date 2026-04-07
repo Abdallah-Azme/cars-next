@@ -104,8 +104,8 @@
       "sold": "Sold",
       "notSold": "Not Sold",
       "yetToBeAuctioned": "Soon in Auction",
-      "soldPrice": "Selling Price",
-      "startPrice": "Start Price",
+      "soldPrice": "Price",
+      "startPrice": "Price",
       "tbd": "Ask for Price",
       "acceptanceEnds": "Acceptance Ends:",
       "acceptancePeriod": "Acceptance Period"
@@ -312,7 +312,7 @@
       "items": "{count} items",
       "itemsTotal": "Total: {count} vehicles",
       "noSessions": "No auction sessions found",
-      "startPrice": "Start price",
+      "startPrice": "Price",
       "currency": "Yen",
       "specs": {
         "model": "Model",

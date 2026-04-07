@@ -104,8 +104,8 @@
       "sold": "تم البيع",
       "notSold": "لم يباع",
       "yetToBeAuctioned": "قريباً في المزاد",
-      "soldPrice": "سعر البيع",
-      "startPrice": "سعر البداية",
+      "soldPrice": "السعر",
+      "startPrice": "السعر",
       "tbd": "اسأل عن السعر",
       "acceptanceEnds": "ينتهي القبول في:",
       "acceptancePeriod": "فترة القبول"
@@ -312,7 +312,7 @@
       "items": "{count} منتجات",
       "itemsTotal": "الإجمالي: {count} معدات",
       "noSessions": "لم يتم العثور على جلسات مزاد",
-      "startPrice": "سعر البداية",
+      "startPrice": "السعر",
       "currency": "ين",
       "specs": {
         "model": "الموديل",

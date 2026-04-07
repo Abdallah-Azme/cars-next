@@ -29,31 +29,44 @@ function buildVehicleQS(
   childCategoryIds: number[],
 ) {
   const q = new URLSearchParams();
-  if (params.lotNumber) {
-    q.set("lot_number", params.lotNumber);
-    // If lot number is searched, typically we want to ignore other filters
-    // to search globally, but we still respect pagination.
-  } else {
-    // Deduplicate child category IDs
-    const uniqueChildIds = Array.from(new Set(childCategoryIds));
-    if (uniqueChildIds.length > 0) {
-      uniqueChildIds.forEach((id) =>
-        q.append("child_category_id[]", String(id)),
-      );
-    }
-    params.selectedModels?.forEach((v) => q.append("selection_model[]", v));
-    params.selectedTypes?.forEach((v) => q.append("vehicle_type[]", v));
-    params.sizes?.forEach((v) => q.append("vehicle_size[]", v));
-    params.results?.forEach((v) => q.append("result[]", v));
-    if (params.yearFrom) q.set("year_min", params.yearFrom);
-    if (params.yearTo) q.set("year_max", params.yearTo);
-    if (params.hourFrom) q.set("working_hours_min", params.hourFrom);
-    if (params.hourTo) q.set("working_hours_max", params.hourTo);
-    if (params.scoreFrom) q.set("score", params.scoreFrom);
-    if (params.holdingDate) q.set("holding_date", params.holdingDate);
-  }
+
+  // child_category_id[] (deduplicated)
+  const uniqueChildIds = Array.from(new Set(childCategoryIds));
+  uniqueChildIds.forEach((id) => q.append("child_category_id[]", String(id)));
+
+  // selection_model[] — model names
+  params.selectedModels?.forEach((v) => q.append("selection_model[]", v));
+
+  // vehicle_type[]
+  params.selectedTypes?.forEach((v) => q.append("vehicle_type[]", v));
+
+  // vehicle_size[]
+  params.sizes?.forEach((v) => q.append("vehicle_size[]", v));
+
+  // result[]
+  params.results?.forEach((v) => q.append("result[]", v));
+
+  // year range
+  if (params.yearFrom) q.set("year_min", params.yearFrom);
+  if (params.yearTo) q.set("year_max", params.yearTo);
+
+  // working hours range
+  if (params.hourFrom) q.set("working_hours_min", params.hourFrom);
+  if (params.hourTo) q.set("working_hours_max", params.hourTo);
+
+  // score (single value per API)
+  if (params.scoreFrom) q.set("score", params.scoreFrom);
+
+  // holding_date
+  if (params.holdingDate) q.set("holding_date", params.holdingDate);
+
+  // lot_number[] — API expects array bracket notation
+  if (params.lotNumber) q.append("lot_number[]", params.lotNumber);
+
+  // pagination
   q.set("page", String(page));
   q.set("per_page", String(perPage));
+
   return q.toString();
 }
 
