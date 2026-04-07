@@ -1,15 +1,19 @@
 "use client";
 
+import Image from "next/image";
+
 import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
   SidebarGroup,
   SidebarHeader,
+  SidebarMenu,
+  SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/admin/ui/sidebar";
 import { cn } from "@/lib/utils";
-import { LayoutPanelTop, LogOut, Truck, Users, Loader2, Settings } from "lucide-react";
+import { LayoutPanelTop, LogOut, Truck, Users, Loader2, Settings, Info } from "lucide-react";
 import { Link } from "@/i18n/routing";
 import { usePathname, useRouter } from "next/navigation";
 import { Button } from "../ui/button";
@@ -55,6 +59,11 @@ export function AppSidebar() {
       href: "/admin/settings",
       icon: Settings,
     },
+    {
+      title: t("aboutUs"),
+      href: "/admin/about-us",
+      icon: Info,
+    },
   ];
 
   const handleLogout = async () => {
@@ -71,47 +80,87 @@ export function AppSidebar() {
   };
 
   return (
-    <Sidebar side={isRtl ? "right" : "left"}>
-      <SidebarHeader className={`flex flex-col items-center gap-2 border-b-2 ${isRtl ? 'text-right' : 'text-left'}`}>
-        <img src="/logo-icon.jpeg" alt="logo" className="w-22" />
-        <h1 className="text-xl font-bold">{t("title")}</h1>
+    <Sidebar side={isRtl ? "right" : "left"} className="border-none shadow-xl">
+      <SidebarHeader className="p-6 border-b border-neutral-100 bg-white">
+        <div className={cn("flex items-center gap-4", isRtl && "flex-row-reverse")}>
+          <div className="relative size-12 overflow-hidden rounded-xl border border-neutral-100 shadow-sm bg-neutral-50 p-1">
+             <Image 
+                src="/logo-icon.jpeg" 
+                alt="logo" 
+                fill 
+                className="object-contain p-1" 
+             />
+          </div>
+          <div className={cn(isRtl ? 'text-right' : 'text-left')}>
+            <h1 className="text-lg font-extrabold tracking-tight text-neutral-900 leading-none">{t("title")}</h1>
+            <p className="mt-1 text-[10px] uppercase tracking-widest text-neutral-400 font-bold block">Dashboard</p>
+          </div>
+        </div>
       </SidebarHeader>
-      <SidebarContent>
-        <SidebarGroup className="flex flex-col gap-2 p-4">
-          {navigations.map((nav) => {
-            const isActive = pathname === nav.href;
-            return (
-              <SidebarMenuItem key={nav.title}>
-                <Link
-                  href={nav.href}
-                  className={cn(
-                    "font-semibold flex items-center gap-2 p-2 rounded hover:bg-red-700 hover:text-white transition-colors",
-                    isRtl && "flex-row-reverse text-right",
-                    isActive && "bg-red-700 text-white",
-                  )}
-                >
-                  <nav.icon size={20} className={isRtl ? "ml-2" : "mr-2"} />
-                  {nav.title}
-                </Link>
-              </SidebarMenuItem>
-            );
-          })}
+
+      <SidebarContent className="bg-white">
+        <SidebarGroup className="px-4 py-6">
+          <div className={cn("px-4 py-2 mb-4", isRtl ? "text-right" : "text-left")}>
+            <h2 className="text-[10px] font-bold uppercase tracking-widest text-neutral-400">Main Navigation</h2>
+          </div>
+          <SidebarMenu className="gap-2">
+            {navigations.map((nav) => {
+              const isActive = pathname === nav.href;
+              return (
+                <SidebarMenuItem key={nav.title}>
+                  <SidebarMenuButton
+                    asChild
+                    isActive={isActive}
+                    className={cn(
+                      "group relative flex items-center gap-4 rounded-xl px-4 py-6 transition-all duration-300 ease-in-out border border-transparent",
+                      isActive
+                        ? "bg-red-700 text-white shadow-lg shadow-red-200 border-red-800"
+                        : "text-neutral-500 hover:bg-neutral-50 hover:text-neutral-900 hover:border-neutral-100",
+                      isRtl && "flex-row-reverse text-right"
+                    )}
+                  >
+                    <Link href={nav.href} className="w-full h-full">
+                      <nav.icon 
+                        size={22} 
+                        className={cn(
+                          "transition-all duration-300 group-hover:scale-110",
+                          isActive ? "text-white rotate-3" : "text-neutral-400 group-hover:text-red-600"
+                        )} 
+                      />
+                      <span className="font-semibold tracking-tight text-sm">{nav.title}</span>
+                      
+                      {isActive && (
+                        <span className={cn(
+                          "absolute w-1.5 h-6 bg-white rounded-full transition-all duration-300",
+                          isRtl ? "left-2" : "right-2"
+                        )} />
+                      )}
+                    </Link>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              );
+            })}
+          </SidebarMenu>
         </SidebarGroup>
-      </SidebarContent>
-      <SidebarFooter className="border-t-2 p-4">
+      </SidebarContent>      <SidebarFooter className="p-4 border-t border-neutral-100 bg-white">
         <Button 
-          variant="destructive" 
-          size={"lg"} 
-          className={cn("bg-red-700 w-full flex items-center gap-2", isRtl && "flex-row-reverse")}
+          variant="ghost" 
+          size="lg"
+          className={cn(
+            "w-full group flex items-center gap-4 rounded-xl px-4 py-7 text-neutral-500 hover:bg-neutral-50 hover:text-red-700 transition-all duration-300 border border-transparent hover:border-red-100", 
+            isRtl && "flex-row-reverse text-right"
+          )}
           onClick={handleLogout}
           disabled={isLoggingOut}
         >
-          {isLoggingOut ? (
-            <Loader2 className="animate-spin" />
-          ) : (
-            <LogOut className={isRtl ? "rotate-180" : ""} />
-          )}
-          {t("logout")}
+          <div className="flex size-10 items-center justify-center rounded-lg bg-neutral-50 group-hover:bg-red-50 transition-colors">
+            {isLoggingOut ? (
+              <Loader2 className="animate-spin size-5 text-red-600" />
+            ) : (
+              <LogOut className={cn("size-5 transition-transform group-hover:scale-110 group-hover:text-red-600", isRtl ? "rotate-180" : "")} />
+            )}
+          </div>
+          <span className="font-bold tracking-tight">{t("logout")}</span>
         </Button>
       </SidebarFooter>
     </Sidebar>

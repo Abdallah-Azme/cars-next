@@ -1,4 +1,8 @@
 {
+  "AboutUs": {
+    "title": "About Us",
+    "badge": "Our Story"
+  },
   "Navbar": {
     "home": "Home",
     "machines": "Inventory",
@@ -296,6 +300,7 @@
       "categories": "Categories",
       "users": "Users",
       "settings": "Settings",
+      "aboutUs": "About Us",
       "logout": "Logout"
     },
     "products": {

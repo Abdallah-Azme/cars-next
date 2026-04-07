@@ -26,7 +26,7 @@
               }
             ],
             "url": {
-              "raw": "{{url}}/vehicles?per_page=30&result[]=Sold",
+              "raw": "{{url}}/vehicles?result[]=Yet To Be Auctioned&per_page=804",
               "host": [
                 "{{url}}"
               ],
@@ -116,6 +116,11 @@
                   "disabled": true
                 },
                 {
+                  "key": "vehicle_type[]",
+                  "value": "Wheel Loader",
+                  "disabled": true
+                },
+                {
                   "key": "child_category_id[]",
                   "value": "17",
                   "disabled": true
@@ -123,23 +128,30 @@
                 {
                   "key": "child_category_id[]",
                   "value": "18",
-                  "type": "text",
                   "disabled": true
-                },
-                {
-                  "key": "per_page",
-                  "value": "30"
                 },
                 {
                   "key": "result[]",
-                  "value": "Not Sold",
-                  "type": "text",
-                  "disabled": true
+                  "value": "Yet To Be Auctioned"
                 },
                 {
                   "key": "result[]",
                   "value": "Sold",
-                  "type": "text"
+                  "disabled": true
+                },
+                {
+                  "key": "lot_number[]",
+                  "value": "1002",
+                  "disabled": true
+                },
+                {
+                  "key": "lot_number[]",
+                  "value": "1001",
+                  "disabled": true
+                },
+                {
+                  "key": "per_page",
+                  "value": "804"
                 }
               ]
             }
@@ -163,18 +175,132 @@
               }
             ],
             "url": {
-              "raw": "{{url}}/vehicles/:id",
+              "raw": "{{url}}/vehicles?result[]=Yet To Be Auctioned&per_page=12",
               "host": [
                 "{{url}}"
               ],
               "path": [
-                "vehicles",
-                ":id"
+                "vehicles"
               ],
-              "variable": [
+              "query": [
                 {
-                  "key": "id",
-                  "value": "10180"
+                  "key": "auction_day",
+                  "value": "wednesday",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "holding_date",
+                  "value": "2026-03-04",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "year_min",
+                  "value": "20",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "year_max",
+                  "value": "30",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "working_hours_min",
+                  "value": "10",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "working_hours_max",
+                  "value": "20",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "score[]",
+                  "value": "N",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "vehicle_size[]",
+                  "value": "Heavy-Duty Truck",
+                  "description": "all for all values ",
+                  "disabled": true
+                },
+                {
+                  "key": "vehicle_size[]",
+                  "value": "Construction Machinery",
+                  "disabled": true
+                },
+                {
+                  "key": "selection_maker[]",
+                  "value": "OTHER JAPAN",
+                  "description": "all for all values",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "selection_maker[]",
+                  "value": "OTHER IMPORTED",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "selection_model[]",
+                  "value": "Komatsu",
+                  "disabled": true
+                },
+                {
+                  "key": "selection_model[]",
+                  "value": "CAT",
+                  "disabled": true
+                },
+                {
+                  "key": "vehicle_type[]",
+                  "value": "Mini Wheel Loader",
+                  "disabled": true
+                },
+                {
+                  "key": "vehicle_type[]",
+                  "value": "Wheel Loader",
+                  "disabled": true
+                },
+                {
+                  "key": "child_category_id[]",
+                  "value": "17",
+                  "disabled": true
+                },
+                {
+                  "key": "child_category_id[]",
+                  "value": "18",
+                  "disabled": true
+                },
+                {
+                  "key": "result[]",
+                  "value": "Yet To Be Auctioned"
+                },
+                {
+                  "key": "result[]",
+                  "value": "Sold",
+                  "disabled": true
+                },
+                {
+                  "key": "lot_number[]",
+                  "value": "1002",
+                  "disabled": true
+                },
+                {
+                  "key": "lot_number[]",
+                  "value": "1001",
+                  "disabled": true
+                },
+                {
+                  "key": "per_page",
+                  "value": "12"
                 }
               ]
             }
@@ -492,9 +618,16 @@
                 },
                 {
                   "key": "email",
-                  "value": "takwa1@gmail.com",
+                  "value": "takwa9@gmail.com",
                   "type": "text",
-                  "uuid": "640043c6-36df-4a1c-8fb6-c1fe8a2ae171"
+                  "uuid": "640043c6-36df-4a1c-8fb6-c1fe8a2ae171",
+                  "disabled": true
+                },
+                {
+                  "key": "mobile",
+                  "value": "+201281927142",
+                  "type": "text",
+                  "uuid": "823d4fc4-bd5e-41fe-9968-81e06dc538ea"
                 },
                 {
                   "key": "password",
@@ -556,7 +689,7 @@
               "formdata": [
                 {
                   "key": "email",
-                  "value": "takwa1@gmail.com",
+                  "value": "admin@example.com",
                   "type": "text",
                   "uuid": "19762c3f-74b0-4097-8e5e-d4af188233a6"
                 },
@@ -565,6 +698,13 @@
                   "value": "Fcis_it4",
                   "type": "text",
                   "uuid": "09d5d58d-2d23-413e-9920-f58b7c83bd06"
+                },
+                {
+                  "key": "mobile",
+                  "value": "201281927142",
+                  "type": "text",
+                  "uuid": "df903600-b224-465c-960f-f2b7059b5145",
+                  "disabled": true
                 }
               ]
             },
@@ -605,8 +745,8 @@
               "mode": "formdata",
               "formdata": [
                 {
-                  "key": "email",
-                  "value": "takwa1@gmail.com",
+                  "key": "mobile",
+                  "value": "201281927142",
                   "type": "text",
                   "uuid": "19762c3f-74b0-4097-8e5e-d4af188233a6"
                 }
@@ -649,14 +789,14 @@
               "mode": "formdata",
               "formdata": [
                 {
-                  "key": "email",
-                  "value": "takwa1@gmail.com",
+                  "key": "mobile",
+                  "value": "201281927142",
                   "type": "text",
                   "uuid": "19762c3f-74b0-4097-8e5e-d4af188233a6"
                 },
                 {
                   "key": "code",
-                  "value": "270563",
+                  "value": "364441",
                   "type": "text",
                   "uuid": "e5fddd0b-a02f-4eaf-beec-a9a8b50d3d07"
                 }
@@ -744,8 +884,8 @@
               "mode": "formdata",
               "formdata": [
                 {
-                  "key": "email",
-                  "value": "adham@gmail.com",
+                  "key": "mobile",
+                  "value": "201281927142",
                   "type": "text",
                   "uuid": "19762c3f-74b0-4097-8e5e-d4af188233a6"
                 }
@@ -788,14 +928,14 @@
               "mode": "formdata",
               "formdata": [
                 {
-                  "key": "email",
-                  "value": "takwa@gmail.com",
+                  "key": "mobile",
+                  "value": "201281927142",
                   "type": "text",
                   "uuid": "19762c3f-74b0-4097-8e5e-d4af188233a6"
                 },
                 {
                   "key": "code",
-                  "value": "764659",
+                  "value": "175918",
                   "type": "text",
                   "uuid": "f82d8d31-04eb-4f79-a566-b8ebdc3ce4f0"
                 }
@@ -839,7 +979,7 @@
               "formdata": [
                 {
                   "key": "token",
-                  "value": "1DXDfiIDRaAP1VNVPSl0q9buczwhwswBFwh8O2nxlSIgc2OAo0tMOtRE2uaC",
+                  "value": "hU8Eh1Dt4Et8s1fRrvzxPJjubG7pc5gO193kD3xCSkAMEQkgzr6uroo3VdJO",
                   "type": "text",
                   "uuid": "19762c3f-74b0-4097-8e5e-d4af188233a6"
                 },
@@ -1037,7 +1177,7 @@
               }
             ],
             "url": {
-              "raw": "{{url}}/users?per_page=10",
+              "raw": "{{url}}/users?per_page=20",
               "host": [
                 "{{url}}"
               ],
@@ -1053,7 +1193,7 @@
                 },
                 {
                   "key": "per_page",
-                  "value": "10"
+                  "value": "20"
                 }
               ]
             }
@@ -1457,20 +1597,6 @@
               "mode": "formdata",
               "formdata": [
                 {
-                  "key": "hero_title",
-                  "value": "Powerful Heavy Equipment",
-                  "type": "text",
-                  "uuid": "09e5ee7b-557e-4f1c-9e18-ff45524db08f",
-                  "disabled": true
-                },
-                {
-                  "key": "hero_description",
-                  "value": "For Every Construction Project\nWe provide high-performance heavy machinery for construction, roadwork, infrastructure, and industrial projects — built for reliability and maximum productivity.",
-                  "type": "text",
-                  "uuid": "974c1c00-0285-451e-884b-0ce7c19d690e",
-                  "disabled": true
-                },
-                {
                   "key": "hero_image",
                   "type": "file",
                   "uuid": "d80bd947-3940-4e94-a8d2-406e11a6f153",
@@ -1492,39 +1618,40 @@
                   "disabled": true
                 },
                 {
-                  "key": "statistics_heading",
-                  "value": "Our Performance in Numbers",
-                  "type": "text",
-                  "uuid": "1fad97d8-7992-433f-b63a-f981be5f8b7f",
-                  "disabled": true
-                },
-                {
-                  "key": "statistics_description",
-                  "value": "Delivering strength, reliability, and excellence in every project.",
-                  "type": "text",
-                  "uuid": "4bbe3874-6aab-4e3b-af7d-ca2ac9b17a54",
-                  "disabled": true
-                },
-                {
                   "key": "statistics[0][id]",
                   "value": "1",
                   "type": "text",
-                  "uuid": "c55eec64-8603-433d-8307-d873d22d68dc",
-                  "disabled": true
+                  "uuid": "c55eec64-8603-433d-8307-d873d22d68dc"
                 },
                 {
                   "key": "statistics[0][value]",
                   "value": "150+",
                   "type": "text",
-                  "uuid": "0a5c751a-5493-4889-a84e-3bf455c9b986",
-                  "disabled": true
+                  "uuid": "0a5c751a-5493-4889-a84e-3bf455c9b986"
                 },
                 {
-                  "key": "statistics[0][label]",
+                  "key": "statistics[0][label_ar]",
                   "value": "Years of Experience",
                   "type": "text",
-                  "uuid": "d1db5400-a5b4-4f53-af67-f1e5d77da64a",
-                  "disabled": true
+                  "uuid": "d1db5400-a5b4-4f53-af67-f1e5d77da64a"
+                },
+                {
+                  "key": "statistics[0][label_en]",
+                  "value": "Years of Experience",
+                  "type": "text",
+                  "uuid": "12076e1d-cf40-4522-8a24-66f9f2d0c606"
+                },
+                {
+                  "key": "statistics[0][label_jp]",
+                  "value": "Years of Experience",
+                  "type": "text",
+                  "uuid": "670286bd-784b-4c7e-927a-b65aa5f35839"
+                },
+                {
+                  "key": "statistics[0][label_sw]",
+                  "value": "Years of Experience",
+                  "type": "text",
+                  "uuid": "13138d48-7b52-4aa7-b9c3-a5a3fec907bc"
                 },
                 {
                   "key": "statistics[1][id]",
@@ -1590,38 +1717,10 @@
                   "disabled": true
                 },
                 {
-                  "key": "site_name",
-                  "value": "site_name",
-                  "type": "text",
-                  "uuid": "0f3646b5-7cdc-48f8-8471-dc2d315e050d",
-                  "disabled": true
-                },
-                {
                   "key": "site_logo",
                   "type": "file",
                   "uuid": "1a42d630-e376-432b-967a-791f36b5e548",
                   "src": "postman-cloud:///1f1205d6-80d5-4e70-a159-7501783250de",
-                  "disabled": true
-                },
-                {
-                  "key": "meta_title",
-                  "value": "meta_title",
-                  "type": "text",
-                  "uuid": "bacbff5e-d232-42ea-9b1d-adde7c7d87e8",
-                  "disabled": true
-                },
-                {
-                  "key": "meta_description",
-                  "value": "meta_description",
-                  "type": "text",
-                  "uuid": "cb7e0af3-c6e1-483c-a14e-c06b00233d47",
-                  "disabled": true
-                },
-                {
-                  "key": "meta_keywords",
-                  "value": "meta_keywords",
-                  "type": "text",
-                  "uuid": "8ac9204c-5798-44ad-b9bc-7b2d6751e1bb",
                   "disabled": true
                 },
                 {
@@ -1643,12 +1742,6 @@
                   "value": "01065552444",
                   "type": "text",
                   "uuid": "07dd2e44-3a7a-4dc1-9275-cec1926ba6bc"
-                },
-                {
-                  "key": "address",
-                  "value": "طنطا الملاحه-شارع مساكن المحامين",
-                  "type": "text",
-                  "uuid": "e42f4f09-693a-4d67-a3a8-d2948d2e8881"
                 },
                 {
                   "key": "facebook",
@@ -1716,6 +1809,222 @@
                   "type": "text",
                   "uuid": "0149f85e-5ecb-40a6-a0aa-e848df132b01",
                   "disabled": true
+                },
+                {
+                  "key": "site_name_ar",
+                  "value": "site_name_ar",
+                  "type": "text",
+                  "uuid": "72a3c293-a19a-4051-8ba9-e5026d6e9d3a"
+                },
+                {
+                  "key": "site_name_en",
+                  "value": "site_name_en",
+                  "type": "text",
+                  "uuid": "5ea9afc8-906d-4656-93a7-81b8d759ad84"
+                },
+                {
+                  "key": "site_name_jp",
+                  "value": "site_name_jp",
+                  "type": "text",
+                  "uuid": "d55db1dc-693f-4095-a4c2-0223d9aefa2f"
+                },
+                {
+                  "key": "site_name_sw",
+                  "value": "site_name_sw",
+                  "type": "text",
+                  "uuid": "625ba752-fc0d-4e1a-88b2-13bae0d0b014"
+                },
+                {
+                  "key": "hero_title_ar",
+                  "value": "hero_title_ar",
+                  "type": "text",
+                  "uuid": "7e354252-9f87-4312-9190-a8d1c384c842"
+                },
+                {
+                  "key": "hero_title_en",
+                  "value": "hero_title_ar",
+                  "type": "text",
+                  "uuid": "5eff0611-a108-4470-a7ed-606b5715e5fc"
+                },
+                {
+                  "key": "hero_title_jp",
+                  "value": "hero_title_ar",
+                  "type": "text",
+                  "uuid": "71399a8a-59bc-4475-8427-700749dbf461"
+                },
+                {
+                  "key": "hero_title_sw",
+                  "value": "hero_title_ar",
+                  "type": "text",
+                  "uuid": "09507146-854a-4aaa-9336-fe2230bd62fd"
+                },
+                {
+                  "key": "hero_description_ar",
+                  "value": "hero_description_ar",
+                  "type": "text",
+                  "uuid": "5ed76b4c-b4e4-49fa-9320-1b3376eff01c"
+                },
+                {
+                  "key": "hero_description_en",
+                  "value": "hero_description_ar",
+                  "type": "text",
+                  "uuid": "9f16b2ea-febb-441a-9db6-cf810d8ba632"
+                },
+                {
+                  "key": "hero_description_jp",
+                  "value": "hero_description_ar",
+                  "type": "text",
+                  "uuid": "bfdad5aa-7129-4d20-b79e-be8de0b3e670"
+                },
+                {
+                  "key": "hero_description_sw",
+                  "value": "hero_description_ar",
+                  "type": "text",
+                  "uuid": "24100964-231a-4bc3-9727-a5812aab0f14"
+                },
+                {
+                  "key": "statistics_heading_ar",
+                  "value": "statistics_heading_ar",
+                  "type": "text",
+                  "uuid": "58992b38-7702-4e4c-95df-c17e6c1db248"
+                },
+                {
+                  "key": "statistics_heading_en",
+                  "value": "statistics_heading_ar",
+                  "type": "text",
+                  "uuid": "f1cf1f1f-f905-46d7-bf7c-ff789c8b4972"
+                },
+                {
+                  "key": "statistics_heading_jp",
+                  "value": "statistics_heading_ar",
+                  "type": "text",
+                  "uuid": "4231a547-87be-4da4-83c2-abc28860e418"
+                },
+                {
+                  "key": "statistics_heading_sw",
+                  "value": "statistics_heading_ar",
+                  "type": "text",
+                  "uuid": "cb0a06f2-18fd-48f3-b301-8ef65b5b043a"
+                },
+                {
+                  "key": "statistics_description_ar",
+                  "value": "statistics_description_ar",
+                  "type": "text",
+                  "uuid": "f453bb12-c428-4242-bddf-c681d0a537e1"
+                },
+                {
+                  "key": "statistics_description_en",
+                  "value": "statistics_description_ar",
+                  "type": "text",
+                  "uuid": "08254b36-c43e-4027-8103-8d61070ee723"
+                },
+                {
+                  "key": "statistics_description_jp",
+                  "value": "statistics_description_ar",
+                  "type": "text",
+                  "uuid": "b901a2f3-414b-44f5-8bf4-244abcfb5c47"
+                },
+                {
+                  "key": "statistics_description_sw",
+                  "value": "statistics_description_ar",
+                  "type": "text",
+                  "uuid": "224ed45e-c4ba-4e24-8451-d32e65854766"
+                },
+                {
+                  "key": "meta_title_ar",
+                  "value": "meta_title_ar",
+                  "type": "text",
+                  "uuid": "9f44d20a-c5e0-450c-a32f-190c6c8a7932"
+                },
+                {
+                  "key": "meta_title_en",
+                  "value": "meta_title_ar",
+                  "type": "text",
+                  "uuid": "05566479-4fe9-4fe3-84d2-b0313d69cc63"
+                },
+                {
+                  "key": "meta_title_jp",
+                  "value": "meta_title_ar",
+                  "type": "text",
+                  "uuid": "8129f14d-3cec-4bfa-9a97-83fb03da96f2"
+                },
+                {
+                  "key": "meta_title_sw",
+                  "value": "meta_title_ar",
+                  "type": "text",
+                  "uuid": "39d25215-a574-45cf-98fe-f60c6b35adba"
+                },
+                {
+                  "key": "meta_description_ar",
+                  "value": "meta_keywords_ar",
+                  "type": "text",
+                  "uuid": "ce54d735-d314-486c-9a96-34e8cbc1d480"
+                },
+                {
+                  "key": "meta_description_en",
+                  "value": "meta_keywords_ar",
+                  "type": "text",
+                  "uuid": "0e65c103-2024-47ce-8491-80674d81ffb1"
+                },
+                {
+                  "key": "meta_description_jp",
+                  "value": "meta_keywords_ar",
+                  "type": "text",
+                  "uuid": "3aac55fd-84ba-45ec-b541-4ef8eb173b3c"
+                },
+                {
+                  "key": "meta_description_sw",
+                  "value": "meta_keywords_ar",
+                  "type": "text",
+                  "uuid": "2ce2ad24-4345-41c7-a4f5-2c65452e7207"
+                },
+                {
+                  "key": "meta_keywords_ar",
+                  "value": "meta_keywords_ar",
+                  "type": "text",
+                  "uuid": "74710530-46df-42f0-b002-c7bba24ed883"
+                },
+                {
+                  "key": "meta_keywords_en",
+                  "value": "meta_keywords_ar",
+                  "type": "text",
+                  "uuid": "0287baf6-7261-462d-97f1-144c95467888"
+                },
+                {
+                  "key": "meta_keywords_jp",
+                  "value": "meta_keywords_ar",
+                  "type": "text",
+                  "uuid": "6e9636ac-0e7d-437b-88de-5828fff05023"
+                },
+                {
+                  "key": "meta_keywords_sw",
+                  "value": "meta_keywords_ar",
+                  "type": "text",
+                  "uuid": "27644f0a-14ca-4f62-b014-7d9761e6c578"
+                },
+                {
+                  "key": "address_ar",
+                  "value": "طنطا الملاحه-شارع مساكن المحامين",
+                  "type": "text",
+                  "uuid": "8cd5249d-c166-4b24-8e05-132687c4ff25"
+                },
+                {
+                  "key": "address_en",
+                  "value": "طنطا الملاحه-شارع مساكن المحامين",
+                  "type": "text",
+                  "uuid": "ad58e147-0296-41aa-91f6-3fe05dad90b4"
+                },
+                {
+                  "key": "address_jp",
+                  "value": "طنطا الملاحه-شارع مساكن المحامين",
+                  "type": "text",
+                  "uuid": "99468f8a-842a-4d70-95cd-5c9dd75ab6fa"
+                },
+                {
+                  "key": "address_sw",
+                  "value": "طنطا الملاحه-شارع مساكن المحامين",
+                  "type": "text",
+                  "uuid": "f90c63a9-08c1-487b-b1bf-7a5d1281d010"
                 }
               ]
             },
@@ -2005,7 +2314,7 @@
               }
             ],
             "url": {
-              "raw": "{{url}}/child-categories?parent_id[]=2&parent_id[]=3&parent_id[]=1",
+              "raw": "{{url}}/child-categories?parent_id[]=1",
               "host": [
                 "{{url}}"
               ],
@@ -2015,17 +2324,7 @@
               "query": [
                 {
                   "key": "parent_id[]",
-                  "value": "2"
-                },
-                {
-                  "key": "parent_id[]",
-                  "value": "3",
-                  "type": "text"
-                },
-                {
-                  "key": "parent_id[]",
-                  "value": "1",
-                  "type": "text"
+                  "value": "1"
                 }
               ]
             }
@@ -2049,7 +2348,7 @@
               }
             ],
             "url": {
-              "raw": "{{url}}/models?child_category_id[]=17",
+              "raw": "{{url}}/models",
               "host": [
                 "{{url}}"
               ],
@@ -2059,7 +2358,8 @@
               "query": [
                 {
                   "key": "child_category_id[]",
-                  "value": "17"
+                  "value": "40",
+                  "disabled": true
                 },
                 {
                   "key": "child_category_id[]",
@@ -2088,7 +2388,7 @@
               }
             ],
             "url": {
-              "raw": "{{url}}/filters-by-model?child_category_id[]=17&child_category_id[]=16",
+              "raw": "{{url}}/filters-by-model",
               "host": [
                 "{{url}}"
               ],
@@ -2109,12 +2409,12 @@
                 {
                   "key": "child_category_id[]",
                   "value": "17",
-                  "type": "text"
+                  "disabled": true
                 },
                 {
                   "key": "child_category_id[]",
                   "value": "16",
-                  "type": "text"
+                  "disabled": true
                 }
               ]
             }
@@ -2345,6 +2645,165 @@
                   "key": "id",
                   "value": "4"
                 }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Currency",
+      "item": [
+        {
+          "name": "currency",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Accept-Language",
+                "value": "ar",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{url}}/currency/rates",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "currency",
+                "rates"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Aboutus",
+      "item": [
+        {
+          "name": "index",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Accept-Language",
+                "value": "ar",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{url}}/about-us",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "about-us"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "update",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Accept-Language",
+                "value": "ar",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "multipart/form-data",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "title_ar",
+                  "value": "من نحن - منصة رائدة في بيع وشراء المركبات بأفضل الأسعا",
+                  "type": "text",
+                  "uuid": "64db99e1-9ca8-4c26-a0e7-34d23f3b897d"
+                },
+                {
+                  "key": "title_en",
+                  "value": "about us ",
+                  "type": "text",
+                  "uuid": "5cce144a-0bd5-498d-bdd7-342f227a212a"
+                },
+                {
+                  "key": "title_ja",
+                  "value": "ちについて - 最高の価格で車両を売買するための主要な",
+                  "type": "text",
+                  "uuid": "4b02e03e-9ac5-48fb-a58b-8a8ba2640c68"
+                },
+                {
+                  "key": "title_sw",
+                  "value": "Kuhusu Sisi - Jukwaa linaloongoza kwa kununua na kuuza",
+                  "type": "text",
+                  "uuid": "bf18ada7-b095-4aea-bb9d-e0ee6add3abc"
+                },
+                {
+                  "key": "description_ar",
+                  "value": "من نحن - منصة رائدة في بيع وشراء المركبات بأفضل الأسعا",
+                  "type": "text",
+                  "uuid": "4d4c0af4-7ed1-4f21-ba00-c5caf90525ef"
+                },
+                {
+                  "key": "description_en",
+                  "value": "about us ",
+                  "type": "text",
+                  "uuid": "ae7c684d-c400-415a-8741-f01c7528ee33"
+                },
+                {
+                  "key": "description_ja",
+                  "value": "ちについて - 最高の価格で車両を売買するための主要な",
+                  "type": "text",
+                  "uuid": "711afe9f-7336-4b72-b098-a70616a28b67"
+                },
+                {
+                  "key": "description_sw",
+                  "value": "Kuhusu Sisi - Jukwaa linaloongoza kwa kununua na kuuza",
+                  "type": "text",
+                  "uuid": "09b1d2e0-433b-4f33-8b73-4d7be5912c75"
+                },
+                {
+                  "key": "image",
+                  "type": "file",
+                  "uuid": "7296f8bb-0460-41a2-8893-be02704834f4",
+                  "src": "postman-cloud:///1f128412-bf3a-4890-b339-caf2dfb1324d"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{url}}/about-us",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "about-us"
               ]
             }
           },

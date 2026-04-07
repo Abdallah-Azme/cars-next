@@ -549,3 +549,39 @@ export async function getCurrencyRates() {
     cache: "no-store",
   });
 }
+
+// About Us
+export type AboutUsData = {
+  title_ar: string;
+  title_en: string;
+  title_ja: string;
+  title_sw: string;
+  description_ar: string;
+  description_en: string;
+  description_ja: string;
+  description_sw: string;
+  image?: string;
+};
+
+export async function getAboutUs(locale?: string) {
+  const headers: Record<string, string> = locale ? { "Accept-Language": locale } : {};
+  return fetchFromLaravel<{
+    success: boolean;
+    data: AboutUsData;
+  }>("/about-us", {
+    method: "GET",
+    headers,
+    cache: "no-store",
+  });
+}
+
+export async function updateAboutUs(data: FormData) {
+  return fetchFromLaravel<{
+    success: boolean;
+    message: string;
+    data: AboutUsData;
+  }>("/about-us", {
+    method: "POST",
+    body: data,
+  });
+}

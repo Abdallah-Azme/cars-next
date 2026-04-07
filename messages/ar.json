@@ -1,4 +1,8 @@
 {
+  "AboutUs": {
+    "title": "من نحن",
+    "badge": "قصتنا"
+  },
   "Navbar": {
     "home": "الرئيسية",
     "machines": "المعدات",
@@ -296,6 +300,7 @@
       "categories": "الفئات",
       "users": "المستخدمين",
       "settings": "الإعدادات",
+      "aboutUs": "من نحن",
       "logout": "تسجيل الخروج"
     },
     "products": {
