@@ -71,12 +71,25 @@ export function FavCard({ vehicle }: Props) {
             <div className={`grid ${isRtl ? 'grid-cols-[1fr_110px]' : 'grid-cols-[110px_1fr]'}`}>
               {labels.map((row, idx) => (
                 <div key={`${row.label}-${idx}`} className="contents">
-                  <div className={`border-b px-3 py-2 text-xs font-medium bg-muted/60 ${isRtl ? 'order-2 text-right' : 'order-1 text-left'}`}>
-                    {row.label}
-                  </div>
-                  <div className={`border-b px-3 py-2 text-xs ${isRtl ? 'order-1 text-left' : 'order-2 text-right'}`}>
-                    {row.value || "-"}
-                  </div>
+                  {isRtl ? (
+                    <>
+                      <div className="border-b px-3 py-2 text-xs text-left">
+                        {row.value || "-"}
+                      </div>
+                      <div className="border-b px-3 py-2 text-xs font-medium bg-muted/60 text-right">
+                        {row.label}
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      <div className="border-b px-3 py-2 text-xs font-medium bg-muted/60 text-left">
+                        {row.label}
+                      </div>
+                      <div className="border-b px-3 py-2 text-xs text-right">
+                        {row.value || "-"}
+                      </div>
+                    </>
+                  )}
                 </div>
               ))}
             </div>

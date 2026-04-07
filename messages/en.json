@@ -97,7 +97,8 @@
       "fuel": "Fuel",
       "size": "Size",
       "inspection": "Inspection",
-      "lot": "Lot"
+      "lot": "Lot",
+      "viewDetails": "View Details"
     },
     "status": {
       "sold": "Sold",
@@ -110,6 +111,7 @@
     },
     "contact": {
       "whatsapp": "Contact via WhatsApp",
+      "email": "Email Us",
       "unavailable": "Contact Unavailable",
       "currency": "¥ (JPY)"
     },

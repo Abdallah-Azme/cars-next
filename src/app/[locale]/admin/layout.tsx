@@ -8,8 +8,8 @@ import DashboardProtectedRoute from "@/components/admin/shared/DashboardProtecte
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   
-  // Don't show sidebar on login page
-  if (pathname === "/admin/login") {
+  // Don't show sidebar on login page (pathname includes locale prefix, e.g. /en/admin/login)
+  if (pathname.endsWith("/admin/login")) {
     return <>{children}</>;
   }
 

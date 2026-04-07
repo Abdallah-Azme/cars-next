@@ -5,11 +5,17 @@ import { Badge } from "@/components/ui/badge";
 import AddToFavBtn from "@/components/products/AddToFavBtn";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { MessageCircle } from "lucide-react";
+import { MessageCircle, Maximize2, ZoomIn, ZoomOut, RotateCcw, X } from "lucide-react";
 import { useSettingsStore } from "@/stores/settings";
 import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
+
+import {
+  Dialog,
+  DialogContent,
+} from "@/components/ui/dialog";
+import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 
 import EmailSubscription from "@/components/shared/EmailBox";
 import PageHeader from "@/components/shared/PageHeader";
@@ -50,6 +56,10 @@ const SingleProductPage = () => {
   const [api, setApi] = React.useState<CarouselApi>();
   const [current, setCurrent] = React.useState(0);
 
+  const [isZoomOpen, setIsZoomOpen] = React.useState(false);
+  const [zoomApi, setZoomApi] = React.useState<CarouselApi>();
+  const [zoomCurrent, setZoomCurrent] = React.useState(0);
+
   const vehicle = data?.data?.data;
 
   const handleWhatsAppContact = () => {
@@ -70,6 +80,22 @@ const SingleProductPage = () => {
       setCurrent(api.selectedScrollSnap());
     });
   }, [api]);
+
+  React.useEffect(() => {
+    if (!zoomApi) return;
+
+    setZoomCurrent(zoomApi.selectedScrollSnap());
+
+    zoomApi.on("select", () => {
+      setZoomCurrent(zoomApi.selectedScrollSnap());
+    });
+  }, [zoomApi]);
+
+  React.useEffect(() => {
+    if (isZoomOpen && zoomApi) {
+      zoomApi.scrollTo(current, true);
+    }
+  }, [isZoomOpen, zoomApi, current]);
 
   if (isLoading) {
     return (
@@ -183,15 +209,24 @@ const SingleProductPage = () => {
                   <CarouselContent>
                     {images.map((src: string, i: number) => (
                       <CarouselItem key={src + i}>
-                        <div className="relative overflow-hidden rounded-lg border bg-muted aspect-4/3">
+                        <div 
+                          className="relative overflow-hidden rounded-lg border bg-muted aspect-4/3 cursor-pointer group"
+                          onClick={() => {
+                            api?.scrollTo(i, true);
+                            setIsZoomOpen(true);
+                          }}
+                        >
                           <Image
                             src={fixImageUrl(src)}
                             alt={`${title} image ${i + 1}`}
                             fill
-                            className="object-contain"
+                            className="object-contain transition-transform duration-300 group-hover:scale-105"
                             sizes="(max-width: 1024px) 100vw, 60vw"
                             priority={i === 0}
                           />
+                          <div className="absolute top-4 right-4 z-10 bg-black/50 p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity">
+                            <Maximize2 className="size-5 text-white" />
+                          </div>
 
                           {/* Logo Overlay */}
                           <div className={`absolute bottom-4 ${isRtl ? 'left-4' : 'right-4'} z-10 select-none pointer-events-none opacity-80 transition-opacity hover:opacity-100`}>
@@ -320,6 +355,92 @@ const SingleProductPage = () => {
           </CardContent>
         </Card>
       </div>
+
+      <Dialog open={isZoomOpen} onOpenChange={setIsZoomOpen}>
+        <DialogContent className="w-screen h-dvh max-w-none sm:max-w-none p-0 border-none bg-black/95 rounded-none" showCloseButton={false}>
+          <div className={`absolute top-4 ${isRtl ? 'right-4' : 'left-4'} z-50 flex items-center gap-2`}>
+            <AddToFavBtn vehicle={vehicle} />
+          </div>
+          <div className={`absolute top-4 ${isRtl ? 'left-4' : 'right-4'} z-50`}>
+            <button 
+              onClick={() => setIsZoomOpen(false)}
+              aria-label="Close zoom"
+              className="p-2 bg-white/10 hover:bg-white/20 text-white rounded-full transition-colors flex items-center justify-center backdrop-blur-md border border-white/10"
+            >
+              <X className="size-6" />
+            </button>
+          </div>
+          <div className="flex h-full w-full items-center justify-center p-0 md:p-8 relative">
+            <Carousel
+              setApi={setZoomApi}
+              opts={{ loop: true, direction: isRtl ? 'rtl' : 'ltr' }}
+              className="w-full h-full max-w-[100vw] mx-auto"
+            >
+              <CarouselContent className="h-full">
+                {images.map((src: string, i: number) => (
+                  <CarouselItem key={`zoom-${src}-${i}`} className="h-dvh flex items-center justify-center">
+                    <TransformWrapper
+                      initialScale={1}
+                      minScale={0.5}
+                      maxScale={6}
+                      centerZoomedOut={true}
+                    >
+                      {({ zoomIn, zoomOut, resetTransform }) => (
+                        <div className="relative w-full h-[95vh] flex flex-col">
+                          <TransformComponent wrapperStyle={{ width: "100%", height: "100%" }} contentStyle={{ width: "100%", height: "100%" }}>
+                            <div className="relative w-full h-full flex items-center justify-center">
+                              <Image
+                                src={fixImageUrl(src)}
+                                alt={`${title} zoomed ${i + 1}`}
+                                fill
+                                className="object-contain select-none cursor-grab active:cursor-grabbing"
+                                sizes="100vw"
+                                priority
+                                draggable={false}
+                              />
+                            </div>
+                          </TransformComponent>
+                          
+                          {/* Visual UX Controls */}
+                          <div className={`absolute bottom-[25%] ${isRtl ? 'left-4' : 'right-4'} z-50 flex flex-col gap-2 bg-black/50 p-2 rounded-xl backdrop-blur-md border border-white/10`}>
+                            <button
+                              onClick={(e) => { e.stopPropagation(); zoomIn(); }}
+                              aria-label="Zoom in"
+                              className="p-2 text-white hover:bg-white/20 rounded-lg transition-colors flex items-center justify-center"
+                            >
+                              <ZoomIn className="size-5" />
+                            </button>
+                            <button
+                              onClick={(e) => { e.stopPropagation(); zoomOut(); }}
+                              aria-label="Zoom out"
+                              className="p-2 text-white hover:bg-white/20 rounded-lg transition-colors flex items-center justify-center"
+                            >
+                              <ZoomOut className="size-5" />
+                            </button>
+                            <button
+                              onClick={(e) => { e.stopPropagation(); resetTransform(); }}
+                              aria-label="Reset zoom"
+                              className="p-2 text-white hover:bg-white/20 rounded-lg transition-colors flex items-center justify-center"
+                            >
+                              <RotateCcw className="size-5" />
+                            </button>
+                          </div>
+                        </div>
+                      )}
+                    </TransformWrapper>
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+              <CarouselPrevious className="left-4 md:left-10 bg-white/20 hover:bg-white/40 border-none text-white size-10 md:size-12 shadow-md flex" />
+              <CarouselNext className="right-4 md:right-10 bg-white/20 hover:bg-white/40 border-none text-white size-10 md:size-12 shadow-md flex" />
+              <div className="absolute bottom-6 left-1/2 -translate-x-1/2 text-white bg-black/50 px-4 py-1.5 rounded-full text-sm backdrop-blur-sm z-50">
+                {zoomCurrent + 1} / {images.length}
+              </div>
+            </Carousel>
+          </div>
+        </DialogContent>
+      </Dialog>
+
       <EmailSubscription />
     </>
   );

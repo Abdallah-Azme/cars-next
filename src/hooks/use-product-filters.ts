@@ -2,8 +2,6 @@
 
 import { useEffect, useCallback } from "react";
 import { useForm, useWatch } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
 import { useQuery } from "@tanstack/react-query";
 import {
   getParentCategories,
@@ -17,23 +15,20 @@ import {
   type FiltersByModelData,
 } from "@/lib/actions";
 
-// ── Schema (stable reference outside the hook) ────────────────────────────────
-const filterSchema = z.object({
-  selectedParentId: z.number().optional(),
-  selectedChildIds: z.array(z.number()).default([]),
-  selectedModels: z.array(z.string()).default([]),
-  selectedTypes: z.array(z.string()).default([]),
-  selectedSizes: z.array(z.string()).default([]),
-  selectedResults: z.array(z.string()).default(["Yet To Be Auctioned"]),
-  yearFrom: z.string().optional(),
-  yearTo: z.string().optional(),
-  hourFrom: z.string().optional(),
-  hourTo: z.string().optional(),
-  scoreFrom: z.string().optional(),
-  scoreTo: z.string().optional(),
-});
-
-type FilterValues = z.infer<typeof filterSchema>;
+type FilterValues = {
+  selectedParentId?: number;
+  selectedChildIds: number[];
+  selectedModels: string[];
+  selectedTypes: string[];
+  selectedSizes: string[];
+  selectedResults: string[];
+  yearFrom?: string;
+  yearTo?: string;
+  hourFrom?: string;
+  hourTo?: string;
+  scoreFrom?: string;
+  scoreTo?: string;
+};
 
 // ── Hook interface ────────────────────────────────────────────────────────────
 interface UseProductFiltersProps {
@@ -49,7 +44,6 @@ export function useProductFilters({
 }: UseProductFiltersProps) {
   // ── Single form instance replaces 12 × useState ───────────────────────────
   const form = useForm<FilterValues>({
-    resolver: zodResolver(filterSchema),
     defaultValues: {
       selectedParentId: controlledParams.selectedParentId,
       selectedChildIds: controlledParams.selectedChildIds ?? [],

@@ -97,7 +97,8 @@
       "fuel": "Mafuta",
       "size": "Ukubwa",
       "inspection": "Ukaguzi",
-      "lot": "Kura"
+      "lot": "Kura",
+      "viewDetails": "Angalia Maelezo"
     },
     "status": {
       "sold": "Imeuzwa",
@@ -109,6 +110,7 @@
     },
     "contact": {
       "whatsapp": "Wasiliana kupitia WhatsApp",
+      "email": "Tutumie Barua Pepe",
       "unavailable": "Mawasiliano Hayapatikani",
       "currency": "Yen (JPY)"
     },

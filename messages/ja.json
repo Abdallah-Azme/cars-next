@@ -97,7 +97,8 @@
       "fuel": "燃料",
       "size": "サイズ",
       "inspection": "点検",
-      "lot": "ロット"
+      "lot": "ロット",
+      "viewDetails": "詳細を表示"
     },
     "status": {
       "sold": "売約済",
@@ -109,6 +110,7 @@
     },
     "contact": {
       "whatsapp": "WhatsAppでお問い合わせ",
+      "email": "メールでお問い合わせ",
       "unavailable": "現在ご利用いただけません",
       "currency": "円 (JPY)"
     },
