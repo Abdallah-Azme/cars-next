@@ -135,13 +135,13 @@ export function useProductFilters({
     selectedChildIds.length > 0 ? typesFromCategory : 
     allTypes;
 
-  const displayResults = dynamicResultsData.length > 0 
-    ? dynamicResultsData.map(r => ({ label: r, value: r }))
-    : [
-        { label: "Sold", value: "Sold" },
-        { label: "Not Sold", value: "Not Sold" },
-        { label: "Soon in Auction", value: "Yet To Be Auctioned" },
-      ];
+  const displayResults = (dynamicResultsData.length > 0 
+    ? dynamicResultsData.filter(r => r !== "Sold By Nego") 
+    : ["Sold", "Not Sold", "Yet To Be Auctioned"]
+  ).map(r => ({ 
+    label: r === "Yet To Be Auctioned" ? "Soon in Auction" : r, 
+    value: r 
+  }));
 
   const dynamicYears = dynamicFilters?.years.map((y) => y.title) ?? [];
 
