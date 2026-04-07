@@ -26,7 +26,7 @@
               }
             ],
             "url": {
-              "raw": "{{url}}/vehicles?result[]=Yet To Be Auctioned&per_page=804",
+              "raw": "{{url}}/vehicles?per_page=80",
               "host": [
                 "{{url}}"
               ],
@@ -132,7 +132,8 @@
                 },
                 {
                   "key": "result[]",
-                  "value": "Yet To Be Auctioned"
+                  "value": "Yet To Be Auctioned",
+                  "disabled": true
                 },
                 {
                   "key": "result[]",
@@ -151,7 +152,7 @@
                 },
                 {
                   "key": "per_page",
-                  "value": "804"
+                  "value": "80"
                 }
               ]
             }
@@ -691,20 +692,20 @@
                   "key": "email",
                   "value": "admin@example.com",
                   "type": "text",
-                  "uuid": "19762c3f-74b0-4097-8e5e-d4af188233a6"
+                  "uuid": "19762c3f-74b0-4097-8e5e-d4af188233a6",
+                  "disabled": true
                 },
                 {
                   "key": "password",
-                  "value": "Fcis_it4",
+                  "value": "Admin1234",
                   "type": "text",
                   "uuid": "09d5d58d-2d23-413e-9920-f58b7c83bd06"
                 },
                 {
                   "key": "mobile",
-                  "value": "201281927142",
+                  "value": "2012345678",
                   "type": "text",
-                  "uuid": "df903600-b224-465c-960f-f2b7059b5145",
-                  "disabled": true
+                  "uuid": "df903600-b224-465c-960f-f2b7059b5145"
                 }
               ]
             },
@@ -1281,13 +1282,21 @@
                   "key": "name",
                   "value": "adham",
                   "type": "text",
-                  "uuid": "ee53fb8b-9585-43b4-a31c-53f1c753ca7f"
+                  "uuid": "ee53fb8b-9585-43b4-a31c-53f1c753ca7f",
+                  "disabled": true
                 },
                 {
                   "key": "avatar",
                   "type": "file",
                   "uuid": "dc63535c-b8d5-44cb-9d4a-c30bd8cc1897",
-                  "src": "postman-cloud:///1f1186de-cc43-46e0-be47-b96eb71bebd4"
+                  "src": "postman-cloud:///1f1186de-cc43-46e0-be47-b96eb71bebd4",
+                  "disabled": true
+                },
+                {
+                  "key": "mobile",
+                  "value": "+2012345678",
+                  "type": "text",
+                  "uuid": "2fc00f7e-174f-404f-bdc6-c67a6ecbf8be"
                 }
               ]
             },
@@ -2348,7 +2357,7 @@
               }
             ],
             "url": {
-              "raw": "{{url}}/models",
+              "raw": "{{url}}/models?child_category_id[]=40&child_category_id[]=16",
               "host": [
                 "{{url}}"
               ],
@@ -2358,13 +2367,11 @@
               "query": [
                 {
                   "key": "child_category_id[]",
-                  "value": "40",
-                  "disabled": true
+                  "value": "40"
                 },
                 {
                   "key": "child_category_id[]",
-                  "value": "16",
-                  "disabled": true
+                  "value": "16"
                 }
               ]
             }
@@ -2452,6 +2459,24 @@
                   "uuid": "3d5b9125-cff7-4148-8dd5-32469d27de6b"
                 },
                 {
+                  "key": "name_ar",
+                  "value": "vehic",
+                  "type": "text",
+                  "uuid": "634704ab-e9b9-474e-a58a-ebf7be9c2d37"
+                },
+                {
+                  "key": "name_ja",
+                  "value": "vehic",
+                  "type": "text",
+                  "uuid": "b5b42d31-0201-45ed-b629-5e6372999bc1"
+                },
+                {
+                  "key": "name_sw",
+                  "value": "vehic",
+                  "type": "text",
+                  "uuid": "d534040a-504a-4c79-87e8-8ad0906a5dcb"
+                },
+                {
                   "key": "image",
                   "type": "file",
                   "uuid": "e7faa2e5-24b4-466d-bc5a-33f19312cbbb",
@@ -2462,6 +2487,24 @@
                   "value": "Cars",
                   "type": "text",
                   "uuid": "1bb987d1-b808-4d7d-b5c4-30d70717eb78"
+                },
+                {
+                  "key": "children_names_ar[0]",
+                  "value": "Cars",
+                  "type": "text",
+                  "uuid": "5f8ad25c-5e75-42f6-a5f5-de2006c89b63"
+                },
+                {
+                  "key": "children_names_ja[0]",
+                  "value": "Cars",
+                  "type": "text",
+                  "uuid": "81a95a40-6962-455e-bfbc-a54f8ebadd09"
+                },
+                {
+                  "key": "children_names_sw[0]",
+                  "value": "Cars",
+                  "type": "text",
+                  "uuid": "2197775f-c846-49cb-bedb-18a83d0bedc5"
                 },
                 {
                   "key": "children_keywords[0]",
@@ -2480,6 +2523,24 @@
                   "value": "Trucks",
                   "type": "text",
                   "uuid": "b5581232-937f-42de-bb48-46cf290b1cf9"
+                },
+                {
+                  "key": "children_names_ar[1]",
+                  "value": "car",
+                  "type": "text",
+                  "uuid": "bf7ba602-0764-4f56-9e9b-61f4681e4ff1"
+                },
+                {
+                  "key": "children_names_sw[1]",
+                  "value": "car",
+                  "type": "text",
+                  "uuid": "2a2d678a-0134-41c9-87ca-ff58e2e8f1b1"
+                },
+                {
+                  "key": "children_names_ja[1]",
+                  "value": "car",
+                  "type": "text",
+                  "uuid": "3ba3928e-cdeb-4215-ad63-84d29eb8ad73"
                 },
                 {
                   "key": "children_keywords[1]",
@@ -2539,6 +2600,24 @@
                   "disabled": true
                 },
                 {
+                  "key": "name_ar",
+                  "value": "أخرى",
+                  "type": "text",
+                  "uuid": "f2a9bede-4de1-40fe-bf17-1e8053ebcea0"
+                },
+                {
+                  "key": "name_ja",
+                  "value": "その他",
+                  "type": "text",
+                  "uuid": "9fe9d719-1c37-4855-ac66-65b9b52d5aa2"
+                },
+                {
+                  "key": "name_sw",
+                  "value": "Nyingine",
+                  "type": "text",
+                  "uuid": "7fa2065d-57c0-4619-a6d4-aab11782b73a"
+                },
+                {
                   "key": "image",
                   "type": "file",
                   "uuid": "e595f8fc-14ca-44d0-8acf-b5e6bbc17c86",
@@ -2547,7 +2626,7 @@
                 },
                 {
                   "key": "children_ids[0]",
-                  "value": "3",
+                  "value": "23",
                   "type": "text",
                   "uuid": "4615d4ed-caf2-440c-9b6e-ed363821bbd9"
                 },
@@ -2557,6 +2636,24 @@
                   "type": "text",
                   "uuid": "1bb987d1-b808-4d7d-b5c4-30d70717eb78",
                   "disabled": true
+                },
+                {
+                  "key": "children_names_ar[0]",
+                  "value": "أخرى",
+                  "type": "text",
+                  "uuid": "94bc96cc-1700-45e1-936a-9aa8a6afa0fe"
+                },
+                {
+                  "key": "children_names_ja[0]",
+                  "value": "その他",
+                  "type": "text",
+                  "uuid": "24fff7d5-4f52-496e-bf35-212c4f61af3f"
+                },
+                {
+                  "key": "children_names_sw[0]",
+                  "value": "Nyingine",
+                  "type": "text",
+                  "uuid": "28d5f55a-ecab-4e62-90d6-73b3027cc82c"
                 },
                 {
                   "key": "children_keywords[0]",
@@ -2569,13 +2666,35 @@
                   "key": "children_images[0]",
                   "type": "file",
                   "uuid": "d25151e5-4efd-47e7-89df-9d37bdc5f74a",
-                  "src": "postman-cloud:///1f128412-bf3a-4890-b339-caf2dfb1324d"
+                  "src": "postman-cloud:///1f128412-bf3a-4890-b339-caf2dfb1324d",
+                  "disabled": true
                 },
                 {
                   "key": "children_names[1]",
-                  "value": "Excavators",
+                  "value": "Excavators updates",
                   "type": "text",
                   "uuid": "b5581232-937f-42de-bb48-46cf290b1cf9",
+                  "disabled": true
+                },
+                {
+                  "key": "children_names_ja[1]",
+                  "value": "Excavators updates",
+                  "type": "text",
+                  "uuid": "e828bb2b-bfd3-48ae-b7c8-4086c52361c6",
+                  "disabled": true
+                },
+                {
+                  "key": "children_names_sw[1]",
+                  "value": "Excavators updates",
+                  "type": "text",
+                  "uuid": "e301ecfc-ab55-4c98-9d53-85fa396785e2",
+                  "disabled": true
+                },
+                {
+                  "key": "children_names_ar[1]",
+                  "value": "Excavators updates",
+                  "type": "text",
+                  "uuid": "ac7eb69f-bd74-4057-aaa1-903acef1a4e1",
                   "disabled": true
                 },
                 {
@@ -2599,7 +2718,7 @@
               "variable": [
                 {
                   "key": "id",
-                  "value": "1"
+                  "value": "3"
                 }
               ]
             }
@@ -2643,7 +2762,7 @@
               "variable": [
                 {
                   "key": "id",
-                  "value": "4"
+                  "value": "9"
                 }
               ]
             }

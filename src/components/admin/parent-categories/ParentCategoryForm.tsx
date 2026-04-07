@@ -86,12 +86,18 @@ export function ParentCategoryForm({
   const childSchema = z.object({
     id: z.number().optional(),
     name: z.string().min(1, t("validation.name")),
+    name_ar: z.string().optional(),
+    name_ja: z.string().optional(),
+    name_sw: z.string().optional(),
     searchKeywords: z.string().min(1, t("validation.keywords")),
     image: z.any().optional(),
   });
 
   const formSchema = z.object({
     name: z.string().min(1, t("validation.name")),
+    name_ar: z.string().optional(),
+    name_ja: z.string().optional(),
+    name_sw: z.string().optional(),
     image: z.any().optional(),
     children: z.array(childSchema),
   });
@@ -102,9 +108,15 @@ export function ParentCategoryForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: initialData?.name || "",
+      name_ar: initialData?.name_ar || "",
+      name_ja: initialData?.name_ja || "",
+      name_sw: initialData?.name_sw || "",
       children: initialData?.children?.map((c) => ({
         id: c.id,
         name: c.name,
+        name_ar: c.name_ar || "",
+        name_ja: c.name_ja || "",
+        name_sw: c.name_sw || "",
         searchKeywords: c.searchKeywords,
       })) || [],
     },
@@ -124,6 +136,9 @@ export function ParentCategoryForm({
     try {
       const formData = new FormData();
       formData.append("name", values.name);
+      if (values.name_ar) formData.append("name_ar", values.name_ar);
+      if (values.name_ja) formData.append("name_ja", values.name_ja);
+      if (values.name_sw) formData.append("name_sw", values.name_sw);
       
       if (values.image instanceof File) {
         formData.append("image", values.image);
@@ -134,6 +149,9 @@ export function ParentCategoryForm({
           formData.append(`children_ids[${index}]`, String(child.id));
         }
         formData.append(`children_names[${index}]`, child.name);
+        if (child.name_ar) formData.append(`children_names_ar[${index}]`, child.name_ar);
+        if (child.name_ja) formData.append(`children_names_ja[${index}]`, child.name_ja);
+        if (child.name_sw) formData.append(`children_names_sw[${index}]`, child.name_sw);
         formData.append(`children_keywords[${index}]`, child.searchKeywords);
         
         if (child.image instanceof File) {
@@ -170,19 +188,60 @@ export function ParentCategoryForm({
             <CardTitle>{t("basicInfo")}</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
-            <FormField
-              control={form.control}
-              name="name"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className={"block w-full text-start"}>{t("categoryName")}</FormLabel>
-                  <FormControl>
-                    <Input placeholder={t("namePlaceholder")} {...field} className="text-start" />
-                  </FormControl>
-                  <FormMessage className="text-start" />
-                </FormItem>
-              )}
-            />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <FormField
+                control={form.control}
+                name="name"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className={"block w-full text-start"}>{t("categoryName")} (EN)</FormLabel>
+                    <FormControl>
+                      <Input placeholder={t("namePlaceholder")} {...field} className="text-start" disabled={!!initialData} />
+                    </FormControl>
+                    <FormMessage className="text-start" />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="name_ar"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className={"block w-full text-start"}>{t("categoryName")} (AR)</FormLabel>
+                    <FormControl>
+                      <Input placeholder={`${t("namePlaceholder")} (AR)`} {...field} className="text-start" dir="rtl" />
+                    </FormControl>
+                    <FormMessage className="text-start" />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="name_ja"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className={"block w-full text-start"}>{t("categoryName")} (JA)</FormLabel>
+                    <FormControl>
+                      <Input placeholder={`${t("namePlaceholder")} (JA)`} {...field} className="text-start" />
+                    </FormControl>
+                    <FormMessage className="text-start" />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="name_sw"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className={"block w-full text-start"}>{t("categoryName")} (SW)</FormLabel>
+                    <FormControl>
+                      <Input placeholder={`${t("namePlaceholder")} (SW)`} {...field} className="text-start" />
+                    </FormControl>
+                    <FormMessage className="text-start" />
+                  </FormItem>
+                )}
+              />
+            </div>
 
             <FormField
               control={form.control}
@@ -266,29 +325,68 @@ export function ParentCategoryForm({
                       name={`children.${index}.name`}
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel className={"block w-full text-start"}>{t("childName")}</FormLabel>
+                          <FormLabel className={"block w-full text-start"}>{t("childName")} (EN)</FormLabel>
                           <FormControl>
-                            <Input placeholder={t("childPlaceholder")} {...field} className="text-start" />
+                            <Input placeholder={t("childPlaceholder")} {...field} className="text-start" disabled={!!initialData} />
                           </FormControl>
                           <FormMessage className="text-start" />
                         </FormItem>
                       )}
                     />
-
                     <FormField
                       control={form.control}
-                      name={`children.${index}.searchKeywords`}
+                      name={`children.${index}.name_ar`}
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel className={"block w-full text-start"}>{t("keywords")}</FormLabel>
+                          <FormLabel className={"block w-full text-start"}>{t("childName")} (AR)</FormLabel>
                           <FormControl>
-                            <Input placeholder={t("keywordsPlaceholder")} {...field} className="text-start" />
+                            <Input placeholder={`${t("childPlaceholder")} (AR)`} {...field} className="text-start" dir="rtl" />
+                          </FormControl>
+                          <FormMessage className="text-start" />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name={`children.${index}.name_ja`}
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className={"block w-full text-start"}>{t("childName")} (JA)</FormLabel>
+                          <FormControl>
+                            <Input placeholder={`${t("childPlaceholder")} (JA)`} {...field} className="text-start" />
+                          </FormControl>
+                          <FormMessage className="text-start" />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name={`children.${index}.name_sw`}
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className={"block w-full text-start"}>{t("childName")} (SW)</FormLabel>
+                          <FormControl>
+                            <Input placeholder={`${t("childPlaceholder")} (SW)`} {...field} className="text-start" />
                           </FormControl>
                           <FormMessage className="text-start" />
                         </FormItem>
                       )}
                     />
                   </div>
+
+                  <FormField
+                    control={form.control}
+                    name={`children.${index}.searchKeywords`}
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className={"block w-full text-start"}>{t("keywords")}</FormLabel>
+                        <FormControl>
+                          <Input placeholder={t("keywordsPlaceholder")} {...field} className="text-start" />
+                        </FormControl>
+                        <FormMessage className="text-start" />
+                      </FormItem>
+                    )}
+                  />
 
                   <FormField
                     control={form.control}
