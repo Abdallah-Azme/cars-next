@@ -57,3 +57,13 @@ export function getLocalizedValue(
   const suffix = mapping[locale] || "En";
   return obj[`${key}${suffix}`] || obj[`${key}En`] || "";
 }
+
+export function getCategoryName(
+  category: { name: string; nameAr?: string | null; nameJa?: string | null; nameSw?: string | null },
+  locale: string
+): string {
+  if (locale === "ar" && category.nameAr) return category.nameAr;
+  if (locale === "ja" && category.nameJa) return category.nameJa;
+  if (locale === "sw" && category.nameSw) return category.nameSw;
+  return category.name;
+}

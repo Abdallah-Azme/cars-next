@@ -2,6 +2,8 @@ import { Link } from "@/i18n/routing";
 import type { ChildCategory } from "@/lib/actions";
 import FallbackImage from "../shared/FallbackImage";
 import { ArrowUpRight } from "lucide-react";
+import { useLocale } from "next-intl";
+import { getCategoryName } from "@/lib/utils";
 
 export default function SubCategoryCard({
   category,
@@ -10,6 +12,7 @@ export default function SubCategoryCard({
   category: ChildCategory;
   parentId: number;
 }) {
+  const locale = useLocale();
   return (
     <Link
       href={`/products?parentId=${parentId}&childId=${category.id}`}
@@ -17,7 +20,7 @@ export default function SubCategoryCard({
     >
       <FallbackImage
         src={category.image || ""}
-        alt={category.name || "subcategory"}
+        alt={getCategoryName(category, locale)}
         width={600}
         height={450}
         className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
@@ -28,7 +31,7 @@ export default function SubCategoryCard({
       {/* Text Container at Top */}
       <div className="absolute top-0 inset-x-0 p-5 flex flex-col items-center">
         <h3 className="text-xl md:text-2xl font-bold text-white drop-shadow-md flex items-center justify-center  text-center">
-          - {category.name} -
+          - {getCategoryName(category, locale)} -
         </h3>
         {category.vehiclesCount !== undefined && (
           <p className="text-sm font-medium text-white/90 drop-shadow mt-1">

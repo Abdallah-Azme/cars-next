@@ -176,9 +176,9 @@ export async function getSingleVehicle(id: string) {
 export type ChildCategory = {
   id: number;
   name: string;
-  name_ar?: string;
-  name_ja?: string;
-  name_sw?: string;
+  nameAr?: string | null;
+  nameJa?: string | null;
+  nameSw?: string | null;
   searchKeywords: string;
   image?: string | null;
   vehiclesCount?: number;
@@ -187,9 +187,9 @@ export type ChildCategory = {
 export type ParentCategory = {
   id: number;
   name: string;
-  name_ar?: string;
-  name_ja?: string;
-  name_sw?: string;
+  nameAr?: string | null;
+  nameJa?: string | null;
+  nameSw?: string | null;
   image?: string | null;
   childrenCount: number;
   children: ChildCategory[];

@@ -11,7 +11,7 @@ import {
 import { Button } from "@/components/admin/ui/button";
 import { Pencil, Trash2 } from "lucide-react";
 import { ParentCategory, deleteParentCategory } from "@/lib/actions";
-import { fixImageUrl } from "@/lib/utils";
+import { fixImageUrl, getCategoryName } from "@/lib/utils";
 import { toast } from "sonner";
 import { useState } from "react";
 import { Loader2 } from "lucide-react";
@@ -94,7 +94,7 @@ export function ParentCategoriesList({
                   )}
                 </TableCell>
                 <TableCell className={`font-medium text-red-700 text-start`}>
-                    {cat.name}
+                    {getCategoryName(cat, locale)}
                 </TableCell>
                 <TableCell className="text-start">
                   <span className="inline-flex items-center rounded-full bg-red-50 px-2 py-1 text-xs font-medium text-red-700 ring-1 ring-inset ring-red-600/10">

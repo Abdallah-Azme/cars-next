@@ -20,6 +20,7 @@ import {
 import { useSearchParams } from "next/navigation";
 import { useEffect, Suspense } from "react";
 import { useLocale, useTranslations } from "next-intl";
+import { getCategoryName } from "@/lib/utils";
 
 /** Build the query string for the /api/vehicles route */
 function buildVehicleQS(
@@ -218,7 +219,7 @@ function ProductSectionContent() {
   };
 
   const handleParentSelect = (name: string, checked: boolean) => {
-    const cat = parentCategories.find((p) => p.name === name);
+    const cat = parentCategories.find((p) => getCategoryName(p, locale) === name);
     if (!cat) return;
 
     if (checked) {
@@ -233,7 +234,7 @@ function ProductSectionContent() {
   };
 
   const handleChildSelect = (name: string, checked: boolean) => {
-    const cat = childCategories.find((c) => c.name === name);
+    const cat = childCategories.find((c) => getCategoryName(c, locale) === name);
     if (!cat) return;
 
     if (checked) {
@@ -277,12 +278,12 @@ function ProductSectionContent() {
         <HorizontalFilterRow
           title={t("filter.category")}
           items={parentCategories.map((p) => ({
-            name: p.name,
+            name: getCategoryName(p, locale),
             image: p.image,
           }))}
           selectedItems={parentCategories
             .filter((p) => p.id === selectedParentId)
-            .map((p) => p.name)}
+            .map((p) => getCategoryName(p, locale))}
           onToggle={handleParentSelect}
         />
         {selectedParentId !== undefined && (
@@ -290,12 +291,12 @@ function ProductSectionContent() {
             title={t("filter.subCategory")}
             variant="grid"
             items={childCategories.map((c) => ({
-              name: c.name,
+              name: getCategoryName(c, locale),
               image: c.image,
             }))}
             selectedItems={childCategories
               .filter((c) => selectedChildIds.includes(c.id))
-              .map((c) => c.name)}
+              .map((c) => getCategoryName(c, locale))}
             onToggle={handleChildSelect}
           />
         )}

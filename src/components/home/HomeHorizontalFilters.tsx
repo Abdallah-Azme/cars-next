@@ -5,13 +5,15 @@ import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { getParentCategories, getChildCategories, type ParentCategory, type ChildCategory } from "@/lib/actions";
 import { HorizontalFilterRow } from "@/components/products/HorizontalFilters";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
+import { getCategoryName } from "@/lib/utils";
 
 export default function HomeHorizontalFilters() {
   const router = useRouter();
   const [selectedParentId, setSelectedParentId] = useState<number | undefined>();
   const t = useTranslations("HomePage");
   const tFilter = useTranslations("Vehicle.inventory.filter");
+  const locale = useLocale();
 
   // Fetch Parent Categories
   const { data: parentData } = useQuery({
@@ -30,7 +32,7 @@ export default function HomeHorizontalFilters() {
   const childCategories: ChildCategory[] = childData?.data?.data ?? [];
 
   const handleParentSelect = (name: string, checked: boolean) => {
-    const cat = parentCategories.find(p => p.name === name);
+    const cat = parentCategories.find(p => getCategoryName(p, locale) === name);
     if (cat && checked) {
       setSelectedParentId(cat.id);
     } else {
@@ -39,7 +41,7 @@ export default function HomeHorizontalFilters() {
   };
 
   const handleChildSelect = (name: string, checked: boolean) => {
-    const cat = childCategories.find(c => c.name === name);
+    const cat = childCategories.find(c => getCategoryName(c, locale) === name);
     if (cat && checked && selectedParentId) {
       router.push(`/products?parentId=${selectedParentId}&childId=${cat.id}`);
     }
@@ -56,8 +58,8 @@ export default function HomeHorizontalFilters() {
         {/* Parent Categories */}
         <HorizontalFilterRow
           title={tFilter('parentCategory')}
-          items={parentCategories.map((cat) => ({ name: cat.name, image: cat.image }))}
-          selectedItems={parentCategories.filter(p => p.id === selectedParentId).map(p => p.name)}
+          items={parentCategories.map((cat) => ({ name: getCategoryName(cat, locale), image: cat.image }))}
+          selectedItems={parentCategories.filter(p => p.id === selectedParentId).map(p => getCategoryName(p, locale))}
           onToggle={handleParentSelect}
         />
 
@@ -66,7 +68,7 @@ export default function HomeHorizontalFilters() {
           <div className="animate-in fade-in slide-in-from-top-4 duration-500">
             <HorizontalFilterRow
               title={tFilter('selectSubCategory')}
-              items={childCategories.map((cat) => ({ name: cat.name, image: cat.image }))}
+              items={childCategories.map((cat) => ({ name: getCategoryName(cat, locale), image: cat.image }))}
               selectedItems={[]} // Nothing selected yet
               onToggle={handleChildSelect}
             />
