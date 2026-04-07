@@ -102,6 +102,8 @@
     },
     "status": {
       "sold": "売約済",
+      "notSold": "流札",
+      "yetToBeAuctioned": "間もなくオークション",
       "soldPrice": "販売価格",
       "startPrice": "開始価格",
       "tbd": "お問い合わせ",

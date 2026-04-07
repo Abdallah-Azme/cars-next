@@ -29,21 +29,29 @@ function buildVehicleQS(
   childCategoryIds: number[],
 ) {
   const q = new URLSearchParams();
-  if (childCategoryIds.length > 0) {
-    childCategoryIds.forEach((id) =>
-      q.append("child_category_id[]", String(id)),
-    );
+  if (params.lotNumber) {
+    q.set("lot_number", params.lotNumber);
+    // If lot number is searched, typically we want to ignore other filters
+    // to search globally, but we still respect pagination.
+  } else {
+    // Deduplicate child category IDs
+    const uniqueChildIds = Array.from(new Set(childCategoryIds));
+    if (uniqueChildIds.length > 0) {
+      uniqueChildIds.forEach((id) =>
+        q.append("child_category_id[]", String(id)),
+      );
+    }
+    params.selectedModels?.forEach((v) => q.append("selection_model[]", v));
+    params.selectedTypes?.forEach((v) => q.append("vehicle_type[]", v));
+    params.sizes?.forEach((v) => q.append("vehicle_size[]", v));
+    params.results?.forEach((v) => q.append("result[]", v));
+    if (params.yearFrom) q.set("year_min", params.yearFrom);
+    if (params.yearTo) q.set("year_max", params.yearTo);
+    if (params.hourFrom) q.set("working_hours_min", params.hourFrom);
+    if (params.hourTo) q.set("working_hours_max", params.hourTo);
+    if (params.scoreFrom) q.set("score", params.scoreFrom);
+    if (params.holdingDate) q.set("holding_date", params.holdingDate);
   }
-  params.selectedModels?.forEach((v) => q.append("selection_model[]", v));
-  params.selectedTypes?.forEach((v) => q.append("vehicle_type[]", v));
-  params.sizes?.forEach((v) => q.append("vehicle_size[]", v));
-  params.results?.forEach((v) => q.append("result[]", v));
-  if (params.yearFrom) q.set("year_min", params.yearFrom);
-  if (params.yearTo) q.set("year_max", params.yearTo);
-  if (params.hourFrom) q.set("working_hours_min", params.hourFrom);
-  if (params.hourTo) q.set("working_hours_max", params.hourTo);
-  if (params.scoreFrom) q.set("score", params.scoreFrom);
-  if (params.holdingDate) q.set("holding_date", params.holdingDate);
   q.set("page", String(page));
   q.set("per_page", String(perPage));
   return q.toString();
@@ -106,6 +114,7 @@ function ProductSectionContent() {
   const childCategories: ChildCategory[] = childData?.data?.data ?? [];
 
   const hasResultsFilter = (filterParams.results?.length ?? 0) > 0;
+  const hasActiveSearch = !!filterParams.lotNumber;
 
   const vehiclesQuery = useQuery({
     queryKey: ["vehicles", filterParams, page, perPage, selectedChildIds],
@@ -123,8 +132,8 @@ function ProductSectionContent() {
         throw err;
       }
     },
-    // Fire when: type mode is off AND (a sub-category is selected OR a result filter is active)
-    enabled: !isByTypeMode && (hasResultsFilter || (!!selectedParentId && selectedChildIds.length > 0)),
+    // Fire when: type mode is off AND (a sub-category is selected OR a result filter is active OR a lot number is searched)
+    enabled: !isByTypeMode && (hasResultsFilter || hasActiveSearch || (!!selectedParentId && selectedChildIds.length > 0)),
     placeholderData: keepPreviousData,
   });
 
@@ -223,6 +232,7 @@ function ProductSectionContent() {
     handleFilterChange({ selectedModels: [], selectedTypes: [] });
   };
 
+
   return (
     <section className="container py-10" dir={isRtl ? "rtl" : "ltr"}>
       {/* Top bar */}
@@ -276,6 +286,7 @@ function ProductSectionContent() {
             onToggle={handleChildSelect}
           />
         )}
+
       </div>
 
       <div className="mt-8 grid gap-6 lg:grid-cols-[280px_1fr]">
@@ -298,7 +309,7 @@ function ProductSectionContent() {
 
         {/* Products */}
         <div className="space-y-4">
-          {(selectedChildIds.length > 0 || isByTypeMode || hasResultsFilter) && (
+          {(selectedChildIds.length > 0 || isByTypeMode || hasResultsFilter || hasActiveSearch) && (
             <div className="text-sm text-muted-foreground flex items-center gap-1">
               <span>{t("showing")}</span>
               <span className="font-medium text-foreground">
@@ -315,7 +326,7 @@ function ProductSectionContent() {
                 : "transition-opacity"
             }
           >
-            {selectedChildIds.length === 0 && !isByTypeMode && !hasResultsFilter ? (
+            {selectedChildIds.length === 0 && !isByTypeMode && !hasResultsFilter && !hasActiveSearch ? (
               <div className="text-center py-20 bg-gray-50 rounded-3xl border-2 border-dashed border-gray-200">
                 <div className="flex flex-col items-center gap-4">
                   <div className="h-16 w-16 bg-red-100 text-red-600 rounded-full flex items-center justify-center animate-bounce">
@@ -361,7 +372,7 @@ function ProductSectionContent() {
           </div>
 
           {/* Pagination */}
-          {(selectedChildIds.length > 0 || isByTypeMode || hasResultsFilter) && pagination && pagination.last_page > 1 && (
+          {(selectedChildIds.length > 0 || isByTypeMode || hasResultsFilter || hasActiveSearch) && pagination && pagination.last_page > 1 && (
             <PaginationControls
               pagination={pagination}
               onPageChange={setPage}

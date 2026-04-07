@@ -9,9 +9,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Trash, Loader2 } from "lucide-react";
+import { Trash, Loader2, Search } from "lucide-react";
 import type { VehicleFilterParams } from "@/lib/actions";
 import { useLocale, useTranslations } from "next-intl";
+import { useState, useEffect } from "react";
+import { Input } from "@/components/ui/input";
+import { cn } from "@/lib/utils";
 
 import { useProductFilters } from "@/hooks/use-product-filters";
 import { SectionTitle } from "./filters/SectionTitle";
@@ -28,15 +31,38 @@ export function ProductFilters({
   controlledParams?: VehicleFilterParams;
 }) {
   const t = useTranslations("Vehicle.inventory.filter");
+  const tStatus = useTranslations("Vehicle.status");
   const tCommon = useTranslations("Common");
   const locale = useLocale();
   const isRtl = locale === 'ar';
+
+  const tLabels = useTranslations("Vehicle.labels");
 
   const { state, data, loading, handlers } = useProductFilters({
     onFilterChange,
     exclude,
     controlledParams,
   });
+
+  const [localLotNumber, setLocalLotNumber] = useState(state.lotNumber || "");
+
+  // Removed state sync effect to resolve cascading render warning
+  // Initial value is already handled in useState initialization
+  useEffect(() => {
+    if (state.lotNumber !== undefined && state.lotNumber !== localLotNumber) {
+        setLocalLotNumber(state.lotNumber);
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [state.lotNumber]);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (localLotNumber !== state.lotNumber) {
+        handlers.handleLotNumberChange(localLotNumber);
+      }
+    }, 500);
+    return () => clearTimeout(timer);
+  }, [localLotNumber, state.lotNumber, handlers]);
 
   return (
     <div className="space-y-5" dir={isRtl ? "rtl" : "ltr"}>
@@ -57,12 +83,42 @@ export function ProductFilters({
       <Separator />
 
       <div className="flex flex-col gap-6">
+        {/* ── Search by Lot Number ────────────────────────────────────────── */}
+        <div className="space-y-3">
+          <SectionTitle title={tLabels('lotNumber')} />
+          <div className="relative">
+            <Input
+              placeholder={tCommon('search')}
+              value={localLotNumber}
+              onChange={(e) => setLocalLotNumber(e.target.value)}
+              className={isRtl ? "pr-9" : "pl-9"}
+            />
+            <Search className={cn(
+              "absolute top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground",
+              isRtl ? "right-3" : "left-3"
+            )} />
+          </div>
+        </div>
+
         {/* ── 8. Auction Status checklist (Moved to Top) ────────────────────── */}
         {!exclude.includes("auctionStatus") && (
           <div className="space-y-3">
             <SectionTitle title={t('auctionStatus')} />
             <ChecklistBox
-              items={data.displayResults}
+              items={data.displayResults.map((item) => {
+                const key =
+                  item.value === "Yet To Be Auctioned"
+                    ? "yetToBeAuctioned"
+                    : item.value === "Not Sold"
+                      ? "notSold"
+                      : item.value === "Sold"
+                        ? "sold"
+                        : null;
+                return {
+                  ...item,
+                  label: key ? tStatus(key) : item.label,
+                };
+              })}
               selectedItems={state.selectedResults}
               onToggle={handlers.toggleResult}
             />
@@ -118,20 +174,16 @@ export function ProductFilters({
         )}
 
         {/* ── 3. Model checklist ─────────────────────────────────────────── */}
-        {state.selectedChildIds.length > 0 && (
+        {!exclude.includes("model") && data.displayModels.length > 0 && (
           <div className="space-y-3">
             <SectionTitle title={t('model')} />
-            {loading.loadingModels ? (
+            {loading.loadingModels && state.selectedChildIds.length > 0 ? (
               <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                <Loader2 className="h-3 w-3 animate-spin" /> {t('loadingModels')}
+                <Loader2 className="h-3 w-3 animate-spin" /> {tCommon('loading')}
               </div>
-            ) : data.modelItems.length === 0 ? (
-              <p className="text-xs text-muted-foreground">
-                {t('noModels')}
-              </p>
             ) : (
               <ChecklistBox
-                items={data.modelItems.map((m) => m.name)}
+                items={data.displayModels}
                 selectedItems={state.selectedModels}
                 onToggle={handlers.toggleModel}
                 searchable
@@ -177,8 +229,6 @@ export function ProductFilters({
             />
           </div>
         )}
-
-
       </div>
     </div>
   );

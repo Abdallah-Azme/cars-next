@@ -103,6 +103,7 @@
     "status": {
       "sold": "تم البيع",
       "notSold": "لم يباع",
+      "yetToBeAuctioned": "قريباً في المزاد",
       "soldPrice": "سعر البيع",
       "startPrice": "سعر البداية",
       "tbd": "اسأل عن السعر",

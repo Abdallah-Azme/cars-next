@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useCallback } from "react";
+import { useEffect, useCallback, useMemo } from "react";
 import { useForm, useWatch } from "react-hook-form";
 import { useQuery } from "@tanstack/react-query";
 import {
@@ -9,10 +9,6 @@ import {
   getModelsByChildCategory,
   getFiltersByModels,
   type VehicleFilterParams,
-  type ParentCategory,
-  type ChildCategory,
-  type ModelItem,
-  type FiltersByModelData,
 } from "@/lib/actions";
 
 type FilterValues = {
@@ -28,6 +24,7 @@ type FilterValues = {
   hourTo?: string;
   scoreFrom?: string;
   scoreTo?: string;
+  lotNumber?: string;
 };
 
 // ── Hook interface ────────────────────────────────────────────────────────────
@@ -58,6 +55,7 @@ export function useProductFilters({
       hourTo: controlledParams.hourTo,
       scoreFrom: controlledParams.scoreFrom,
       scoreTo: controlledParams.scoreTo,
+      lotNumber: controlledParams.lotNumber,
     },
   });
 
@@ -79,6 +77,7 @@ export function useProductFilters({
       hourTo: controlledParams.hourTo,
       scoreFrom: controlledParams.scoreFrom,
       scoreTo: controlledParams.scoreTo,
+      lotNumber: controlledParams.lotNumber,
     });
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [controlledParams]);
@@ -87,8 +86,8 @@ export function useProductFilters({
   const values = useWatch({ control: form.control });
 
   const selectedParentId = values.selectedParentId;
-  const selectedChildIds = values.selectedChildIds ?? [];
-  const selectedModels = values.selectedModels ?? [];
+  const selectedChildIds = useMemo(() => values.selectedChildIds ?? [], [values.selectedChildIds]);
+  const selectedModels = useMemo(() => values.selectedModels ?? [], [values.selectedModels]);
 
   // ── Queries ───────────────────────────────────────────────────────────────
   const { data: parentData, isLoading: loadingParents } = useQuery({
@@ -122,35 +121,47 @@ export function useProductFilters({
   });
 
   // ── Derived data ──────────────────────────────────────────────────────────
-  const parentCategories: ParentCategory[] = parentData?.data?.data ?? [];
-  const childCategories: ChildCategory[] = childData?.data?.data ?? [];
-  const modelItems: ModelItem[] = modelsDataResponse?.data?.data?.models ?? [];
-  const typesFromCategory =
-    modelsDataResponse?.data?.data?.types?.map((t) => t.title) ?? [];
-  const dynamicResultsData = modelsDataResponse?.data?.data?.results ?? [];
+  const parentCategories = useMemo(() => parentData?.data?.data ?? [], [parentData]);
+  const childCategories = useMemo(() => childData?.data?.data ?? [], [childData]);
+  // modelsDataResponse.data is ActionResponse<{success, message, data: ModelsData}>
+  // so .data.data is the object with { models, types, results, lotNumbers }
+  const modelItems = useMemo(() => modelsDataResponse?.data?.data?.models ?? [], [modelsDataResponse]);
+  const typesFromCategory = useMemo(() =>
+    modelsDataResponse?.data?.data?.types?.map((t: { title: string }) => t.title) ?? [], [modelsDataResponse]);
+  const dynamicResultsData = useMemo(() => modelsDataResponse?.data?.data?.results ?? [], [modelsDataResponse]);
 
-  const dynamicFilters: FiltersByModelData | undefined =
-    filtersByModelData?.data?.data;
-  const dynamicTypes = dynamicFilters?.types.map((t) => t.title) ?? [];
-  const allTypes = allTypesData?.data?.data?.types.map((t) => t.title) ?? [];
+  const dynamicFilters = useMemo(() =>
+    filtersByModelData?.data?.data, [filtersByModelData]);
+  const dynamicTypes = useMemo(() => dynamicFilters?.types.map((t) => t.title) ?? [], [dynamicFilters]);
+  const allTypes = useMemo(() => allTypesData?.data?.data?.types.map((t) => t.title) ?? [], [allTypesData]);
 
-  const displayTypes =
+  const allModels = useMemo(() => allTypesData?.data?.data?.models?.map((m: { title: string }) => m.title) ?? [], [allTypesData]);
+  const subCatModels = useMemo(() => modelItems.map((m) => m.name), [modelItems]);
+
+  const displayModels = useMemo(() =>
+    selectedChildIds.length > 0
+      ? subCatModels
+      : allModels
+  , [selectedChildIds, subCatModels, allModels]);
+
+  const displayTypes = useMemo(() =>
     selectedModels.length > 0
       ? dynamicTypes
       : selectedChildIds.length > 0
         ? typesFromCategory
-        : allTypes;
+        : allTypes
+  , [selectedModels, dynamicTypes, selectedChildIds, typesFromCategory, allTypes]);
 
-  const displayResults = (
+  const displayResults = useMemo(() => (
     dynamicResultsData.length > 0
       ? dynamicResultsData.filter((r) => r !== "Sold By Nego")
       : ["Sold", "Not Sold", "Yet To Be Auctioned"]
   ).map((r) => ({
     label: r === "Yet To Be Auctioned" ? "Soon in Auction" : r,
     value: r,
-  }));
+  })), [dynamicResultsData]);
 
-  const dynamicYears = dynamicFilters?.years.map((y) => y.title) ?? [];
+  const dynamicYears = useMemo(() => dynamicFilters?.years.map((y) => y.title) ?? [], [dynamicFilters]);
 
   // ── notify: reads committed form values synchronously ────────────────────
   // We still accept `overrides` because useWatch is async (next render).
@@ -171,6 +182,7 @@ export function useProductFilters({
         hourTo: current.hourTo,
         scoreFrom: current.scoreFrom,
         scoreTo: current.scoreTo,
+        lotNumber: current.lotNumber,
         ...overrides,
       };
 
@@ -184,7 +196,7 @@ export function useProductFilters({
   );
 
   // ── Handlers ──────────────────────────────────────────────────────────────
-  const handleParentChange = (val: string) => {
+  const handleParentChange = useCallback((val: string) => {
     const id = Number(val);
     form.setValue("selectedParentId", id);
     form.setValue("selectedChildIds", []);
@@ -196,9 +208,9 @@ export function useProductFilters({
       selectedModels: [],
       selectedTypes: [],
     });
-  };
+  }, [form, notify]);
 
-  const handleChildToggle = (name: string, checked: boolean) => {
+  const handleChildToggle = useCallback((name: string, checked: boolean) => {
     const cat = childCategories.find((c) => c.name === name);
     if (!cat) return;
     const prev = form.getValues("selectedChildIds");
@@ -209,31 +221,31 @@ export function useProductFilters({
     form.setValue("selectedModels", []);
     form.setValue("selectedTypes", []);
     notify({ selectedChildIds: next, selectedModels: [], selectedTypes: [] });
-  };
+  }, [childCategories, form, notify]);
 
-  const toggleModel = (name: string, checked: boolean) => {
+  const toggleModel = useCallback((name: string, checked: boolean) => {
     const prev = form.getValues("selectedModels");
     const next = checked ? [...prev, name] : prev.filter((m) => m !== name);
     form.setValue("selectedModels", next);
     form.setValue("selectedTypes", []);
     notify({ selectedModels: next, selectedTypes: [] });
-  };
+  }, [form, notify]);
 
-  const toggleType = (name: string, checked: boolean) => {
+  const toggleType = useCallback((name: string, checked: boolean) => {
     const prev = form.getValues("selectedTypes");
     const next = checked ? [...prev, name] : prev.filter((t) => t !== name);
     form.setValue("selectedTypes", next);
     notify({ selectedTypes: next });
-  };
+  }, [form, notify]);
 
-  const toggleResult = (name: string, checked: boolean) => {
+  const toggleResult = useCallback((name: string, checked: boolean) => {
     const prev = form.getValues("selectedResults");
     const next = checked ? [...prev, name] : prev.filter((r) => r !== name);
     form.setValue("selectedResults", next);
     notify({ results: next });
-  };
+  }, [form, notify]);
 
-  const handleYearChange = (type: "from" | "to", v: string) => {
+  const handleYearChange = useCallback((type: "from" | "to", v: string) => {
     const val = v === "all" ? undefined : v;
     if (type === "from") {
       form.setValue("yearFrom", val);
@@ -242,9 +254,14 @@ export function useProductFilters({
       form.setValue("yearTo", val);
       notify({ yearTo: val });
     }
-  };
+  }, [form, notify]);
+  
+  const handleLotNumberChange = useCallback((v: string) => {
+    form.setValue("lotNumber", v);
+    notify({ lotNumber: v });
+  }, [form, notify]);
 
-  const handleReset = () => {
+  const handleReset = useCallback(() => {
     const defaults: FilterValues = {
       selectedParentId: undefined,
       selectedChildIds: [],
@@ -258,13 +275,14 @@ export function useProductFilters({
       hourTo: undefined,
       scoreFrom: undefined,
       scoreTo: undefined,
+      lotNumber: undefined,
     };
     form.reset(defaults);
     onFilterChange({ results: ["Yet To Be Auctioned"] });
-  };
+  }, [form, onFilterChange]);
 
   // ── Return (identical shape to before — ProductFilter.tsx unchanged) ──────
-  return {
+  return useMemo(() => ({
     state: {
       selectedParentId: values.selectedParentId,
       selectedChildIds: values.selectedChildIds ?? [],
@@ -273,11 +291,13 @@ export function useProductFilters({
       selectedResults: values.selectedResults ?? [],
       yearFrom: values.yearFrom,
       yearTo: values.yearTo,
+      lotNumber: values.lotNumber,
     },
     data: {
       parentCategories,
       childCategories,
       modelItems,
+      displayModels,
       displayTypes,
       displayResults,
       dynamicYears,
@@ -295,7 +315,29 @@ export function useProductFilters({
       toggleType,
       toggleResult,
       handleYearChange,
+      handleLotNumberChange,
       handleReset,
     },
-  };
+  }), [
+    values,
+    parentCategories,
+    childCategories,
+    modelItems,
+    displayModels,
+    displayTypes,
+    displayResults,
+    dynamicYears,
+    loadingParents,
+    loadingChildren,
+    loadingModels,
+    loadingFiltersByModel,
+    handleParentChange,
+    handleChildToggle,
+    toggleModel,
+    toggleType,
+    toggleResult,
+    handleYearChange,
+    handleLotNumberChange,
+    handleReset,
+  ]);
 }

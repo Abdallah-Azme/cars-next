@@ -103,6 +103,7 @@
     "status": {
       "sold": "Sold",
       "notSold": "Not Sold",
+      "yetToBeAuctioned": "Soon in Auction",
       "soldPrice": "Selling Price",
       "startPrice": "Start Price",
       "tbd": "Ask for Price",

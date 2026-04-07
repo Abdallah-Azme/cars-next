@@ -126,6 +126,7 @@ export type VehicleFilterParams = {
   results?: string[]; // Auction results (Sold, Yet To Be Auctioned)
   selectedParentId?: number;
   selectedChildIds?: number[];
+  lotNumber?: string;
   [key: string]: string | number | string[] | number[] | undefined;
 };
 
@@ -147,6 +148,7 @@ export async function getVehicles(params?: VehicleFilterParams) {
   if (params?.page) query.set("page", String(params.page));
   if (params?.per_page) query.set("per_page", String(params.per_page));
   if (params?.holdingDate) query.set("holding_date", params.holdingDate);
+  if (params?.lotNumber) query.set("lot_number", params.lotNumber);
 
   const qs = query.toString();
   return fetchFromLaravel<VehicleSResponse>(`/vehicles${qs ? `?${qs}` : ""}`, {

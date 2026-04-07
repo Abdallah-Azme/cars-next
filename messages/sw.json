@@ -102,6 +102,8 @@
     },
     "status": {
       "sold": "Imeuzwa",
+      "notSold": "Haijauzwa",
+      "yetToBeAuctioned": "Hivi karibuni katika Mnada",
       "soldPrice": "Bei ya Kuuza",
       "startPrice": "Bei ya Kuanzia",
       "tbd": "Uliza bei",
