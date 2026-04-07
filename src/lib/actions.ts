@@ -224,6 +224,7 @@ export type ModelsData = {
   models: ModelItem[];
   types: { title: string; count: number }[];
   results: string[];
+  lotNumbers: string[];
 };
 
 export async function getModelsByChildCategory(childCategoryIds: number[]) {
