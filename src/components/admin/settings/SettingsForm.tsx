@@ -20,14 +20,13 @@ import {
   Loader2,
   Phone,
   Mail,
-  MapPin,
   Share2,
   BarChart3,
   Rocket,
   Settings as SettingsIcon,
   Search
 } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useLocale, useTranslations } from "next-intl";
 
 interface SettingsFormProps {
@@ -46,35 +45,66 @@ export function SettingsForm({ initialData, onUpdate }: SettingsFormProps) {
   const statisticSchema = z.object({
     id: z.number().optional(),
     value: z.string().min(1, t("stats.valueLabel")),
-    label: z.string().min(1, t("stats.labelLabel")),
+    labelAr: z.string().min(1, "Required"),
+    labelEn: z.string().min(1, "Required"),
+    labelJp: z.string().min(1, "Required"),
+    labelSw: z.string().min(1, "Required"),
   });
 
   const settingsSchema = z.object({
-    siteName: z.string().nullable(),
+    siteNameAr: z.string().nullable(),
+    siteNameEn: z.string().nullable(),
+    siteNameJp: z.string().nullable(),
+    siteNameSw: z.string().nullable(),
     siteLogo: z.instanceof(typeof window !== 'undefined' ? FileList : Object).optional(),
-    metaTitle: z.string().nullable(),
-    metaDescription: z.string().nullable(),
-    metaKeywords: z.string().nullable(),
+    metaTitleAr: z.string().nullable(),
+    metaTitleEn: z.string().nullable(),
+    metaTitleJp: z.string().nullable(),
+    metaTitleSw: z.string().nullable(),
+    metaDescriptionAr: z.string().nullable(),
+    metaDescriptionEn: z.string().nullable(),
+    metaDescriptionJp: z.string().nullable(),
+    metaDescriptionSw: z.string().nullable(),
+    metaKeywordsAr: z.string().nullable(),
+    metaKeywordsEn: z.string().nullable(),
+    metaKeywordsJp: z.string().nullable(),
+    metaKeywordsSw: z.string().nullable(),
     metaImage: z.instanceof(typeof window !== 'undefined' ? FileList : Object).optional(),
-    heroTitle: z.string().min(1, t("hero.heroTitle")),
-    heroDescription: z.string().min(1, t("hero.heroDescription")),
+    heroTitleAr: z.string().nullable(),
+    heroTitleEn: z.string().nullable(),
+    heroTitleJp: z.string().nullable(),
+    heroTitleSw: z.string().nullable(),
+    heroDescriptionAr: z.string().nullable(),
+    heroDescriptionEn: z.string().nullable(),
+    heroDescriptionJp: z.string().nullable(),
+    heroDescriptionSw: z.string().nullable(),
+    heroImage: z.instanceof(typeof window !== 'undefined' ? FileList : Object).optional(),
     heroButton1Link: z.string().nullable().or(z.literal("")),
     heroButton2Link: z.string().nullable().or(z.literal("")),
     email: z.string().email().nullable().or(z.literal("")),
     phone: z.string().nullable(),
-    address: z.string().nullable(),
-    facebook: z.string().url().nullable().or(z.literal("")),
-    twitter: z.string().url().nullable().or(z.literal("")),
-    instagram: z.string().url().nullable().or(z.literal("")),
-    linkedin: z.string().url().nullable().or(z.literal("")),
-    youtube: z.string().url().nullable().or(z.literal("")),
-    tiktok: z.string().url().nullable().or(z.literal("")),
-    snapchat: z.string().url().nullable().or(z.literal("")),
-    pinterest: z.string().url().nullable().or(z.literal("")),
-    whatsapp: z.string().url().nullable().or(z.literal("")),
-    telegram: z.string().url().nullable().or(z.literal("")),
-    statisticsHeading: z.string().min(1, t("stats.heading")),
-    statisticsDescription: z.string().min(1, t("stats.subtext")),
+    addressAr: z.string().nullable(),
+    addressEn: z.string().nullable(),
+    addressJp: z.string().nullable(),
+    addressSw: z.string().nullable(),
+    facebook: z.string().nullable().or(z.literal("")),
+    twitter: z.string().nullable().or(z.literal("")),
+    instagram: z.string().nullable().or(z.literal("")),
+    linkedin: z.string().nullable().or(z.literal("")),
+    youtube: z.string().nullable().or(z.literal("")),
+    tiktok: z.string().nullable().or(z.literal("")),
+    snapchat: z.string().nullable().or(z.literal("")),
+    pinterest: z.string().nullable().or(z.literal("")),
+    whatsapp: z.string().nullable().or(z.literal("")),
+    telegram: z.string().nullable().or(z.literal("")),
+    statisticsHeadingAr: z.string().nullable(),
+    statisticsHeadingEn: z.string().nullable(),
+    statisticsHeadingJp: z.string().nullable(),
+    statisticsHeadingSw: z.string().nullable(),
+    statisticsDescriptionAr: z.string().nullable(),
+    statisticsDescriptionEn: z.string().nullable(),
+    statisticsDescriptionJp: z.string().nullable(),
+    statisticsDescriptionSw: z.string().nullable(),
     statistics: z.array(statisticSchema),
   });
 
@@ -84,18 +114,45 @@ export function SettingsForm({ initialData, onUpdate }: SettingsFormProps) {
     register,
     control,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<SettingsFormValues>({
     resolver: zodResolver(settingsSchema),
     defaultValues: {
-      ...initialData,
-      siteName: initialData.siteName || "",
-      metaTitle: initialData.metaTitle || "",
-      metaDescription: initialData.metaDescription || "",
-      metaKeywords: initialData.metaKeywords || "",
+      ...(initialData as unknown as SettingsFormValues),
+      siteLogo: undefined,
+      metaImage: undefined,
+      heroImage: undefined,
+      siteNameAr: initialData.siteNameAr || "",
+      siteNameEn: initialData.siteNameEn || "",
+      siteNameJp: initialData.siteNameJp || "",
+      siteNameSw: initialData.siteNameSw || "",
+      metaTitleAr: initialData.metaTitleAr || "",
+      metaTitleEn: initialData.metaTitleEn || "",
+      metaTitleJp: initialData.metaTitleJp || "",
+      metaTitleSw: initialData.metaTitleSw || "",
+      metaDescriptionAr: initialData.metaDescriptionAr || "",
+      metaDescriptionEn: initialData.metaDescriptionEn || "",
+      metaDescriptionJp: initialData.metaDescriptionJp || "",
+      metaDescriptionSw: initialData.metaDescriptionSw || "",
+      metaKeywordsAr: initialData.metaKeywordsAr || "",
+      metaKeywordsEn: initialData.metaKeywordsEn || "",
+      metaKeywordsJp: initialData.metaKeywordsJp || "",
+      metaKeywordsSw: initialData.metaKeywordsSw || "",
       phone: initialData.phone || "",
-      address: initialData.address || "",
+      addressAr: initialData.addressAr || "",
+      addressEn: initialData.addressEn || "",
+      addressJp: initialData.addressJp || "",
+      addressSw: initialData.addressSw || "",
       email: initialData.email || "",
+      heroTitleAr: initialData.heroTitleAr || "",
+      heroTitleEn: initialData.heroTitleEn || "",
+      heroTitleJp: initialData.heroTitleJp || "",
+      heroTitleSw: initialData.heroTitleSw || "",
+      heroDescriptionAr: initialData.heroDescriptionAr || "",
+      heroDescriptionEn: initialData.heroDescriptionEn || "",
+      heroDescriptionJp: initialData.heroDescriptionJp || "",
+      heroDescriptionSw: initialData.heroDescriptionSw || "",
       heroButton1Link: initialData.heroButton1Link || "",
       heroButton2Link: initialData.heroButton2Link || "",
       facebook: initialData.facebook || "",
@@ -108,8 +165,91 @@ export function SettingsForm({ initialData, onUpdate }: SettingsFormProps) {
       pinterest: initialData.pinterest || "",
       whatsapp: initialData.whatsapp || "",
       telegram: initialData.telegram || "",
+      statisticsHeadingAr: initialData.statisticsHeadingAr || "",
+      statisticsHeadingEn: initialData.statisticsHeadingEn || "",
+      statisticsHeadingJp: initialData.statisticsHeadingJp || "",
+      statisticsHeadingSw: initialData.statisticsHeadingSw || "",
+      statisticsDescriptionAr: initialData.statisticsDescriptionAr || "",
+      statisticsDescriptionEn: initialData.statisticsDescriptionEn || "",
+      statisticsDescriptionJp: initialData.statisticsDescriptionJp || "",
+      statisticsDescriptionSw: initialData.statisticsDescriptionSw || "",
+      statistics: initialData.statistics.map(s => ({
+        id: s.id,
+        value: s.value,
+        labelAr: s.labelAr || "",
+        labelEn: s.labelEn || "",
+        labelJp: s.labelJp || "",
+        labelSw: s.labelSw || "",
+      }))
     },
   });
+
+  useEffect(() => {
+    reset({
+      ...(initialData as unknown as SettingsFormValues),
+      siteLogo: undefined,
+      metaImage: undefined,
+      heroImage: undefined,
+      siteNameAr: initialData.siteNameAr || "",
+      siteNameEn: initialData.siteNameEn || "",
+      siteNameJp: initialData.siteNameJp || "",
+      siteNameSw: initialData.siteNameSw || "",
+      metaTitleAr: initialData.metaTitleAr || "",
+      metaTitleEn: initialData.metaTitleEn || "",
+      metaTitleJp: initialData.metaTitleJp || "",
+      metaTitleSw: initialData.metaTitleSw || "",
+      metaDescriptionAr: initialData.metaDescriptionAr || "",
+      metaDescriptionEn: initialData.metaDescriptionEn || "",
+      metaDescriptionJp: initialData.metaDescriptionJp || "",
+      metaDescriptionSw: initialData.metaDescriptionSw || "",
+      metaKeywordsAr: initialData.metaKeywordsAr || "",
+      metaKeywordsEn: initialData.metaKeywordsEn || "",
+      metaKeywordsJp: initialData.metaKeywordsJp || "",
+      metaKeywordsSw: initialData.metaKeywordsSw || "",
+      phone: initialData.phone || "",
+      addressAr: initialData.addressAr || "",
+      addressEn: initialData.addressEn || "",
+      addressJp: initialData.addressJp || "",
+      addressSw: initialData.addressSw || "",
+      email: initialData.email || "",
+      heroTitleAr: initialData.heroTitleAr || "",
+      heroTitleEn: initialData.heroTitleEn || "",
+      heroTitleJp: initialData.heroTitleJp || "",
+      heroTitleSw: initialData.heroTitleSw || "",
+      heroDescriptionAr: initialData.heroDescriptionAr || "",
+      heroDescriptionEn: initialData.heroDescriptionEn || "",
+      heroDescriptionJp: initialData.heroDescriptionJp || "",
+      heroDescriptionSw: initialData.heroDescriptionSw || "",
+      heroButton1Link: initialData.heroButton1Link || "",
+      heroButton2Link: initialData.heroButton2Link || "",
+      facebook: initialData.facebook || "",
+      twitter: initialData.twitter || "",
+      instagram: initialData.instagram || "",
+      linkedin: initialData.linkedin || "",
+      youtube: initialData.youtube || "",
+      tiktok: initialData.tiktok || "",
+      snapchat: initialData.snapchat || "",
+      pinterest: initialData.pinterest || "",
+      whatsapp: initialData.whatsapp || "",
+      telegram: initialData.telegram || "",
+      statisticsHeadingAr: initialData.statisticsHeadingAr || "",
+      statisticsHeadingEn: initialData.statisticsHeadingEn || "",
+      statisticsHeadingJp: initialData.statisticsHeadingJp || "",
+      statisticsHeadingSw: initialData.statisticsHeadingSw || "",
+      statisticsDescriptionAr: initialData.statisticsDescriptionAr || "",
+      statisticsDescriptionEn: initialData.statisticsDescriptionEn || "",
+      statisticsDescriptionJp: initialData.statisticsDescriptionJp || "",
+      statisticsDescriptionSw: initialData.statisticsDescriptionSw || "",
+      statistics: initialData.statistics.map(s => ({
+        id: s.id,
+        value: s.value,
+        labelAr: s.labelAr || "",
+        labelEn: s.labelEn || "",
+        labelJp: s.labelJp || "",
+        labelSw: s.labelSw || "",
+      }))
+    });
+  }, [initialData, reset]);
 
   const { fields, append, remove } = useFieldArray({
     control,
@@ -121,7 +261,6 @@ export function SettingsForm({ initialData, onUpdate }: SettingsFormProps) {
     try {
       const formData = new FormData();
 
-      // Helper to map camelCase to snake_case for the API
       const appendSnakeCase = (key: string, value: unknown) => {
         const snakeKey = key.replace(/[A-Z]/g, (letter) => `_${letter.toLowerCase()}`);
         if (value instanceof FileList) {
@@ -133,18 +272,19 @@ export function SettingsForm({ initialData, onUpdate }: SettingsFormProps) {
         }
       };
 
-      // Append all simple fields
       Object.entries(values).forEach(([key, value]) => {
         if (key !== "statistics") {
           appendSnakeCase(key, value);
         }
       });
 
-      // Append statistics array
       values.statistics.forEach((stat, index) => {
         if (stat.id) formData.append(`statistics[${index}][id]`, stat.id.toString());
         formData.append(`statistics[${index}][value]`, stat.value);
-        formData.append(`statistics[${index}][label]`, stat.label);
+        formData.append(`statistics[${index}][label_ar]`, stat.labelAr || "");
+        formData.append(`statistics[${index}][label_en]`, stat.labelEn || "");
+        formData.append(`statistics[${index}][label_jp]`, stat.labelJp || "");
+        formData.append(`statistics[${index}][label_sw]`, stat.labelSw || "");
       });
 
       const res = await updateSettings(formData);
@@ -167,8 +307,16 @@ export function SettingsForm({ initialData, onUpdate }: SettingsFormProps) {
     "tiktok", "snapchat", "pinterest", "whatsapp", "telegram"
   ] as const;
 
+  const languages = [
+    { code: 'Ar', name: 'Arabic', flag: '🇸🇦' },
+    { code: 'En', name: 'English', flag: '🇺🇸' },
+    { code: 'Jp', name: 'Japanese', flag: '🇯🇵' },
+    { code: 'Sw', name: 'Swahili', flag: '🇰🇪' }
+  ];
+
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className={`space-y-8 ${isRtl ? 'text-right' : 'text-left'}`}>
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    <form onSubmit={handleSubmit(onSubmit as any)} className={`space-y-8 ${isRtl ? 'text-right' : 'text-left'}`}>
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
         <TabsList className={`grid w-full grid-cols-2 md:grid-cols-3 lg:grid-cols-6 mb-8 ${isRtl ? 'flex-row-reverse' : ''}`}>
           <TabsTrigger value="general" className="gap-2">
@@ -199,15 +347,20 @@ export function SettingsForm({ initialData, onUpdate }: SettingsFormProps) {
               <CardDescription>{t("general.description")}</CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
-              <div className="grid gap-2">
-                <Label htmlFor="siteName" className={isRtl ? 'text-right' : ''}>{t("general.siteName")}</Label>
-                <Input 
-                    id="siteName" 
-                    {...register("siteName")} 
-                    placeholder={t("general.siteName")} 
-                    className={isRtl ? 'text-right' : ''}
-                />
-                {errors.siteName && <p className="text-sm text-destructive">{errors.siteName.message}</p>}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {languages.map(lang => (
+                  <div key={lang.code} className="grid gap-2">
+                    <Label htmlFor={`siteName${lang.code}`} className={isRtl ? 'text-right' : ''}>
+                      {t("general.siteName")} ({lang.name}) {lang.flag}
+                    </Label>
+                    <Input 
+                        id={`siteName${lang.code}`} 
+                        {...register(`siteName${lang.code}` as keyof SettingsFormValues)} 
+                        placeholder={`${t("general.siteName")} (${lang.name})`} 
+                        className={isRtl ? 'text-right' : ''}
+                    />
+                  </div>
+                ))}
               </div>
               <div className="grid gap-2">
                 <Label htmlFor="siteLogo" className={isRtl ? 'text-right' : ''}>{t("general.siteLogo")}</Label>
@@ -239,18 +392,29 @@ export function SettingsForm({ initialData, onUpdate }: SettingsFormProps) {
               <CardDescription>{t("seo.description")}</CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
-              <div className="grid gap-2">
-                <Label htmlFor="metaTitle" className={isRtl ? 'text-right' : ''}>{t("seo.metaTitle")}</Label>
-                <Input id="metaTitle" {...register("metaTitle")} placeholder={t("seo.metaTitle")} className={isRtl ? 'text-right' : ''} />
-              </div>
-              <div className="grid gap-2">
-                <Label htmlFor="metaDescription" className={isRtl ? 'text-right' : ''}>{t("seo.metaDescription")}</Label>
-                <Textarea id="metaDescription" {...register("metaDescription")} placeholder={t("seo.metaDescription")} className={isRtl ? 'text-right' : ''} />
-              </div>
-              <div className="grid gap-2">
-                <Label htmlFor="metaKeywords" className={isRtl ? 'text-right' : ''}>{t("seo.metaKeywords")}</Label>
-                <Input id="metaKeywords" {...register("metaKeywords")} placeholder="keyword1, keyword2, ..." className={isRtl ? 'text-right' : ''} />
-              </div>
+               <Tabs defaultValue="Ar">
+                  <TabsList className="mb-4">
+                     {languages.map(lang => (
+                        <TabsTrigger key={lang.code} value={lang.code}>{lang.flag} {lang.name}</TabsTrigger>
+                     ))}
+                  </TabsList>
+                  {languages.map(lang => (
+                     <TabsContent key={lang.code} value={lang.code} className="space-y-4">
+                        <div className="grid gap-2">
+                           <Label htmlFor={`metaTitle${lang.code}`} className={isRtl ? 'text-right' : ''}>{t("seo.metaTitle")}</Label>
+                           <Input id={`metaTitle${lang.code}`} {...register(`metaTitle${lang.code}` as keyof SettingsFormValues)} placeholder={t("seo.metaTitle")} className={isRtl ? 'text-right' : ''} />
+                        </div>
+                        <div className="grid gap-2">
+                           <Label htmlFor={`metaDescription${lang.code}`} className={isRtl ? 'text-right' : ''}>{t("seo.metaDescription")}</Label>
+                           <Textarea id={`metaDescription${lang.code}`} {...register(`metaDescription${lang.code}` as keyof SettingsFormValues)} placeholder={t("seo.metaDescription")} className={isRtl ? 'text-right' : ''} />
+                        </div>
+                        <div className="grid gap-2">
+                           <Label htmlFor={`metaKeywords${lang.code}`} className={isRtl ? 'text-right' : ''}>{t("seo.metaKeywords")}</Label>
+                           <Input id={`metaKeywords${lang.code}`} {...register(`metaKeywords${lang.code}` as keyof SettingsFormValues)} placeholder="keyword1, keyword2, ..." className={isRtl ? 'text-right' : ''} />
+                        </div>
+                     </TabsContent>
+                  ))}
+               </Tabs>
               <div className="grid gap-2">
                 <Label htmlFor="metaImage" className={isRtl ? 'text-right' : ''}>{t("seo.metaImage")}</Label>
                 {initialData.metaImage && (
@@ -280,16 +444,26 @@ export function SettingsForm({ initialData, onUpdate }: SettingsFormProps) {
               <CardDescription>{t("hero.description")}</CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
-              <div className="grid gap-2">
-                <Label htmlFor="heroTitle" className={isRtl ? 'text-right' : ''}>{t("hero.heroTitle")}</Label>
-                <Input id="heroTitle" {...register("heroTitle")} className={isRtl ? 'text-right' : ''} />
-                {errors.heroTitle && <p className="text-sm text-destructive">{errors.heroTitle.message}</p>}
-              </div>
-              <div className="grid gap-2">
-                <Label htmlFor="heroDescription" className={isRtl ? 'text-right' : ''}>{t("hero.heroDescription")}</Label>
-                <Textarea id="heroDescription" {...register("heroDescription")} className={isRtl ? 'text-right' : ''} />
-                {errors.heroDescription && <p className="text-sm text-destructive">{errors.heroDescription.message}</p>}
-              </div>
+                <Tabs defaultValue="Ar">
+                  <TabsList className="mb-4">
+                     {languages.map(lang => (
+                        <TabsTrigger key={lang.code} value={lang.code}>{lang.flag} {lang.name}</TabsTrigger>
+                     ))}
+                  </TabsList>
+                  {languages.map(lang => (
+                     <TabsContent key={lang.code} value={lang.code} className="space-y-4">
+                        <div className="grid gap-2">
+                           <Label htmlFor={`heroTitle${lang.code}`} className={isRtl ? 'text-right' : ''}>{t("hero.heroTitle")}</Label>
+                           <Input id={`heroTitle${lang.code}`} {...register(`heroTitle${lang.code}` as keyof SettingsFormValues)} className={isRtl ? 'text-right' : ''} />
+                        </div>
+                        <div className="grid gap-2">
+                           <Label htmlFor={`heroDescription${lang.code}`} className={isRtl ? 'text-right' : ''}>{t("hero.heroDescription")}</Label>
+                           <Textarea id={`heroDescription${lang.code}`} {...register(`heroDescription${lang.code}` as keyof SettingsFormValues)} className={isRtl ? 'text-right' : ''} />
+                        </div>
+                     </TabsContent>
+                  ))}
+               </Tabs>
+
               <div className={`grid grid-cols-1 md:grid-cols-2 gap-4 ${isRtl ? 'flex-row-reverse' : ''}`}>
                 <div className="grid gap-2">
                   <Label htmlFor="heroButton1Link" className={isRtl ? 'text-right' : ''}>{t("hero.button1")}</Label>
@@ -299,6 +473,24 @@ export function SettingsForm({ initialData, onUpdate }: SettingsFormProps) {
                   <Label htmlFor="heroButton2Link" className={isRtl ? 'text-right' : ''}>{t("hero.button2")}</Label>
                   <Input id="heroButton2Link" {...register("heroButton2Link")} placeholder="/request-quote" className={isRtl ? 'text-right' : ''} />
                 </div>
+              </div>
+
+               <div className="grid gap-2">
+                <Label htmlFor="heroImage" className={isRtl ? 'text-right' : ''}>{t("hero.heroImage") || "Hero Image"}</Label>
+                {initialData.heroImage && (
+                    <div className={`mb-2 flex ${isRtl ? 'justify-end' : ''}`}>
+                      <div className="relative h-32 w-64 rounded border p-1 bg-white">
+                        <Image 
+                          src={fixImageUrl(initialData.heroImage)} 
+                          alt="Current Hero Image" 
+                          fill
+                          className="object-cover rounded"
+                          sizes="256px"
+                        />
+                      </div>
+                    </div>
+                )}
+                <Input id="heroImage" type="file" accept="image/*" {...register("heroImage")} className={isRtl ? 'text-right' : ''} />
               </div>
             </CardContent>
           </Card>
@@ -322,9 +514,17 @@ export function SettingsForm({ initialData, onUpdate }: SettingsFormProps) {
                 <Label htmlFor="phone" className={`flex items-center gap-2 ${isRtl ? 'flex-row-reverse' : ''}`}><Phone className="size-4" /> {t("contact.phone")}</Label>
                 <Input id="phone" {...register("phone")} placeholder="0123456789" className={isRtl ? 'text-right' : ''} />
               </div>
-              <div className="grid gap-2">
-                <Label htmlFor="address" className={`flex items-center gap-2 ${isRtl ? 'flex-row-reverse' : ''}`}><MapPin className="size-4" /> {t("contact.address")}</Label>
-                <Input id="address" {...register("address")} placeholder="Cairo, Egypt" className={isRtl ? 'text-right' : ''} />
+
+              <div className="border-t pt-4">
+                 <Label className={`mb-4 block ${isRtl ? 'text-right' : ''}`}>{t("contact.address")}</Label>
+                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {languages.map(lang => (
+                       <div key={lang.code} className="grid gap-2">
+                          <Label htmlFor={`address${lang.code}`} className={isRtl ? 'text-right' : ''}>{lang.name} {lang.flag}</Label>
+                          <Input id={`address${lang.code}`} {...register(`address${lang.code}` as keyof SettingsFormValues)} placeholder={`${t("contact.address")} (${lang.name})`} className={isRtl ? 'text-right' : ''} />
+                       </div>
+                    ))}
+                 </div>
               </div>
             </CardContent>
           </Card>
@@ -359,37 +559,62 @@ export function SettingsForm({ initialData, onUpdate }: SettingsFormProps) {
               <CardDescription>{t("stats.description")}</CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
-              <div className="grid gap-2">
-                <Label htmlFor="statisticsHeading" className={isRtl ? 'text-right' : ''}>{t("stats.heading")}</Label>
-                <Input id="statisticsHeading" {...register("statisticsHeading")} className={isRtl ? 'text-right' : ''} />
-              </div>
-              <div className="grid gap-2">
-                <Label htmlFor="statisticsDescription" className={isRtl ? 'text-right' : ''}>{t("stats.subtext")}</Label>
-                <Textarea id="statisticsDescription" {...register("statisticsDescription")} className={isRtl ? 'text-right' : ''} />
-              </div>
+               <Tabs defaultValue="Ar">
+                  <TabsList className="mb-4">
+                     {languages.map(lang => (
+                        <TabsTrigger key={lang.code} value={lang.code}>{lang.flag} {lang.name}</TabsTrigger>
+                     ))}
+                  </TabsList>
+                  {languages.map(lang => (
+                     <TabsContent key={lang.code} value={lang.code} className="space-y-4">
+                        <div className="grid gap-2">
+                           <Label htmlFor={`statisticsHeading${lang.code}`} className={isRtl ? 'text-right' : ''}>{t("stats.heading")}</Label>
+                           <Input id={`statisticsHeading${lang.code}`} {...register(`statisticsHeading${lang.code}` as keyof SettingsFormValues)} className={isRtl ? 'text-right' : ''} />
+                        </div>
+                        <div className="grid gap-2">
+                           <Label htmlFor={`statisticsDescription${lang.code}`} className={isRtl ? 'text-right' : ''}>{t("stats.subtext")}</Label>
+                           <Textarea id={`statisticsDescription${lang.code}`} {...register(`statisticsDescription${lang.code}` as keyof SettingsFormValues)} className={isRtl ? 'text-right' : ''} />
+                        </div>
+                     </TabsContent>
+                  ))}
+               </Tabs>
 
               <div className="space-y-4 pt-4">
                 <div className={`flex items-center justify-between ${isRtl ? 'flex-row-reverse' : ''}`}>
                   <Label className={isRtl ? 'text-right' : ''}>{t("stats.addItem")}</Label>
-                  <Button type="button" variant="outline" size="sm" onClick={() => append({ value: "", label: "" })}>
+                  <Button type="button" variant="outline" size="sm" onClick={() => append({ value: "", labelAr: "", labelEn: "", labelJp: "", labelSw: "" })}>
                     <Plus className={`${isRtl ? 'ml-2' : 'mr-2'} size-4`} /> {t("stats.addItem")}
                   </Button>
                 </div>
                 
-                <div className="grid gap-4">
+                <div className="grid gap-6">
                   {fields.map((field, index) => (
-                    <div key={field.id} className={`flex items-end gap-4 p-4 border rounded-lg bg-muted/30 ${isRtl ? 'flex-row-reverse' : ''}`}>
-                      <div className="grid flex-1 gap-2">
-                        <Label className={isRtl ? 'text-right' : ''}>{t("stats.valueLabel")}</Label>
-                        <Input {...register(`statistics.${index}.value` as const)} placeholder="150+" className={isRtl ? 'text-right' : ''} />
-                      </div>
-                      <div className="grid flex-2 gap-2">
-                        <Label className={isRtl ? 'text-right' : ''}>{t("stats.labelLabel")}</Label>
-                        <Input {...register(`statistics.${index}.label` as const)} placeholder="Completed Projects" className={isRtl ? 'text-right' : ''} />
-                      </div>
-                      <Button type="button" variant="destructive" size="icon" onClick={() => remove(index)}>
+                    <div key={field.id} className={`flex flex-col gap-4 p-4 border rounded-lg bg-muted/30 relative`}>
+                      <Button 
+                        type="button" 
+                        variant="destructive" 
+                        size="icon" 
+                        className={`absolute top-2 ${isRtl ? 'left-2' : 'right-2'}`} 
+                        onClick={() => remove(index)}
+                       >
                         <Trash2 className="size-4" />
                       </Button>
+                      
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                         <div className="grid gap-2">
+                           <Label className={isRtl ? 'text-right' : ''}>{t("stats.valueLabel")}</Label>
+                           <Input {...register(`statistics.${index}.value` as const)} placeholder="150+" className={isRtl ? 'text-right' : ''} />
+                         </div>
+                         <div className="grid gap-2 grid-cols-2">
+                            {languages.map(lang => (
+                               <div key={lang.code} className="grid gap-1">
+                                  <Label className={`text-[10px] ${isRtl ? 'text-right' : ''}`}>{lang.name} {lang.flag}</Label>
+                                  {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+                                  <Input {...register(`statistics.${index}.label${lang.code}` as any)} placeholder={lang.name} className={`h-8 text-xs ${isRtl ? 'text-right' : ''}`} />
+                               </div>
+                            ))}
+                         </div>
+                      </div>
                     </div>
                   ))}
                   {fields.length === 0 && (
@@ -411,3 +636,4 @@ export function SettingsForm({ initialData, onUpdate }: SettingsFormProps) {
     </form>
   );
 }
+

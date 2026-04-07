@@ -96,6 +96,7 @@ export function AboutUsForm({
   type FormValues = z.infer<typeof formSchema>;
 
   // Map camelCase from API to snake_case used in Form
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const mapInitialData = (data: any) => ({
     title_ar: data?.titleAr || data?.title_ar || "",
     title_en: data?.titleEn || data?.title_en || "",
@@ -172,14 +173,15 @@ export function AboutUsForm({
             <FormField
               control={form.control}
               name="image"
-              render={({ field: { onChange, value: _, ...field } }) => (
+              // eslint-disable-next-line @typescript-eslint/no-unused-vars
+              render={({ field: { onChange, value: _value, ...field } }) => (
                 <FormItem>
                   <FormLabel className={isRtl ? 'text-right block w-full' : ''}>About Us Image</FormLabel>
                   <FormControl>
                     <div className={`flex flex-col gap-4 p-4 border rounded-md bg-muted/20`}>
                       <ImagePreview 
                         file={parentImage instanceof File ? parentImage : null} 
-                        fallbackUrl={initialData?.image || (initialData as any)?.imageUrl} 
+                        fallbackUrl={initialData?.image || (initialData as Record<string, unknown>)?.imageUrl as string} 
                       />
                       <div className={`flex-1 space-y-2 ${isRtl ? 'text-right' : ''}`}>
                         <Input

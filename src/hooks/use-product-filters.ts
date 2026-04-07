@@ -1,6 +1,9 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useEffect, useCallback } from "react";
+import { useForm, useWatch } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
 import { useQuery } from "@tanstack/react-query";
 import {
   getParentCategories,
@@ -14,6 +17,25 @@ import {
   type FiltersByModelData,
 } from "@/lib/actions";
 
+// ── Schema (stable reference outside the hook) ────────────────────────────────
+const filterSchema = z.object({
+  selectedParentId: z.number().optional(),
+  selectedChildIds: z.array(z.number()).default([]),
+  selectedModels: z.array(z.string()).default([]),
+  selectedTypes: z.array(z.string()).default([]),
+  selectedSizes: z.array(z.string()).default([]),
+  selectedResults: z.array(z.string()).default(["Yet To Be Auctioned"]),
+  yearFrom: z.string().optional(),
+  yearTo: z.string().optional(),
+  hourFrom: z.string().optional(),
+  hourTo: z.string().optional(),
+  scoreFrom: z.string().optional(),
+  scoreTo: z.string().optional(),
+});
+
+type FilterValues = z.infer<typeof filterSchema>;
+
+// ── Hook interface ────────────────────────────────────────────────────────────
 interface UseProductFiltersProps {
   onFilterChange: (params: VehicleFilterParams) => void;
   exclude?: string[];
@@ -25,70 +47,56 @@ export function useProductFilters({
   exclude = [],
   controlledParams = {},
 }: UseProductFiltersProps) {
-  // ── category hierarchy state ──────────────────────────────────────────────
-  const [selectedParentId, setSelectedParentId] = useState<number | undefined>(
-    controlledParams.selectedParentId,
-  );
-  const [selectedChildIds, setSelectedChildIds] = useState<number[]>(
-    controlledParams.selectedChildIds || [],
-  );
-  const [selectedModels, setSelectedModels] = useState<string[]>(
-    controlledParams.selectedModels || [],
-  );
+  // ── Single form instance replaces 12 × useState ───────────────────────────
+  const form = useForm<FilterValues>({
+    resolver: zodResolver(filterSchema),
+    defaultValues: {
+      selectedParentId: controlledParams.selectedParentId,
+      selectedChildIds: controlledParams.selectedChildIds ?? [],
+      selectedModels: controlledParams.selectedModels ?? [],
+      selectedTypes: controlledParams.selectedTypes ?? [],
+      selectedSizes: controlledParams.sizes ?? [],
+      selectedResults:
+        (controlledParams.results as string[]) ?? ["Yet To Be Auctioned"],
+      yearFrom: controlledParams.yearFrom,
+      yearTo: controlledParams.yearTo,
+      hourFrom: controlledParams.hourFrom,
+      hourTo: controlledParams.hourTo,
+      scoreFrom: controlledParams.scoreFrom,
+      scoreTo: controlledParams.scoreTo,
+    },
+  });
 
-  // ── side-filter state driven by filters-by-model ────────────────────────
-  const [selectedTypes, setSelectedTypes] = useState<string[]>(
-    controlledParams.selectedTypes || [],
-  );
-  const [selectedSizes, setSelectedSizes] = useState<string[]>(
-    controlledParams.sizes || [],
-  );
-  const [selectedResults, setSelectedResults] = useState<string[]>(
-    (controlledParams.results as string[]) || ["Yet To Be Auctioned"],
-  );
-
-  // ── range filter state ───────────────────────────────────────────────────
-  const [yearFrom, setYearFrom] = useState<string | undefined>(
-    controlledParams.yearFrom,
-  );
-  const [yearTo, setYearTo] = useState<string | undefined>(
-    controlledParams.yearTo,
-  );
-  const [hourFrom, setHourFrom] = useState<string | undefined>(
-    controlledParams.hourFrom,
-  );
-  const [hourTo, setHourTo] = useState<string | undefined>(
-    controlledParams.hourTo,
-  );
-  const [scoreFrom, setScoreFrom] = useState<string | undefined>(
-    controlledParams.scoreFrom,
-  );
-  const [scoreTo, setScoreTo] = useState<string | undefined>(
-    controlledParams.scoreTo,
-  );
-
-  // Sync state with controlledParams
+  // ── Sync when controlledParams changes from outside ───────────────────────
+  // form.reset() applies the full object, so empty arrays are never skipped
+  // (unlike the old truthy-guard approach).
   useEffect(() => {
-    if (controlledParams.selectedParentId !== undefined)
-      setSelectedParentId(controlledParams.selectedParentId);
-    if (controlledParams.selectedChildIds)
-      setSelectedChildIds(controlledParams.selectedChildIds);
-    if (controlledParams.selectedModels)
-      setSelectedModels(controlledParams.selectedModels);
-    if (controlledParams.selectedTypes)
-      setSelectedTypes(controlledParams.selectedTypes);
-    if (controlledParams.sizes) setSelectedSizes(controlledParams.sizes);
-    if (controlledParams.results)
-      setSelectedResults(controlledParams.results as string[]);
-    setYearFrom(controlledParams.yearFrom);
-    setYearTo(controlledParams.yearTo);
-    setHourFrom(controlledParams.hourFrom);
-    setHourTo(controlledParams.hourTo);
-    setScoreFrom(controlledParams.scoreFrom);
-    setScoreTo(controlledParams.scoreTo);
+    form.reset({
+      selectedParentId: controlledParams.selectedParentId,
+      selectedChildIds: controlledParams.selectedChildIds ?? [],
+      selectedModels: controlledParams.selectedModels ?? [],
+      selectedTypes: controlledParams.selectedTypes ?? [],
+      selectedSizes: controlledParams.sizes ?? [],
+      selectedResults:
+        (controlledParams.results as string[]) ?? ["Yet To Be Auctioned"],
+      yearFrom: controlledParams.yearFrom,
+      yearTo: controlledParams.yearTo,
+      hourFrom: controlledParams.hourFrom,
+      hourTo: controlledParams.hourTo,
+      scoreFrom: controlledParams.scoreFrom,
+      scoreTo: controlledParams.scoreTo,
+    });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [controlledParams]);
 
-  // Queries
+  // ── Reactive reads that drive query keys + return state ───────────────────
+  const values = useWatch({ control: form.control });
+
+  const selectedParentId = values.selectedParentId;
+  const selectedChildIds = values.selectedChildIds ?? [];
+  const selectedModels = values.selectedModels ?? [];
+
+  // ── Queries ───────────────────────────────────────────────────────────────
   const { data: parentData, isLoading: loadingParents } = useQuery({
     queryKey: ["parentCategories"],
     queryFn: getParentCategories,
@@ -119,139 +127,158 @@ export function useProductFilters({
     enabled: true,
   });
 
-  // Derived data
+  // ── Derived data ──────────────────────────────────────────────────────────
   const parentCategories: ParentCategory[] = parentData?.data?.data ?? [];
   const childCategories: ChildCategory[] = childData?.data?.data ?? [];
   const modelItems: ModelItem[] = modelsDataResponse?.data?.data?.models ?? [];
-  const typesFromCategory = modelsDataResponse?.data?.data?.types?.map((t) => t.title) ?? [];
+  const typesFromCategory =
+    modelsDataResponse?.data?.data?.types?.map((t) => t.title) ?? [];
   const dynamicResultsData = modelsDataResponse?.data?.data?.results ?? [];
 
-  const dynamicFilters: FiltersByModelData | undefined = filtersByModelData?.data?.data;
+  const dynamicFilters: FiltersByModelData | undefined =
+    filtersByModelData?.data?.data;
   const dynamicTypes = dynamicFilters?.types.map((t) => t.title) ?? [];
   const allTypes = allTypesData?.data?.data?.types.map((t) => t.title) ?? [];
-  
-  const displayTypes = 
-    selectedModels.length > 0 ? dynamicTypes : 
-    selectedChildIds.length > 0 ? typesFromCategory : 
-    allTypes;
 
-  const displayResults = (dynamicResultsData.length > 0 
-    ? dynamicResultsData.filter(r => r !== "Sold By Nego") 
-    : ["Sold", "Not Sold", "Yet To Be Auctioned"]
-  ).map(r => ({ 
-    label: r === "Yet To Be Auctioned" ? "Soon in Auction" : r, 
-    value: r 
+  const displayTypes =
+    selectedModels.length > 0
+      ? dynamicTypes
+      : selectedChildIds.length > 0
+        ? typesFromCategory
+        : allTypes;
+
+  const displayResults = (
+    dynamicResultsData.length > 0
+      ? dynamicResultsData.filter((r) => r !== "Sold By Nego")
+      : ["Sold", "Not Sold", "Yet To Be Auctioned"]
+  ).map((r) => ({
+    label: r === "Yet To Be Auctioned" ? "Soon in Auction" : r,
+    value: r,
   }));
 
   const dynamicYears = dynamicFilters?.years.map((y) => y.title) ?? [];
 
-  const notify = (overrides: Partial<VehicleFilterParams>) => {
-    const params: VehicleFilterParams = {
-      selectedParentId,
-      selectedChildIds,
-      selectedModels,
-      selectedTypes,
-      sizes: selectedSizes,
-      results: selectedResults,
-      yearFrom,
-      yearTo,
-      hourFrom,
-      hourTo,
-      scoreFrom,
-      scoreTo,
-      ...overrides,
-    };
+  // ── notify: reads committed form values synchronously ────────────────────
+  // We still accept `overrides` because useWatch is async (next render).
+  // Passing the new values explicitly ensures onFilterChange fires immediately.
+  const notify = useCallback(
+    (overrides: Partial<VehicleFilterParams>) => {
+      const current = form.getValues();
+      const params: VehicleFilterParams = {
+        selectedParentId: current.selectedParentId,
+        selectedChildIds: current.selectedChildIds,
+        selectedModels: current.selectedModels,
+        selectedTypes: current.selectedTypes,
+        sizes: current.selectedSizes,
+        results: current.selectedResults,
+        yearFrom: current.yearFrom,
+        yearTo: current.yearTo,
+        hourFrom: current.hourFrom,
+        hourTo: current.hourTo,
+        scoreFrom: current.scoreFrom,
+        scoreTo: current.scoreTo,
+        ...overrides,
+      };
 
-    exclude.forEach((field) => {
-      delete (params as Record<string, unknown>)[field];
-    });
+      exclude.forEach((field) => {
+        delete (params as Record<string, unknown>)[field];
+      });
 
-    onFilterChange(params);
-  };
+      onFilterChange(params);
+    },
+    [form, exclude, onFilterChange],
+  );
 
-  // Handlers
+  // ── Handlers ──────────────────────────────────────────────────────────────
   const handleParentChange = (val: string) => {
     const id = Number(val);
-    setSelectedParentId(id);
-    setSelectedChildIds([]);
-    setSelectedModels([]);
-    setSelectedTypes([]);
-    notify({ selectedParentId: id, selectedChildIds: [], selectedModels: [], selectedTypes: [] });
+    form.setValue("selectedParentId", id);
+    form.setValue("selectedChildIds", []);
+    form.setValue("selectedModels", []);
+    form.setValue("selectedTypes", []);
+    notify({
+      selectedParentId: id,
+      selectedChildIds: [],
+      selectedModels: [],
+      selectedTypes: [],
+    });
   };
 
   const handleChildToggle = (name: string, checked: boolean) => {
     const cat = childCategories.find((c) => c.name === name);
     if (!cat) return;
+    const prev = form.getValues("selectedChildIds");
     const next = checked
-      ? [...selectedChildIds, cat.id]
-      : selectedChildIds.filter((id) => id !== cat.id);
-    setSelectedChildIds(next);
-    setSelectedModels([]);
-    setSelectedTypes([]);
+      ? [...prev, cat.id]
+      : prev.filter((id) => id !== cat.id);
+    form.setValue("selectedChildIds", next);
+    form.setValue("selectedModels", []);
+    form.setValue("selectedTypes", []);
     notify({ selectedChildIds: next, selectedModels: [], selectedTypes: [] });
   };
 
   const toggleModel = (name: string, checked: boolean) => {
-    const next = checked
-      ? [...selectedModels, name]
-      : selectedModels.filter((m) => m !== name);
-    setSelectedModels(next);
-    setSelectedTypes([]);
+    const prev = form.getValues("selectedModels");
+    const next = checked ? [...prev, name] : prev.filter((m) => m !== name);
+    form.setValue("selectedModels", next);
+    form.setValue("selectedTypes", []);
     notify({ selectedModels: next, selectedTypes: [] });
   };
 
   const toggleType = (name: string, checked: boolean) => {
-    const next = checked
-      ? [...selectedTypes, name]
-      : selectedTypes.filter((t) => t !== name);
-    setSelectedTypes(next);
+    const prev = form.getValues("selectedTypes");
+    const next = checked ? [...prev, name] : prev.filter((t) => t !== name);
+    form.setValue("selectedTypes", next);
     notify({ selectedTypes: next });
   };
 
   const toggleResult = (name: string, checked: boolean) => {
-    const next = checked
-      ? [...selectedResults, name]
-      : selectedResults.filter((r) => r !== name);
-    setSelectedResults(next);
+    const prev = form.getValues("selectedResults");
+    const next = checked ? [...prev, name] : prev.filter((r) => r !== name);
+    form.setValue("selectedResults", next);
     notify({ results: next });
   };
 
   const handleYearChange = (type: "from" | "to", v: string) => {
     const val = v === "all" ? undefined : v;
     if (type === "from") {
-      setYearFrom(val);
+      form.setValue("yearFrom", val);
       notify({ yearFrom: val });
     } else {
-      setYearTo(val);
+      form.setValue("yearTo", val);
       notify({ yearTo: val });
     }
   };
 
   const handleReset = () => {
-    setSelectedParentId(undefined);
-    setSelectedChildIds([]);
-    setSelectedModels([]);
-    setSelectedTypes([]);
-    setSelectedSizes([]);
-    setSelectedResults(["Yet To Be Auctioned"]);
-    setYearFrom(undefined);
-    setYearTo(undefined);
-    setHourFrom(undefined);
-    setHourTo(undefined);
-    setScoreFrom(undefined);
-    setScoreTo(undefined);
+    const defaults: FilterValues = {
+      selectedParentId: undefined,
+      selectedChildIds: [],
+      selectedModels: [],
+      selectedTypes: [],
+      selectedSizes: [],
+      selectedResults: ["Yet To Be Auctioned"],
+      yearFrom: undefined,
+      yearTo: undefined,
+      hourFrom: undefined,
+      hourTo: undefined,
+      scoreFrom: undefined,
+      scoreTo: undefined,
+    };
+    form.reset(defaults);
     onFilterChange({ results: ["Yet To Be Auctioned"] });
   };
 
+  // ── Return (identical shape to before — ProductFilter.tsx unchanged) ──────
   return {
     state: {
-      selectedParentId,
-      selectedChildIds,
-      selectedModels,
-      selectedTypes,
-      selectedResults,
-      yearFrom,
-      yearTo,
+      selectedParentId: values.selectedParentId,
+      selectedChildIds: values.selectedChildIds ?? [],
+      selectedModels: values.selectedModels ?? [],
+      selectedTypes: values.selectedTypes ?? [],
+      selectedResults: values.selectedResults ?? [],
+      yearFrom: values.yearFrom,
+      yearTo: values.yearTo,
     },
     data: {
       parentCategories,
