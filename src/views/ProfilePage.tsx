@@ -22,7 +22,7 @@ const ProfilePage = () => {
   return (
     <>
       <PageHeader title={t("title")} />
-      <div className={`container my-12 ${isRtl ? 'text-right' : 'text-left'}`}>
+      <div className={`container my-12 text-start`}>
         <div className="grid gap-8 lg:grid-cols-2">
           {/* Profile Info */}
           <Card className="h-full">

@@ -5,7 +5,7 @@
   },
   "Navbar": {
     "home": "Home",
-    "machines": "Inventory",
+    "machines": "Vehicles",
     "categories": "Categories",
     "favorites": "Favorites",
     "profile": "Profile",
@@ -485,6 +485,7 @@
   "Common": {
     "loading": "Loading...",
     "error": "Something went wrong",
+    "search": "Search...",
     "whatsappTitle": "Chat with us on WhatsApp!",
     "whatsappAria": "Contact us on WhatsApp",
     "connectWithUs": "Connect With Us",

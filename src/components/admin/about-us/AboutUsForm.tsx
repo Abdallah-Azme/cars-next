@@ -164,9 +164,9 @@ export function AboutUsForm({
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className={`space-y-6 ${isRtl ? 'text-right' : 'text-left'}`}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className={`space-y-6 text-start`}>
         <Card>
-          <CardHeader className={isRtl ? 'text-right' : ''}>
+          <CardHeader className="text-start">
             <CardTitle>Image Section</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
@@ -176,14 +176,14 @@ export function AboutUsForm({
               // eslint-disable-next-line @typescript-eslint/no-unused-vars
               render={({ field: { onChange, value: _value, ...field } }) => (
                 <FormItem>
-                  <FormLabel className={isRtl ? 'text-right block w-full' : ''}>About Us Image</FormLabel>
+                  <FormLabel className={"block w-full text-start"}>About Us Image</FormLabel>
                   <FormControl>
                     <div className={`flex flex-col gap-4 p-4 border rounded-md bg-muted/20`}>
                       <ImagePreview 
                         file={parentImage instanceof File ? parentImage : null} 
                         fallbackUrl={initialData?.image || (initialData as Record<string, unknown>)?.imageUrl as string} 
                       />
-                      <div className={`flex-1 space-y-2 ${isRtl ? 'text-right' : ''}`}>
+                      <div className={`flex-1 space-y-2 `}>
                         <Input
                           type="file"
                           accept="image/*"
@@ -192,7 +192,7 @@ export function AboutUsForm({
                             if (file) onChange(file);
                           }}
                           {...field}
-                          className={isRtl ? 'text-right' : ''}
+                          className="text-start"
                         />
                         <p className="text-[10px] text-muted-foreground">
                           Recommended format: PNG, JPG, WEBP (Max 5MB)
@@ -200,7 +200,7 @@ export function AboutUsForm({
                       </div>
                     </div>
                   </FormControl>
-                  <FormMessage className={isRtl ? 'text-right' : ''} />
+                  <FormMessage className="text-start" />
                 </FormItem>
               )}
             />
@@ -210,7 +210,7 @@ export function AboutUsForm({
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {languages.map((lang) => (
             <Card key={lang.key}>
-              <CardHeader className={isRtl ? 'text-right' : ''}>
+              <CardHeader className="text-start">
                 <CardTitle className="flex items-center gap-2">
                    {lang.label} Content
                 </CardTitle>
@@ -221,11 +221,11 @@ export function AboutUsForm({
                   name={`title_${lang.key}` as keyof FormValues}
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className={isRtl ? 'text-right block w-full' : ''}>Title ({lang.label})</FormLabel>
+                      <FormLabel className={"block w-full text-start"}>Title ({lang.label})</FormLabel>
                       <FormControl>
-                        <Input placeholder={`Enter ${lang.label} title`} {...field} className={isRtl ? 'text-right' : ''} />
+                        <Input placeholder={`Enter ${lang.label} title`} {...field} className="text-start" />
                       </FormControl>
-                      <FormMessage className={isRtl ? 'text-right' : ''} />
+                      <FormMessage className="text-start" />
                     </FormItem>
                   )}
                 />
@@ -235,15 +235,15 @@ export function AboutUsForm({
                   name={`description_${lang.key}` as keyof FormValues}
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className={isRtl ? 'text-right block w-full' : ''}>Description ({lang.label})</FormLabel>
+                      <FormLabel className={"block w-full text-start"}>Description ({lang.label})</FormLabel>
                       <FormControl>
                         <textarea 
                           placeholder={`Enter ${lang.label} description`} 
                           {...field} 
-                          className={`flex min-h-[120px] w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm shadow-sm placeholder:text-muted-foreground focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 ${isRtl ? 'text-right' : ''}`}
+                          className={`flex min-h-[120px] w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm shadow-sm placeholder:text-muted-foreground focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 `}
                         />
                       </FormControl>
-                      <FormMessage className={isRtl ? 'text-right' : ''} />
+                      <FormMessage className="text-start" />
                     </FormItem>
                   )}
                 />
@@ -254,7 +254,7 @@ export function AboutUsForm({
 
         <div className={`flex gap-2 ${isRtl ? 'justify-start flex-row-reverse' : 'justify-end'}`}>
           <Button type="submit" className="bg-red-700 font-bold" disabled={loading}>
-            {loading && <Loader2 className={`${isRtl ? 'ml-2' : 'mr-2'} h-4 w-4 animate-spin`} />}
+            {loading && <Loader2 className={`me-2 h-4 w-4 animate-spin`} />}
             Save Changes
           </Button>
         </div>

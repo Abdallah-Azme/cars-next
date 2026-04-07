@@ -72,14 +72,14 @@ export default function Footer() {
   return (
     <footer className="bg-[#0f0f0f] text-white pt-20 pb-28 md:pb-10 border-t border-white/5">
       <div className="container mx-auto px-4">
-        <div className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16 py-4 text-center ${isRtl ? 'md:text-right' : 'md:text-left'}`}>
+        <div className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16 py-4 text-center md:text-start`}>
           {/* Brand Column */}
           <div className="space-y-6">
             <Link
               href="/"
-              className={`inline-block transition-transform hover:scale-105 mx-auto ${isRtl ? 'md:mr-0' : 'md:ml-0'}`}
+              className={`inline-block transition-transform hover:scale-105 mx-auto md:ms-0`}
             >
-              <div className={`flex items-center justify-center gap-3 ${isRtl ? 'md:justify-start flex-row-reverse' : 'md:justify-start'}`}>
+              <div className={`flex items-center justify-center gap-3 md:justify-start`}>
                 {settings?.siteLogo ? (
                   <div className="relative w-12 h-12">
                     <Image
@@ -105,7 +105,7 @@ export default function Footer() {
             <p className="text-gray-400 text-sm leading-relaxed max-w-sm mx-auto md:mx-0">
               {t("description")}
             </p>
-            <div className={`grid grid-cols-5 gap-2 md:flex md:flex-wrap md:gap-3 pt-2 justify-items-center max-w-[250px] mx-auto md:max-w-none md:mx-0 ${isRtl ? 'md:justify-start flex-row-reverse' : 'md:justify-start'}`}>
+            <div className={`grid grid-cols-5 gap-2 md:flex md:flex-wrap md:gap-3 pt-2 justify-items-center max-w-[250px] mx-auto md:max-w-none md:mx-0 md:justify-start`}>
               {activeSocials.map((platform) => (
                 <a
                   key={platform.id}
@@ -166,11 +166,11 @@ export default function Footer() {
             </h4>
             <div className={`space-y-5 flex flex-col items-center ${isRtl ? 'md:items-end' : 'md:items-start'}`}>
               {settings?.phone && (
-                <div className={`flex flex-col items-center gap-3 md:gap-4 group ${isRtl ? 'md:flex-row-reverse' : 'md:flex-row'}`}>
+                <div className={`flex flex-col items-center gap-3 md:gap-4 group md:flex-row`}>
                   <div className="w-10 h-10 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-red-500 group-hover:bg-red-600 group-hover:text-white transition-colors">
                     <Phone size={18} />
                   </div>
-                  <div className={`flex flex-col items-center text-center ${isRtl ? 'md:text-right md:items-end' : 'md:text-left md:items-start'}`}>
+                  <div className={`flex flex-col items-center text-center md:text-start md:items-start`}>
                     <span className="text-[10px] font-black uppercase tracking-widest text-gray-500">
                       {t('callUs')}
                     </span>
@@ -185,11 +185,11 @@ export default function Footer() {
               )}
               
               {settings?.email && (
-                <div className={`flex flex-col items-center gap-3 md:gap-4 group ${isRtl ? 'md:flex-row-reverse' : 'md:flex-row'}`}>
+                <div className={`flex flex-col items-center gap-3 md:gap-4 group md:flex-row`}>
                   <div className="w-10 h-10 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-red-500 group-hover:bg-red-600 group-hover:text-white transition-colors">
                     <Mail size={18} />
                   </div>
-                  <div className={`flex flex-col items-center text-center ${isRtl ? 'md:text-right md:items-end' : 'md:text-left md:items-start'}`}>
+                  <div className={`flex flex-col items-center text-center md:text-start md:items-start`}>
                     <span className="text-[10px] font-black uppercase tracking-widest text-gray-500">
                       {t('email')}
                     </span>
@@ -204,11 +204,11 @@ export default function Footer() {
               )}
 
               {address && (
-                <div className={`flex flex-col items-center gap-3 md:gap-4 group ${isRtl ? 'md:flex-row-reverse' : 'md:flex-row'}`}>
+                <div className={`flex flex-col items-center gap-3 md:gap-4 group md:flex-row`}>
                   <div className="w-10 h-10 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-red-500">
                     <MapPin size={18} />
                   </div>
-                  <div className={`flex flex-col items-center text-center ${isRtl ? 'md:text-right md:items-end' : 'md:text-left md:items-start'}`}>
+                  <div className={`flex flex-col items-center text-center md:text-start md:items-start`}>
                     <span className="text-[10px] font-black uppercase tracking-widest text-gray-500">
                       {t('location')}
                     </span>

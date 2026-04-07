@@ -135,7 +135,7 @@ function VerifyEmailFormContent() {
             name="code"
             render={({ field }) => (
               <FormItem className="flex flex-col items-center space-y-6">
-                <div className={`flex items-center justify-between w-full px-2 ${isRtl ? 'flex-row-reverse' : ''}`}>
+                <div className={`flex items-center justify-between w-full px-2`}>
                   <FormLabel className="text-base font-bold">{t("otpLabel")}</FormLabel>
                   <Button 
                     variant="outline" 
@@ -199,7 +199,7 @@ function VerifyEmailFormContent() {
         </form>
       </Form>
 
-      <div className={`text-center pt-4 border-t border-gray-100 flex flex-col sm:flex-row items-center justify-center gap-1 text-sm text-gray-500 ${isRtl ? 'flex-row-reverse' : ''}`}>
+      <div className={`text-center pt-4 border-t border-gray-100 flex flex-col sm:flex-row items-center justify-center gap-1 text-sm text-gray-500`}>
          <span>{t("alreadyVerified")}</span>
          <Link href="/login" className="font-bold text-red-700 hover:text-red-800 underline">
             {t("login")}

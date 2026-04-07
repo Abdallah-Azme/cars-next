@@ -12,7 +12,7 @@ export function CategoriesPageSimple({ categories }: { categories: Category[] })
   const isRtl = locale === 'ar';
 
   return (
-    <div className={`space-y-6 container my-12 ${isRtl ? 'text-right' : 'text-left'}`}>
+    <div className={`space-y-6 container my-12 text-start`}>
       {categories.length === 0 ? (
         <div className="text-center text-gray-500 py-10">{t("noCategories")}</div>
       ) : (
@@ -20,7 +20,7 @@ export function CategoriesPageSimple({ categories }: { categories: Category[] })
           {categories?.map((cat) => (
             <Card key={cat?.title} className="overflow-hidden">
               <CardContent className="p-4">
-                <div className={`flex items-center justify-between gap-3 mb-4 ${isRtl ? 'flex-row-reverse' : ''}`}>
+                <div className={`flex items-center justify-between gap-3 mb-4`}>
                   <h2 className="text-xl font-semibold text-red-600">
                     {cat?.title}
                   </h2>
@@ -28,7 +28,7 @@ export function CategoriesPageSimple({ categories }: { categories: Category[] })
                     {t("subCount", { count: cat?.subCategoriesCount })}
                   </Badge>
                 </div>
-                <p className={`text-sm text-muted-foreground mb-4 ${isRtl ? 'text-right' : ''}`}>
+                <p className={`text-sm text-muted-foreground mb-4 `}>
                   {cat?.description}
                 </p>
 
@@ -41,7 +41,7 @@ export function CategoriesPageSimple({ categories }: { categories: Category[] })
                       key={sub?.title}
                       className={`flex items-center gap-3 rounded-lg border p-3 hover:bg-muted/30 transition-colors ${isRtl ? 'flex-row-reverse justify-end' : 'justify-start'}`}
                     >
-                      <div className={`min-w-0 ${isRtl ? 'text-right' : 'text-left'}`}>
+                      <div className={`min-w-0 text-start`}>
                         <div className="truncate text-red-600 font-medium">
                           {sub?.title}
                         </div>

@@ -30,7 +30,7 @@ export function ProductCarousel() {
   return (
     <section className="container py-12">
       {/* Header Section */}
-      <div className={`flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12 ${isRtl ? 'text-right' : 'text-left'}`}>
+      <div className={`flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12 text-start`}>
         <div className="space-y-3">
           <motion.h2
             initial={{ opacity: 0, y: 20 }}

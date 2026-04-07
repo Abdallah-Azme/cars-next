@@ -49,7 +49,7 @@ const ProductPage = () => {
   };
 
   return (
-    <div className={`flex flex-col gap-4 ${isRtl ? 'text-right' : 'text-left'}`}>
+    <div className={`flex flex-col gap-4 text-start`}>
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold text-red-700">{t("title")}</h1>
       </div>
@@ -64,7 +64,7 @@ const ProductPage = () => {
           onValueChange={handleTabChange}
           className="gap-4"
         >
-          <TabsList className={`mb-4 h-auto p-1 bg-muted/50 overflow-x-auto justify-start ${isRtl ? 'flex-row-reverse' : ''}`}>
+          <TabsList className={`mb-4 h-auto p-1 bg-muted/50 overflow-x-auto justify-start`}>
             {summary.map((tab: AuctionSummaryItem) => (
               <TabsTrigger
                 key={tab.date}
@@ -88,7 +88,7 @@ const ProductPage = () => {
               value={tab.date}
               className="flex flex-col gap-4 mt-0"
             >
-              <div className={`flex items-center justify-between ${isRtl ? 'flex-row-reverse' : ''}`}>
+              <div className={`flex items-center justify-between`}>
                 <p className="text-sm font-bold">
                   {tab.auctionDay} {tab.date}
                 </p>

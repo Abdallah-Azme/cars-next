@@ -164,9 +164,9 @@ export function ParentCategoryForm({
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className={`space-y-6 ${isRtl ? 'text-right' : 'text-left'}`}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className={`space-y-6 text-start`}>
         <Card>
-          <CardHeader className={isRtl ? 'text-right' : ''}>
+          <CardHeader className="text-start">
             <CardTitle>{t("basicInfo")}</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
@@ -175,11 +175,11 @@ export function ParentCategoryForm({
               name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className={isRtl ? 'text-right block w-full' : ''}>{t("categoryName")}</FormLabel>
+                  <FormLabel className={"block w-full text-start"}>{t("categoryName")}</FormLabel>
                   <FormControl>
-                    <Input placeholder={t("namePlaceholder")} {...field} className={isRtl ? 'text-right' : ''} />
+                    <Input placeholder={t("namePlaceholder")} {...field} className="text-start" />
                   </FormControl>
-                  <FormMessage className={isRtl ? 'text-right' : ''} />
+                  <FormMessage className="text-start" />
                 </FormItem>
               )}
             />
@@ -189,15 +189,15 @@ export function ParentCategoryForm({
               name="image"
               render={({ field: { value: _value, onChange, ...field } }) => (
                 <FormItem>
-                  <FormLabel className={isRtl ? 'text-right block w-full' : ''}>{t("categoryImg")}</FormLabel>
+                  <FormLabel className={"block w-full text-start"}>{t("categoryImg")}</FormLabel>
                   <FormControl>
-                    <div className={`flex items-center gap-6 p-2 border rounded-md bg-muted/20 ${isRtl ? 'flex-row-reverse' : ''}`}>
+                    <div className={`flex items-center gap-6 p-2 border rounded-md bg-muted/20`}>
                       <ImagePreview 
                         file={parentImage instanceof File ? parentImage : null} 
                         fallbackUrl={initialData?.image} 
                         newFlag={t("newFlag")}
                       />
-                      <div className={`flex-1 space-y-2 ${isRtl ? 'text-right' : ''}`}>
+                      <div className={`flex-1 space-y-2 `}>
                         <Input
                           type="file"
                           accept="image/*"
@@ -206,7 +206,7 @@ export function ParentCategoryForm({
                             if (file) onChange(file);
                           }}
                           {...field}
-                          className={isRtl ? 'text-right' : ''}
+                          className="text-start"
                         />
                         <p className="text-[10px] text-muted-foreground">
                           {t("imgHint")}
@@ -214,7 +214,7 @@ export function ParentCategoryForm({
                       </div>
                     </div>
                   </FormControl>
-                  <FormMessage className={isRtl ? 'text-right' : ''} />
+                  <FormMessage className="text-start" />
                 </FormItem>
               )}
             />
@@ -222,16 +222,16 @@ export function ParentCategoryForm({
         </Card>
 
         <Card>
-          <CardHeader className={`flex flex-row items-center justify-between ${isRtl ? 'flex-row-reverse' : ''}`}>
+          <CardHeader className={`flex flex-row items-center justify-between`}>
             <CardTitle>{t("childCategories")}</CardTitle>
             <Button
               type="button"
               variant="outline"
               size="sm"
               onClick={() => append({ name: "", searchKeywords: "" })}
-              className={isRtl ? 'flex-row-reverse' : ''}
+              
             >
-              <Plus className={`${isRtl ? 'ml-2' : 'mr-2'} h-4 w-4`} />
+              <Plus className={`me-2 h-4 w-4`} />
               {t("addChild")}
             </Button>
           </CardHeader>
@@ -260,17 +260,17 @@ export function ParentCategoryForm({
                     <Trash2 className="h-4 w-4" />
                   </Button>
 
-                  <div className={`grid grid-cols-1 md:grid-cols-2 gap-4 ${isRtl ? 'flex-row-reverse' : ''}`}>
+                  <div className={`grid grid-cols-1 md:grid-cols-2 gap-4`}>
                     <FormField
                       control={form.control}
                       name={`children.${index}.name`}
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel className={isRtl ? 'text-right block w-full' : ''}>{t("childName")}</FormLabel>
+                          <FormLabel className={"block w-full text-start"}>{t("childName")}</FormLabel>
                           <FormControl>
-                            <Input placeholder={t("childPlaceholder")} {...field} className={isRtl ? 'text-right' : ''} />
+                            <Input placeholder={t("childPlaceholder")} {...field} className="text-start" />
                           </FormControl>
-                          <FormMessage className={isRtl ? 'text-right' : ''} />
+                          <FormMessage className="text-start" />
                         </FormItem>
                       )}
                     />
@@ -280,11 +280,11 @@ export function ParentCategoryForm({
                       name={`children.${index}.searchKeywords`}
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel className={isRtl ? 'text-right block w-full' : ''}>{t("keywords")}</FormLabel>
+                          <FormLabel className={"block w-full text-start"}>{t("keywords")}</FormLabel>
                           <FormControl>
-                            <Input placeholder={t("keywordsPlaceholder")} {...field} className={isRtl ? 'text-right' : ''} />
+                            <Input placeholder={t("keywordsPlaceholder")} {...field} className="text-start" />
                           </FormControl>
-                          <FormMessage className={isRtl ? 'text-right' : ''} />
+                          <FormMessage className="text-start" />
                         </FormItem>
                       )}
                     />
@@ -295,19 +295,19 @@ export function ParentCategoryForm({
                     name={`children.${index}.image`}
                     render={({ field: { value: _value, onChange, ...field } }) => (
                       <FormItem>
-                        <FormLabel className={isRtl ? 'text-right block w-full' : ''}>{t("childImg")}</FormLabel>
+                        <FormLabel className={"block w-full text-start"}>{t("childImg")}</FormLabel>
                         <FormControl>
-                          <div className={`flex items-center gap-4 p-2 border rounded-md bg-white ${isRtl ? 'flex-row-reverse' : ''}`}>
+                          <div className={`flex items-center gap-4 p-2 border rounded-md bg-white`}>
                             <ImagePreview 
                               file={childImage instanceof File ? childImage : null} 
                               fallbackUrl={hasExistingImage} 
                               newFlag={t("newFlag")}
                             />
-                            <div className={`flex-1 space-y-1 ${isRtl ? 'text-right' : ''}`}>
+                            <div className={`flex-1 space-y-1 `}>
                               <Input
                                 type="file"
                                 accept="image/*"
-                                className={`h-8 py-0.5 text-xs ${isRtl ? 'text-right' : ''}`}
+                                className={`h-8 py-0.5 text-xs `}
                                 onChange={(e) => {
                                   const file = e.target.files?.[0];
                                   if (file) onChange(file);
@@ -317,7 +317,7 @@ export function ParentCategoryForm({
                             </div>
                           </div>
                         </FormControl>
-                        <FormMessage className={isRtl ? 'text-right' : ''} />
+                        <FormMessage className="text-start" />
                       </FormItem>
                     )}
                   />
@@ -337,7 +337,7 @@ export function ParentCategoryForm({
             {t("cancel")}
           </Button>
           <Button type="submit" className="bg-red-700 font-bold" disabled={loading}>
-            {loading && <Loader2 className={`${isRtl ? 'ml-2' : 'mr-2'} h-4 w-4 animate-spin`} />}
+            {loading && <Loader2 className={`me-2 h-4 w-4 animate-spin`} />}
             {initialData ? t("update") : t("create")}
           </Button>
         </div>

@@ -5,7 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import AddToFavBtn from "@/components/products/AddToFavBtn";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { MessageCircle, Maximize2, ZoomIn, ZoomOut, RotateCcw, X } from "lucide-react";
+import { MessageCircle, Maximize2, ZoomIn, ZoomOut, RotateCcw, X, Mail } from "lucide-react";
 import { useSettingsStore } from "@/stores/settings";
 import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
@@ -41,7 +41,7 @@ const SingleProductPage = () => {
   const id = params?.id as string;
   const locale = useLocale();
   const t = useTranslations("Vehicle");
-  const ts = useTranslations("single");
+  const ts = useTranslations("Vehicle.single");
   const isRtl = locale === 'ar';
   const { formatPrice } = useCurrency();
   
@@ -64,12 +64,15 @@ const SingleProductPage = () => {
 
   const handleWhatsAppContact = () => {
     const contact = settings?.whatsapp || settings?.phone;
+    const currentUrl = typeof window !== 'undefined' ? window.location.href : '';
     const message = isRtl
-      ? `مرحباً، أنا مهتم بـ ${vehicle?.maker || ""} ${vehicle?.model || ""} (ID: ${vehicle?.id}). هل يمكنك تزويدي بمزيد من التفاصيل؟`
-      : `Hello, I'm interested in the ${vehicle?.maker || ""} ${vehicle?.model || ""} (ID: ${vehicle?.id}). Could you provide more details?`;
+      ? `مرحباً، أنا مهتم بـ ${vehicle?.maker || ""} ${vehicle?.model || ""} (ID: ${vehicle?.id}). هل يمكنك تزويدي بمزيد من التفاصيل؟\n${currentUrl}`
+      : `Hello, I'm interested in the ${vehicle?.maker || ""} ${vehicle?.model || ""} (ID: ${vehicle?.id}). Could you provide more details?\n${currentUrl}`;
     const finalUrl = formatWhatsAppUrl(contact, message);
     if (finalUrl) window.open(finalUrl, "_blank");
   };
+
+  // mailto URL is now handled directly in the button for better compatibility
 
   React.useEffect(() => {
     if (!api) return;
@@ -116,7 +119,7 @@ const SingleProductPage = () => {
     );
   }
 
-  const title = `${vehicle.maker} ${vehicle.model}`;
+  const title = `${vehicle.maker || ""} ${vehicle.model || ""}`.trim() || vehicle.carMaker || "Vehicle";
   const mappedImages =
     vehicle.images
       ?.map((img: VehicleImage) => img.download_url)
@@ -146,20 +149,27 @@ const SingleProductPage = () => {
   return (
     <>
       <PageHeader title={title} />
-      <div className={`space-y-5 container my-12 ${isRtl ? 'text-right' : 'text-left'}`}>
+      <div className={`space-y-5 container my-12 text-start`}>
         {/* Header */}
-        <div className={`flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between ${isRtl ? 'sm:flex-row-reverse' : ''}`}>
+        <div className={`flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between`}>
           <div className="space-y-1">
             <h1 className="text-3xl font-bold">{title}</h1>
             <div className="text-muted-foreground">{vehicle.auctionDay}</div>
-            <div className={`flex items-center gap-2 ${isRtl ? 'flex-row-reverse' : ''}`}>
+            <div className={`flex items-center gap-2`}>
               <Badge variant="secondary" className="rounded-full px-3">
                 {ts("grade")} {vehicle.score || "—"}
               </Badge>
-              <Badge variant="outline" className="font-normal">
+              <Badge 
+                variant="outline" 
+                className="font-normal cursor-pointer hover:bg-muted transition-colors"
+                onClick={handleWhatsAppContact}
+              >
                 {localizedStatus}
               </Badge>
-              <span className="text-xs text-muted-foreground">
+              <span 
+                className="text-xs text-muted-foreground cursor-pointer hover:underline underline-offset-4"
+                onClick={handleWhatsAppContact}
+              >
                 {vehicle.holdingDate
                   ? new Date(vehicle.holdingDate).toLocaleDateString(locale)
                   : "—"}
@@ -168,7 +178,7 @@ const SingleProductPage = () => {
           </div>
 
           {/* Favorite + CTA */}
-          <div className={`flex items-center gap-2 ${isRtl ? 'flex-row-reverse' : ''}`}>
+          <div className="flex flex-wrap items-center gap-2">
             {settings?.whatsapp || settings?.phone ? (
               <Button 
                 onClick={handleWhatsAppContact}
@@ -187,6 +197,22 @@ const SingleProductPage = () => {
                 {t("contact.unavailable")}
               </Button>
             )}
+
+            {settings?.email && (
+              <Button 
+                variant="outline"
+                className="gap-2 transition-all active:scale-95 shadow-sm border-gray-300 hover:bg-gray-100"
+                asChild
+              >
+                <a 
+                  href={`mailto:${settings.email.trim()}?subject=${encodeURIComponent(isRtl ? `استفسار حول ${vehicle?.maker || ""} ${vehicle?.model || ""} (ID: ${vehicle?.id})` : `Inquiry about ${vehicle?.maker || ""} ${vehicle?.model || ""} (ID: ${vehicle?.id})`)}&body=${encodeURIComponent((isRtl ? `مرحباً، أنا مهتم بهذه المعدة:\n` : `Hello, I am interested in this machine:\n`) + (typeof window !== 'undefined' ? window.location.href : "" ))}`}
+                >
+                  <Mail className="size-4" />
+                  {t("contact.email")}
+                </a>
+              </Button>
+            )}
+            
             <AddToFavBtn vehicle={vehicle} />
           </div>
         </div>
@@ -229,7 +255,7 @@ const SingleProductPage = () => {
                           </div>
 
                           {/* Logo Overlay */}
-                          <div className={`absolute bottom-4 ${isRtl ? 'left-4' : 'right-4'} z-10 select-none pointer-events-none opacity-80 transition-opacity hover:opacity-100`}>
+                          <div className="absolute bottom-4 end-4 z-10 select-none pointer-events-none opacity-80 transition-opacity hover:opacity-100">
                             <div className="relative h-12 w-32 md:h-16 md:w-40 overflow-hidden rounded-lg bg-white/40 backdrop-blur-md p-2 shadow-sm border border-white/40">
                               <Image
                                 src="/logo.jpeg"
@@ -244,9 +270,9 @@ const SingleProductPage = () => {
                     ))}
                   </CarouselContent>
 
-                  <div className={`flex items-center justify-between mt-4 ${isRtl ? 'flex-row-reverse' : ''}`}>
+                  <div className={`flex items-center justify-between mt-4`}>
                     {/* Dots */}
-                    <div className={`flex gap-2 py-2 ${isRtl ? 'flex-row-reverse' : ''}`}>
+                    <div className={`flex gap-2 py-2`}>
                       {images?.slice(0, 15).map((_: string, i: number) => {
                         const isActive = current === i;
                         return (
@@ -264,7 +290,7 @@ const SingleProductPage = () => {
                       })}
                     </div>
 
-                    <div className={`flex items-center gap-2 ${isRtl ? 'flex-row-reverse' : ''}`}>
+                    <div className={`flex items-center gap-2`}>
                       <CarouselPrevious className="bg-red-600 border-none text-white size-8! static translate-x-0 translate-y-0" />
                       <CarouselNext className="bg-red-600 border-none text-white size-8! static translate-x-0 translate-y-0" />
                     </div>
@@ -287,13 +313,13 @@ const SingleProductPage = () => {
               </CardHeader>
               <CardContent className="pt-0">
                 <div className="rounded-md border bg-muted/20 overflow-hidden">
-                  <div className={`grid ${isRtl ? 'grid-cols-[1fr_120px]' : 'grid-cols-[120px_1fr]'}`}>
+                  <div className="grid grid-cols-[120px_1fr]">
                     {specs.map((row, idx) => (
                       <div key={`${row.label}-${idx}`} className="contents">
-                        <div className={`border-b px-3 py-2 text-xs font-medium bg-muted/40 ${isRtl ? 'order-2 text-right' : 'order-1 text-left'}`}>
+                        <div className="border-b px-3 py-2 text-xs font-medium bg-muted/40 text-start">
                           {row.label}
                         </div>
-                        <div className={`border-b px-3 py-2 text-xs ${isRtl ? 'order-1 text-left' : 'order-2 text-right'}`}>
+                        <div className="border-b px-3 py-2 text-xs text-end">
                           {row.value}
                         </div>
                       </div>
@@ -303,39 +329,60 @@ const SingleProductPage = () => {
               </CardContent>
             </Card>
             {/* Start price */}
-            <Card>
+            <Card 
+              className="cursor-pointer hover:border-red-200 transition-colors group"
+              onClick={handleWhatsAppContact}
+            >
               <CardContent className="p-4">
-                <div className="text-xs text-muted-foreground uppercase font-medium tracking-wider">
-                  {rawStatus.toLowerCase() === "sold"
-                    ? t("status.soldPrice")
-                    : t("status.startPrice")}
-                </div>
-                <div
-                  className={cn(
-                    "mt-1 text-lg font-black flex items-center gap-1",
-                    isRtl ? 'flex-row-reverse' : '',
-                    rawStatus.toLowerCase() === "sold"
-                      ? "text-green-600"
-                      : "text-blue-600",
-                  )}
-                >
-                  {(() => {
-                    const price = rawStatus.toLowerCase() === "sold"
-                      ? (vehicle.soldPrice || vehicle.startPrice || vehicle.translatedData?.startPrice)
-                      : (vehicle.startPrice || vehicle.translatedData?.startPrice);
+                <div className="flex justify-between items-start">
+                  <div>
+                    <div className="text-xs text-muted-foreground uppercase font-medium tracking-wider">
+                      {rawStatus.toLowerCase() === "sold"
+                        ? t("status.soldPrice")
+                        : t("status.startPrice")}
+                    </div>
+                    <div
+                      className={cn(
+                        "mt-1 text-lg font-black flex items-center gap-1",
+                        rawStatus.toLowerCase() === "sold"
+                          ? "text-green-600"
+                          : "text-blue-600",
+                      )}
+                    >
+                      {(() => {
+                        const price = rawStatus.toLowerCase() === "sold"
+                          ? (vehicle.soldPrice || vehicle.startPrice || vehicle.translatedData?.startPrice)
+                          : (vehicle.startPrice || vehicle.translatedData?.startPrice);
 
-                    if (!price) return <span>{t("status.tbd")}</span>;
+                        if (!price) return <span>{t("status.tbd")}</span>;
 
-                    return (
-                      <>
-                        {formatPrice(price)}
-                      </>
-                    );
-                  })()}
+                        return (
+                          <>
+                            {formatPrice(price)}
+                          </>
+                        );
+                      })()}
+                    </div>
+                  </div>
+                  <div className="opacity-0 group-hover:opacity-100 transition-opacity">
+                    <MessageCircle className="size-4 text-green-600" />
+                  </div>
                 </div>
                 <Separator className="my-3" />
-                <div className="text-xs text-muted-foreground">{ts("status")}</div>
-                <div className="mt-1 text-sm">{localizedStatus}</div>
+                <div className="flex justify-between items-end">
+                  <div>
+                    <div className="text-xs text-muted-foreground">{ts("status")}</div>
+                    <div className="mt-1 text-sm font-medium">{localizedStatus}</div>
+                  </div>
+                  {vehicle.holdingDate && (
+                    <div className="text-right">
+                      <div className="text-xs text-muted-foreground">{t("status.acceptanceEnds")}</div>
+                      <div className="mt-1 text-sm font-medium">
+                        {new Date(vehicle.holdingDate).toLocaleDateString(locale)}
+                      </div>
+                    </div>
+                  )}
+                </div>
               </CardContent>
             </Card>
           </div>
@@ -358,10 +405,10 @@ const SingleProductPage = () => {
 
       <Dialog open={isZoomOpen} onOpenChange={setIsZoomOpen}>
         <DialogContent className="w-screen h-dvh max-w-none sm:max-w-none p-0 border-none bg-black/95 rounded-none" showCloseButton={false}>
-          <div className={`absolute top-4 ${isRtl ? 'right-4' : 'left-4'} z-50 flex items-center gap-2`}>
+          <div className="absolute top-4 start-4 z-50 flex items-center gap-2">
             <AddToFavBtn vehicle={vehicle} />
           </div>
-          <div className={`absolute top-4 ${isRtl ? 'left-4' : 'right-4'} z-50`}>
+          <div className="absolute top-4 end-4 z-50">
             <button 
               onClick={() => setIsZoomOpen(false)}
               aria-label="Close zoom"
@@ -402,7 +449,7 @@ const SingleProductPage = () => {
                           </TransformComponent>
                           
                           {/* Visual UX Controls */}
-                          <div className={`absolute bottom-[25%] ${isRtl ? 'left-4' : 'right-4'} z-50 flex flex-col gap-2 bg-black/50 p-2 rounded-xl backdrop-blur-md border border-white/10`}>
+                          <div className="absolute bottom-[25%] end-4 z-50 flex flex-col gap-2 bg-black/50 p-2 rounded-xl backdrop-blur-md border border-white/10">
                             <button
                               onClick={(e) => { e.stopPropagation(); zoomIn(); }}
                               aria-label="Zoom in"

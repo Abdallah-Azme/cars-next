@@ -57,7 +57,7 @@ export default function ChangePasswordForm() {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className={`space-y-4 ${isRtl ? 'text-right' : 'text-left'}`}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className={`space-y-4 text-start`}>
         <FormField
           control={form.control}
           name="new_password"
@@ -68,7 +68,7 @@ export default function ChangePasswordForm() {
                 <Input 
                   type="password" 
                   placeholder="••••••••" 
-                  className={`${isRtl ? 'text-right' : 'text-left'}`}
+                  className={`text-start`}
                   {...field} 
                 />
               </FormControl>
@@ -87,7 +87,7 @@ export default function ChangePasswordForm() {
                 <Input 
                   type="password" 
                   placeholder="••••••••" 
-                  className={`${isRtl ? 'text-right' : 'text-left'}`}
+                  className={`text-start`}
                   {...field} 
                 />
               </FormControl>
@@ -102,7 +102,7 @@ export default function ChangePasswordForm() {
           disabled={isSubmitting}
         >
           {isSubmitting ? (
-            <Loader2 className={`${isRtl ? 'ml-2' : 'mr-2'} h-4 w-4 animate-spin`} />
+            <Loader2 className={`me-2 h-4 w-4 animate-spin`} />
           ) : (
             t("submit")
           )}

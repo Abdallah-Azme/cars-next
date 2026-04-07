@@ -70,7 +70,7 @@ export default function MergedHero() {
       <div className={`absolute inset-0 bg-linear-to-${isRtl ? 'l' : 'r'} from-black/60 via-black/25 to-transparent`} />
 
       {/* Hero Content panel — overlaid on the side */}
-      <div className={`absolute inset-y-0 ${isRtl ? 'right-0' : 'left-0'} flex items-center px-6 md:px-12 lg:px-16`}>
+      <div className={`absolute inset-y-0 start-0 flex items-center px-6 md:px-12 lg:px-16`}>
         <motion.div
           initial={{ opacity: 0, x: isRtl ? 40 : -40 }}
           animate={{ opacity: 1, x: 0 }}

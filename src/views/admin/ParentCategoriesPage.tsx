@@ -51,16 +51,16 @@ const ParentCategoriesPage = () => {
   };
 
   return (
-    <div className={`flex flex-col gap-6 ${isRtl ? 'text-right' : 'text-left'}`}>
-      <div className={`flex items-center justify-between ${isRtl ? 'flex-row-reverse' : ''}`}>
+    <div className={`flex flex-col gap-6 text-start`}>
+      <div className={`flex items-center justify-between`}>
         <div>
           <h1 className="text-3xl font-bold text-red-700">{t("title")}</h1>
           <p className="text-muted-foreground">
             {t("subtitle")}
           </p>
         </div>
-        <Button onClick={handleCreate} className={`bg-red-700 font-bold ${isRtl ? 'flex-row-reverse' : ''}`}>
-          <Plus className={`${isRtl ? 'ml-2' : 'mr-2'} h-4 w-4`} />
+        <Button onClick={handleCreate} className={`bg-red-700 font-bold`}>
+          <Plus className={`me-2 h-4 w-4`} />
           {t("addBtn")}
         </Button>
       </div>
@@ -78,8 +78,8 @@ const ParentCategoriesPage = () => {
       )}
 
       <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
-        <DialogContent className={`sm:max-w-3xl max-h-[90vh] overflow-y-auto ${isRtl ? 'text-right' : 'text-left'}`}>
-          <DialogHeader className={isRtl ? 'text-right items-end' : ''}>
+        <DialogContent className={`sm:max-w-3xl max-h-[90vh] overflow-y-auto text-start`}>
+          <DialogHeader className={"text-start items-start"}>
             <DialogTitle>
               {selectedCategory ? t("modal.edit") : t("modal.add")}
             </DialogTitle>

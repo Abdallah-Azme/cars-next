@@ -27,7 +27,7 @@ export default function SubCategoryCard({
 
       {/* Text Container at Top */}
       <div className="absolute top-0 inset-x-0 p-5 flex flex-col items-center">
-        <h3 className="text-xl md:text-2xl font-bold text-white drop-shadow-md flex items-center justify-center rtl:flex-row-reverse text-center">
+        <h3 className="text-xl md:text-2xl font-bold text-white drop-shadow-md flex items-center justify-center  text-center">
           - {category.name} -
         </h3>
         {category.vehiclesCount !== undefined && (

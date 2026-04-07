@@ -91,10 +91,10 @@ export default function SingleProductPage() {
   ];
 
   return (
-    <div className={`container mx-auto py-6 space-y-6 ${isRtl ? 'text-right' : 'text-left'}`}>
-      <div className={`flex items-center justify-between ${isRtl ? 'flex-row-reverse' : ''}`}>
+    <div className={`container mx-auto py-6 space-y-6 text-start`}>
+      <div className={`flex items-center justify-between`}>
         <h1 className="text-3xl font-bold text-red-700">{title}</h1>
-        <div className={`flex items-center gap-2 ${isRtl ? 'flex-row-reverse' : ''}`}>
+        <div className={`flex items-center gap-2`}>
            <Badge variant="secondary" className="text-lg px-4 py-1">
             {t("single.scorePrefix")} {vehicle.score || "—"}
           </Badge>
@@ -172,7 +172,7 @@ export default function SingleProductPage() {
               </CardContent>
             </Card>
 
-            <div className={`grid grid-cols-4 gap-2 ${isRtl ? 'flex-row-reverse' : ''}`}>
+            <div className={`grid grid-cols-4 gap-2`}>
               {images.slice(0, 4).map((src, i) => (
                 <div
                   key={`thumb-${i}`}
@@ -193,13 +193,13 @@ export default function SingleProductPage() {
         {/* Details Section */}
         <div className="space-y-6">
           <Card className="shadow-sm">
-            <CardHeader className={`bg-muted/30 pb-3 border-b ${isRtl ? 'text-right' : ''}`}>
+            <CardHeader className={`bg-muted/30 pb-3 border-b `}>
               <h2 className="text-xl font-semibold">{t("single.specs")}</h2>
             </CardHeader>
             <CardContent className="p-0">
               <div className="grid grid-cols-1 sm:grid-cols-2 divide-y sm:divide-y-0">
                 {specs.map((item, idx) => (
-                  <div key={item.label} className={`flex justify-between items-center p-4 ${idx % 2 === 0 ? 'bg-white' : 'bg-muted/5'} hover:bg-red-50 transition-colors ${isRtl ? 'flex-row-reverse' : ''}`}>
+                  <div key={item.label} className={`flex justify-between items-center p-4 ${idx % 2 === 0 ? 'bg-white' : 'bg-muted/5'} hover:bg-red-50 transition-colors`}>
                     <span className="text-sm font-medium text-muted-foreground">{item.label}</span>
                     <span className="text-sm font-bold">{item.value}</span>
                   </div>
@@ -209,18 +209,18 @@ export default function SingleProductPage() {
           </Card>
 
           <Card className="shadow-sm border-red-100">
-            <CardHeader className={`bg-red-50 pb-3 border-b border-red-100 ${isRtl ? 'text-right' : ''}`}>
+            <CardHeader className={`bg-red-50 pb-3 border-b border-red-100 `}>
               <h2 className="text-xl font-semibold text-red-900">{t("single.pricing")}</h2>
             </CardHeader>
             <CardContent className="p-4 space-y-4">
-              <div className={`flex justify-between items-baseline ${isRtl ? 'flex-row-reverse' : ''}`}>
+              <div className={`flex justify-between items-baseline`}>
                 <span className="text-muted-foreground font-medium">{t("startPrice")}</span>
                 <span className="text-2xl font-bold text-red-600">
                   {Number(vehicle.startPrice).toLocaleString(locale)} {t("currency")}
                 </span>
               </div>
               <Separator className="bg-red-100" />
-              <div className={`rounded-lg bg-red-50/50 p-4 border border-red-100 italic text-sm text-red-800 ${isRtl ? 'text-right' : ''}`}>
+              <div className={`rounded-lg bg-red-50/50 p-4 border border-red-100 italic text-sm text-red-800 `}>
                 {t("single.auctionDate")} {vehicle.auctionDay} {vehicle.holdingDate ? new Date(vehicle.holdingDate).toLocaleDateString(locale) : ""}
               </div>
             </CardContent>

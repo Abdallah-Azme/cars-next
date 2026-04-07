@@ -82,7 +82,7 @@ function ResetPasswordFormContent() {
   return (
     <div className="space-y-6">
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className={`space-y-4 ${isRtl ? 'text-right' : 'text-left'}`}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className={`space-y-4 text-start`}>
           <FormField
             control={form.control}
             name="token"
@@ -101,7 +101,7 @@ function ResetPasswordFormContent() {
                   <Input 
                     type="password" 
                     placeholder="********" 
-                    className={`${isRtl ? 'text-right' : 'text-left'} h-11 focus-visible:ring-red-600`}
+                    className={`text-start h-11 focus-visible:ring-red-600`}
                     {...field} 
                   />
                 </FormControl>
@@ -120,7 +120,7 @@ function ResetPasswordFormContent() {
                   <Input 
                     type="password" 
                     placeholder="********" 
-                    className={`${isRtl ? 'text-right' : 'text-left'} h-11 focus-visible:ring-red-600`}
+                    className={`text-start h-11 focus-visible:ring-red-600`}
                     {...field} 
                   />
                 </FormControl>

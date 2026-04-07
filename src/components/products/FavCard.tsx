@@ -29,7 +29,7 @@ export function FavCard({ vehicle }: Props) {
     <Card className="overflow-hidden">
       <CardContent className="px-4 py-2">
         {/* Top row: date + grade + favorite */}
-        <div className={`flex items-start justify-between gap-3 ${isRtl ? 'flex-row-reverse text-right' : ''}`}>
+        <div className={`flex items-start justify-between gap-3 text-start`}>
           <div className="space-y-1">
             <div className=" font-semibold tracking-wide">
               {vehicle?.carMaker || "-"} {vehicle?.model || "-"}
@@ -68,7 +68,7 @@ export function FavCard({ vehicle }: Props) {
           })()}
           {/* Specs */}
           <div className="rounded-md border bg-muted/20 overflow-hidden">
-            <div className={`grid ${isRtl ? 'grid-cols-[1fr_110px]' : 'grid-cols-[110px_1fr]'}`}>
+            <div className={`grid grid-cols-[110px_1fr]`}>
               {labels.map((row, idx) => (
                 <div key={`${row.label}-${idx}`} className="contents">
                   {isRtl ? (
@@ -100,9 +100,9 @@ export function FavCard({ vehicle }: Props) {
       {/* Footer */}
       <CardFooter className=" border-t bg-muted/5">
         <div className="flex w-full flex-col gap-2  ">
-          <div className={`text-xs text-muted-foreground flex items-center justify-between ${isRtl ? 'flex-row-reverse' : ''}`}>
+          <div className={`text-xs text-muted-foreground flex items-center justify-between`}>
             <span>{t("status.startPrice")}</span>
-            <div className={`flex items-center gap-1 ${isRtl ? 'flex-row-reverse' : ''}`}>
+            <div className={`flex items-center gap-1`}>
                <span className="text-[10px] opacity-70 font-bold italic">{t("contact.currency")}</span>
                <span className="text-sm font-semibold text-foreground">
                  {vehicle?.startPrice || vehicle?.translatedData?.startPrice || t("status.tbd")}
@@ -110,7 +110,7 @@ export function FavCard({ vehicle }: Props) {
             </div>
           </div>
 
-          <div className={`text-[10px] text-muted-foreground flex items-center justify-between border-t border-dashed pt-2 mt-1 ${isRtl ? 'flex-row-reverse' : ''}`}>
+          <div className={`text-[10px] text-muted-foreground flex items-center justify-between border-t border-dashed pt-2 mt-1`}>
             <span className="flex items-center gap-1 font-medium italic">{t("status.acceptancePeriod")}</span>
             <span className="font-bold text-neutral-700">
               {vehicle?.acceptancePeriod ? new Date(vehicle.acceptancePeriod).toLocaleDateString(locale) : "-"}

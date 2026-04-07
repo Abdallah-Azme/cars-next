@@ -34,7 +34,7 @@ const LogoutBtn = ({size="sm"}: {size?: "sm"|"lg"}) => {
       size={size}
       className="w-full mt-2"
     >
-      <LogOut className={isRtl ? "ml-2 h-4 w-4" : "mr-2 h-4 w-4"} /> 
+      <LogOut className={"me-2 h-4 w-4"} /> 
       {t("logout")}
     </Button>
   );

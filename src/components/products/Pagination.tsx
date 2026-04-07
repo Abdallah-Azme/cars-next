@@ -174,16 +174,7 @@ function PaginationBtn({
       onClick={onClick}
       disabled={disabled}
       title={title}
-      className={`
-        inline-flex h-9 min-w-9 items-center justify-center rounded-md border px-2
-        text-sm font-medium transition-colors
-        ${
-          active
-            ? "border-red-600 bg-red-600 text-white"
-            : "border-border bg-background text-foreground hover:bg-muted"
-        }
-        disabled:pointer-events-none disabled:opacity-40
-      `}
+      className={`inline-flex h-9 min-w-9 items-center justify-center rounded-md border px-2 text-sm font-medium transition-colors ${ active ? "border-red-600 bg-red-600 text-white" : "border-border bg-background text-foreground hover:bg-muted" } disabled:pointer-events-none disabled:opacity-40`}
     >
       {children}
     </button>

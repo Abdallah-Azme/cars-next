@@ -316,9 +316,9 @@ export function SettingsForm({ initialData, onUpdate }: SettingsFormProps) {
 
   return (
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    <form onSubmit={handleSubmit(onSubmit as any)} className={`space-y-8 ${isRtl ? 'text-right' : 'text-left'}`}>
+    <form onSubmit={handleSubmit(onSubmit as any)} className={`space-y-8 text-start`}>
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-        <TabsList className={`grid w-full grid-cols-2 md:grid-cols-3 lg:grid-cols-6 mb-8 ${isRtl ? 'flex-row-reverse' : ''}`}>
+        <TabsList className={`grid w-full grid-cols-2 md:grid-cols-3 lg:grid-cols-6 mb-8`}>
           <TabsTrigger value="general" className="gap-2">
             <SettingsIcon className="size-4" /> {t("tabs.general")}
           </TabsTrigger>
@@ -342,7 +342,7 @@ export function SettingsForm({ initialData, onUpdate }: SettingsFormProps) {
         {/* General Settings */}
         <TabsContent value="general">
           <Card>
-            <CardHeader className={isRtl ? 'text-right' : ''}>
+            <CardHeader className="text-start">
               <CardTitle>{t("general.title")}</CardTitle>
               <CardDescription>{t("general.description")}</CardDescription>
             </CardHeader>
@@ -350,20 +350,20 @@ export function SettingsForm({ initialData, onUpdate }: SettingsFormProps) {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {languages.map(lang => (
                   <div key={lang.code} className="grid gap-2">
-                    <Label htmlFor={`siteName${lang.code}`} className={isRtl ? 'text-right' : ''}>
+                    <Label htmlFor={`siteName${lang.code}`} className="text-start">
                       {t("general.siteName")} ({lang.name}) {lang.flag}
                     </Label>
                     <Input 
                         id={`siteName${lang.code}`} 
                         {...register(`siteName${lang.code}` as keyof SettingsFormValues)} 
                         placeholder={`${t("general.siteName")} (${lang.name})`} 
-                        className={isRtl ? 'text-right' : ''}
+                        className="text-start"
                     />
                   </div>
                 ))}
               </div>
               <div className="grid gap-2">
-                <Label htmlFor="siteLogo" className={isRtl ? 'text-right' : ''}>{t("general.siteLogo")}</Label>
+                <Label htmlFor="siteLogo" className="text-start">{t("general.siteLogo")}</Label>
                 {initialData.siteLogo && (
                   <div className={`mb-2 flex ${isRtl ? 'justify-end' : ''}`}>
                     <div className="relative h-20 w-40 rounded border p-1 bg-white">
@@ -377,8 +377,8 @@ export function SettingsForm({ initialData, onUpdate }: SettingsFormProps) {
                     </div>
                   </div>
                 )}
-                <Input id="siteLogo" type="file" accept="image/*" {...register("siteLogo")} className={isRtl ? 'text-right' : ''} />
-                <p className={`text-xs text-muted-foreground ${isRtl ? 'text-right' : ''}`}>{t("general.logoHint")}</p>
+                <Input id="siteLogo" type="file" accept="image/*" {...register("siteLogo")} className="text-start" />
+                <p className={`text-xs text-muted-foreground `}>{t("general.logoHint")}</p>
               </div>
             </CardContent>
           </Card>
@@ -387,7 +387,7 @@ export function SettingsForm({ initialData, onUpdate }: SettingsFormProps) {
         {/* SEO Settings */}
         <TabsContent value="seo">
           <Card>
-            <CardHeader className={isRtl ? 'text-right' : ''}>
+            <CardHeader className="text-start">
               <CardTitle>{t("seo.title")}</CardTitle>
               <CardDescription>{t("seo.description")}</CardDescription>
             </CardHeader>
@@ -401,22 +401,22 @@ export function SettingsForm({ initialData, onUpdate }: SettingsFormProps) {
                   {languages.map(lang => (
                      <TabsContent key={lang.code} value={lang.code} className="space-y-4">
                         <div className="grid gap-2">
-                           <Label htmlFor={`metaTitle${lang.code}`} className={isRtl ? 'text-right' : ''}>{t("seo.metaTitle")}</Label>
-                           <Input id={`metaTitle${lang.code}`} {...register(`metaTitle${lang.code}` as keyof SettingsFormValues)} placeholder={t("seo.metaTitle")} className={isRtl ? 'text-right' : ''} />
+                           <Label htmlFor={`metaTitle${lang.code}`} className="text-start">{t("seo.metaTitle")}</Label>
+                           <Input id={`metaTitle${lang.code}`} {...register(`metaTitle${lang.code}` as keyof SettingsFormValues)} placeholder={t("seo.metaTitle")} className="text-start" />
                         </div>
                         <div className="grid gap-2">
-                           <Label htmlFor={`metaDescription${lang.code}`} className={isRtl ? 'text-right' : ''}>{t("seo.metaDescription")}</Label>
-                           <Textarea id={`metaDescription${lang.code}`} {...register(`metaDescription${lang.code}` as keyof SettingsFormValues)} placeholder={t("seo.metaDescription")} className={isRtl ? 'text-right' : ''} />
+                           <Label htmlFor={`metaDescription${lang.code}`} className="text-start">{t("seo.metaDescription")}</Label>
+                           <Textarea id={`metaDescription${lang.code}`} {...register(`metaDescription${lang.code}` as keyof SettingsFormValues)} placeholder={t("seo.metaDescription")} className="text-start" />
                         </div>
                         <div className="grid gap-2">
-                           <Label htmlFor={`metaKeywords${lang.code}`} className={isRtl ? 'text-right' : ''}>{t("seo.metaKeywords")}</Label>
-                           <Input id={`metaKeywords${lang.code}`} {...register(`metaKeywords${lang.code}` as keyof SettingsFormValues)} placeholder="keyword1, keyword2, ..." className={isRtl ? 'text-right' : ''} />
+                           <Label htmlFor={`metaKeywords${lang.code}`} className="text-start">{t("seo.metaKeywords")}</Label>
+                           <Input id={`metaKeywords${lang.code}`} {...register(`metaKeywords${lang.code}` as keyof SettingsFormValues)} placeholder="keyword1, keyword2, ..." className="text-start" />
                         </div>
                      </TabsContent>
                   ))}
                </Tabs>
               <div className="grid gap-2">
-                <Label htmlFor="metaImage" className={isRtl ? 'text-right' : ''}>{t("seo.metaImage")}</Label>
+                <Label htmlFor="metaImage" className="text-start">{t("seo.metaImage")}</Label>
                 {initialData.metaImage && (
                     <div className={`mb-2 flex ${isRtl ? 'justify-end' : ''}`}>
                       <div className="relative h-32 w-64 rounded border p-1 bg-white">
@@ -430,7 +430,7 @@ export function SettingsForm({ initialData, onUpdate }: SettingsFormProps) {
                       </div>
                     </div>
                 )}
-                <Input id="metaImage" type="file" accept="image/*" {...register("metaImage")} className={isRtl ? 'text-right' : ''} />
+                <Input id="metaImage" type="file" accept="image/*" {...register("metaImage")} className="text-start" />
               </div>
             </CardContent>
           </Card>
@@ -439,7 +439,7 @@ export function SettingsForm({ initialData, onUpdate }: SettingsFormProps) {
         {/* Hero Settings */}
         <TabsContent value="hero">
           <Card>
-            <CardHeader className={isRtl ? 'text-right' : ''}>
+            <CardHeader className="text-start">
               <CardTitle>{t("hero.title")}</CardTitle>
               <CardDescription>{t("hero.description")}</CardDescription>
             </CardHeader>
@@ -453,30 +453,30 @@ export function SettingsForm({ initialData, onUpdate }: SettingsFormProps) {
                   {languages.map(lang => (
                      <TabsContent key={lang.code} value={lang.code} className="space-y-4">
                         <div className="grid gap-2">
-                           <Label htmlFor={`heroTitle${lang.code}`} className={isRtl ? 'text-right' : ''}>{t("hero.heroTitle")}</Label>
-                           <Input id={`heroTitle${lang.code}`} {...register(`heroTitle${lang.code}` as keyof SettingsFormValues)} className={isRtl ? 'text-right' : ''} />
+                           <Label htmlFor={`heroTitle${lang.code}`} className="text-start">{t("hero.heroTitle")}</Label>
+                           <Input id={`heroTitle${lang.code}`} {...register(`heroTitle${lang.code}` as keyof SettingsFormValues)} className="text-start" />
                         </div>
                         <div className="grid gap-2">
-                           <Label htmlFor={`heroDescription${lang.code}`} className={isRtl ? 'text-right' : ''}>{t("hero.heroDescription")}</Label>
-                           <Textarea id={`heroDescription${lang.code}`} {...register(`heroDescription${lang.code}` as keyof SettingsFormValues)} className={isRtl ? 'text-right' : ''} />
+                           <Label htmlFor={`heroDescription${lang.code}`} className="text-start">{t("hero.heroDescription")}</Label>
+                           <Textarea id={`heroDescription${lang.code}`} {...register(`heroDescription${lang.code}` as keyof SettingsFormValues)} className="text-start" />
                         </div>
                      </TabsContent>
                   ))}
                </Tabs>
 
-              <div className={`grid grid-cols-1 md:grid-cols-2 gap-4 ${isRtl ? 'flex-row-reverse' : ''}`}>
+              <div className={`grid grid-cols-1 md:grid-cols-2 gap-4`}>
                 <div className="grid gap-2">
-                  <Label htmlFor="heroButton1Link" className={isRtl ? 'text-right' : ''}>{t("hero.button1")}</Label>
-                  <Input id="heroButton1Link" {...register("heroButton1Link")} placeholder="/contact-us" className={isRtl ? 'text-right' : ''} />
+                  <Label htmlFor="heroButton1Link" className="text-start">{t("hero.button1")}</Label>
+                  <Input id="heroButton1Link" {...register("heroButton1Link")} placeholder="/contact-us" className="text-start" />
                 </div>
                 <div className="grid gap-2">
-                  <Label htmlFor="heroButton2Link" className={isRtl ? 'text-right' : ''}>{t("hero.button2")}</Label>
-                  <Input id="heroButton2Link" {...register("heroButton2Link")} placeholder="/request-quote" className={isRtl ? 'text-right' : ''} />
+                  <Label htmlFor="heroButton2Link" className="text-start">{t("hero.button2")}</Label>
+                  <Input id="heroButton2Link" {...register("heroButton2Link")} placeholder="/request-quote" className="text-start" />
                 </div>
               </div>
 
                <div className="grid gap-2">
-                <Label htmlFor="heroImage" className={isRtl ? 'text-right' : ''}>{t("hero.heroImage") || "Hero Image"}</Label>
+                <Label htmlFor="heroImage" className="text-start">{t("hero.heroImage") || "Hero Image"}</Label>
                 {initialData.heroImage && (
                     <div className={`mb-2 flex ${isRtl ? 'justify-end' : ''}`}>
                       <div className="relative h-32 w-64 rounded border p-1 bg-white">
@@ -490,7 +490,7 @@ export function SettingsForm({ initialData, onUpdate }: SettingsFormProps) {
                       </div>
                     </div>
                 )}
-                <Input id="heroImage" type="file" accept="image/*" {...register("heroImage")} className={isRtl ? 'text-right' : ''} />
+                <Input id="heroImage" type="file" accept="image/*" {...register("heroImage")} className="text-start" />
               </div>
             </CardContent>
           </Card>
@@ -500,28 +500,28 @@ export function SettingsForm({ initialData, onUpdate }: SettingsFormProps) {
         {/* Contact Settings */}
         <TabsContent value="contact">
           <Card>
-            <CardHeader className={isRtl ? 'text-right' : ''}>
+            <CardHeader className="text-start">
               <CardTitle>{t("contact.title")}</CardTitle>
               <CardDescription>{t("contact.description")}</CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
               <div className="grid gap-2">
-                <Label htmlFor="email" className={`flex items-center gap-2 ${isRtl ? 'flex-row-reverse' : ''}`}><Mail className="size-4" /> {t("contact.email")}</Label>
-                <Input id="email" {...register("email")} placeholder="contact@example.com" className={isRtl ? 'text-right' : ''} />
+                <Label htmlFor="email" className={`flex items-center gap-2`}><Mail className="size-4" /> {t("contact.email")}</Label>
+                <Input id="email" {...register("email")} placeholder="contact@example.com" className="text-start" />
                 {errors.email && <p className="text-sm text-destructive">{errors.email.message}</p>}
               </div>
               <div className="grid gap-2">
-                <Label htmlFor="phone" className={`flex items-center gap-2 ${isRtl ? 'flex-row-reverse' : ''}`}><Phone className="size-4" /> {t("contact.phone")}</Label>
-                <Input id="phone" {...register("phone")} placeholder="0123456789" className={isRtl ? 'text-right' : ''} />
+                <Label htmlFor="phone" className={`flex items-center gap-2`}><Phone className="size-4" /> {t("contact.phone")}</Label>
+                <Input id="phone" {...register("phone")} placeholder="0123456789" className="text-start" />
               </div>
 
               <div className="border-t pt-4">
-                 <Label className={`mb-4 block ${isRtl ? 'text-right' : ''}`}>{t("contact.address")}</Label>
+                 <Label className={`mb-4 block `}>{t("contact.address")}</Label>
                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {languages.map(lang => (
                        <div key={lang.code} className="grid gap-2">
-                          <Label htmlFor={`address${lang.code}`} className={isRtl ? 'text-right' : ''}>{lang.name} {lang.flag}</Label>
-                          <Input id={`address${lang.code}`} {...register(`address${lang.code}` as keyof SettingsFormValues)} placeholder={`${t("contact.address")} (${lang.name})`} className={isRtl ? 'text-right' : ''} />
+                          <Label htmlFor={`address${lang.code}`} className="text-start">{lang.name} {lang.flag}</Label>
+                          <Input id={`address${lang.code}`} {...register(`address${lang.code}` as keyof SettingsFormValues)} placeholder={`${t("contact.address")} (${lang.name})`} className="text-start" />
                        </div>
                     ))}
                  </div>
@@ -533,15 +533,15 @@ export function SettingsForm({ initialData, onUpdate }: SettingsFormProps) {
         {/* Social Links */}
         <TabsContent value="social">
           <Card>
-            <CardHeader className={isRtl ? 'text-right' : ''}>
+            <CardHeader className="text-start">
               <CardTitle>{t("social.title")}</CardTitle>
               <CardDescription>{t("social.description")}</CardDescription>
             </CardHeader>
             <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {socialPlatforms.map((platform) => (
-                <div key={platform} className={`grid gap-2 capitalize ${isRtl ? 'text-right' : ''}`}>
-                  <Label htmlFor={platform} className={isRtl ? 'text-right' : ''}>{platform}</Label>
-                  <Input id={platform} {...register(platform)} placeholder={`https://${platform}.com/yourprofile`} className={isRtl ? 'text-right' : ''} />
+                <div key={platform} className={`grid gap-2 capitalize `}>
+                  <Label htmlFor={platform} className="text-start">{platform}</Label>
+                  <Input id={platform} {...register(platform)} placeholder={`https://${platform}.com/yourprofile`} className="text-start" />
                   {errors[platform] && (
                     <p className="text-sm text-destructive">{errors[platform]?.message}</p>
                   )}
@@ -554,7 +554,7 @@ export function SettingsForm({ initialData, onUpdate }: SettingsFormProps) {
         {/* Statistics */}
         <TabsContent value="statistics">
           <Card>
-            <CardHeader className={isRtl ? 'text-right' : ''}>
+            <CardHeader className="text-start">
               <CardTitle>{t("stats.title")}</CardTitle>
               <CardDescription>{t("stats.description")}</CardDescription>
             </CardHeader>
@@ -568,22 +568,22 @@ export function SettingsForm({ initialData, onUpdate }: SettingsFormProps) {
                   {languages.map(lang => (
                      <TabsContent key={lang.code} value={lang.code} className="space-y-4">
                         <div className="grid gap-2">
-                           <Label htmlFor={`statisticsHeading${lang.code}`} className={isRtl ? 'text-right' : ''}>{t("stats.heading")}</Label>
-                           <Input id={`statisticsHeading${lang.code}`} {...register(`statisticsHeading${lang.code}` as keyof SettingsFormValues)} className={isRtl ? 'text-right' : ''} />
+                           <Label htmlFor={`statisticsHeading${lang.code}`} className="text-start">{t("stats.heading")}</Label>
+                           <Input id={`statisticsHeading${lang.code}`} {...register(`statisticsHeading${lang.code}` as keyof SettingsFormValues)} className="text-start" />
                         </div>
                         <div className="grid gap-2">
-                           <Label htmlFor={`statisticsDescription${lang.code}`} className={isRtl ? 'text-right' : ''}>{t("stats.subtext")}</Label>
-                           <Textarea id={`statisticsDescription${lang.code}`} {...register(`statisticsDescription${lang.code}` as keyof SettingsFormValues)} className={isRtl ? 'text-right' : ''} />
+                           <Label htmlFor={`statisticsDescription${lang.code}`} className="text-start">{t("stats.subtext")}</Label>
+                           <Textarea id={`statisticsDescription${lang.code}`} {...register(`statisticsDescription${lang.code}` as keyof SettingsFormValues)} className="text-start" />
                         </div>
                      </TabsContent>
                   ))}
                </Tabs>
 
               <div className="space-y-4 pt-4">
-                <div className={`flex items-center justify-between ${isRtl ? 'flex-row-reverse' : ''}`}>
-                  <Label className={isRtl ? 'text-right' : ''}>{t("stats.addItem")}</Label>
+                <div className={`flex items-center justify-between`}>
+                  <Label className="text-start">{t("stats.addItem")}</Label>
                   <Button type="button" variant="outline" size="sm" onClick={() => append({ value: "", labelAr: "", labelEn: "", labelJp: "", labelSw: "" })}>
-                    <Plus className={`${isRtl ? 'ml-2' : 'mr-2'} size-4`} /> {t("stats.addItem")}
+                    <Plus className={`me-2 size-4`} /> {t("stats.addItem")}
                   </Button>
                 </div>
                 
@@ -602,15 +602,15 @@ export function SettingsForm({ initialData, onUpdate }: SettingsFormProps) {
                       
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                          <div className="grid gap-2">
-                           <Label className={isRtl ? 'text-right' : ''}>{t("stats.valueLabel")}</Label>
-                           <Input {...register(`statistics.${index}.value` as const)} placeholder="150+" className={isRtl ? 'text-right' : ''} />
+                           <Label className="text-start">{t("stats.valueLabel")}</Label>
+                           <Input {...register(`statistics.${index}.value` as const)} placeholder="150+" className="text-start" />
                          </div>
                          <div className="grid gap-2 grid-cols-2">
                             {languages.map(lang => (
                                <div key={lang.code} className="grid gap-1">
-                                  <Label className={`text-[10px] ${isRtl ? 'text-right' : ''}`}>{lang.name} {lang.flag}</Label>
+                                  <Label className={`text-[10px] `}>{lang.name} {lang.flag}</Label>
                                   {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
-                                  <Input {...register(`statistics.${index}.label${lang.code}` as any)} placeholder={lang.name} className={`h-8 text-xs ${isRtl ? 'text-right' : ''}`} />
+                                  <Input {...register(`statistics.${index}.label${lang.code}` as any)} placeholder={lang.name} className={`h-8 text-xs `} />
                                </div>
                             ))}
                          </div>
@@ -629,7 +629,7 @@ export function SettingsForm({ initialData, onUpdate }: SettingsFormProps) {
 
       <div className={`flex items-center border-t pt-6 ${isRtl ? 'justify-start' : 'justify-end'}`}>
         <Button type="submit" size="lg" className="bg-red-700 hover:bg-red-800 font-bold" disabled={isSubmitting}>
-          {isSubmitting && <Loader2 className={`${isRtl ? 'ml-2' : 'mr-2'} h-4 w-4 animate-spin`} />}
+          {isSubmitting && <Loader2 className={`me-2 h-4 w-4 animate-spin`} />}
           {isSubmitting ? t("saving") : t("saveChanges")}
         </Button>
       </div>

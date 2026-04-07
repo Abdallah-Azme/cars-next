@@ -92,7 +92,7 @@ export default function RegisterForm() {
 
   return (
     <FormProvider {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className={`space-y-4 ${isRtl ? 'text-right' : 'text-left'}`}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className={`space-y-4 text-start`}>
         {/* Name */}
         <FormField
           control={form.control}
@@ -101,7 +101,7 @@ export default function RegisterForm() {
             <FormItem>
               <Label>{tl("name")}</Label>
               <Input
-                className={`${inputStyle} ${isRtl ? 'text-right' : 'text-left'}`}
+                className={`${inputStyle} text-start`}
                 placeholder={tl("name")}
                 {...field}
               />
@@ -118,7 +118,7 @@ export default function RegisterForm() {
             <FormItem>
               <Label>{tl("email")}</Label>
               <Input
-                className={`${inputStyle} ${isRtl ? 'text-right' : 'text-left'}`}
+                className={`${inputStyle} text-start`}
                 placeholder="your@email.com"
                 {...field}
               />
@@ -133,7 +133,7 @@ export default function RegisterForm() {
           name="phone"
           render={({ field }) => (
             <FormItem className="flex flex-col items-start w-full" dir="ltr">
-              <Label className={`w-full ${isRtl ? 'text-right' : 'text-left'}`}>{tl("phone")}</Label>
+              <Label className={`w-full text-start`}>{tl("phone")}</Label>
               <PhoneInput
                 {...field}
                 defaultCountry="EG"
@@ -151,7 +151,7 @@ export default function RegisterForm() {
             <FormItem>
               <Label>{tr("label")}</Label>
               <Select onValueChange={field.onChange} defaultValue={field.value}>
-                <SelectTrigger className={`w-full ${isRtl ? 'flex-row-reverse' : ''}`}>
+                <SelectTrigger className={`w-full`}>
                   <SelectValue placeholder={tr("placeholder")} />
                 </SelectTrigger>
                 <SelectContent position="popper">
@@ -173,7 +173,7 @@ export default function RegisterForm() {
             <FormItem>
               <Label>{tl("password")}</Label>
               <Input
-                className={`${inputStyle} ${isRtl ? 'text-right' : 'text-left'}`}
+                className={`${inputStyle} text-start`}
                 type="password"
                 placeholder="******"
                 {...field}
@@ -191,7 +191,7 @@ export default function RegisterForm() {
             <FormItem>
               <Label>{tl("confirmPassword")}</Label>
               <Input
-                className={`${inputStyle} ${isRtl ? 'text-right' : 'text-left'}`}
+                className={`${inputStyle} text-start`}
                 type="password"
                 placeholder="******"
                 {...field}

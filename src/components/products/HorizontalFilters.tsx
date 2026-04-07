@@ -17,7 +17,7 @@ import {
   Package,
 } from "lucide-react";
 
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import Image from "next/image";
 
 
@@ -28,6 +28,7 @@ interface FilterItemProps {
   onSelect: (selected: boolean) => void;
   icon?: React.ReactNode;
   apiImageUrl?: string | null;
+  isRtl?: boolean;
 }
 
 const FilterItem = ({
@@ -36,6 +37,7 @@ const FilterItem = ({
   onSelect,
   icon,
   apiImageUrl,
+  isRtl,
 }: FilterItemProps) => {
   // Normalize label for image filename (e.g. "Wheel Loader" -> "wheel-loader")
   const imageName = label.toLowerCase().replace(/\s+/g, "-");
@@ -109,7 +111,7 @@ const FilterItem = ({
         {label}
       </span>
 
-      <div className="absolute right-1.5 top-1.5">
+      <div className={cn("absolute top-1.5", isRtl ? "left-1.5" : "right-1.5")}>
         <Checkbox
           checked={isSelected}
           onCheckedChange={(checked) => onSelect(!!checked)}
@@ -165,10 +167,12 @@ export function HorizontalFilterRow({
   variant = "scroll",
 }: HorizontalFiltersProps) {
   const t = useTranslations("Common");
+  const locale = useLocale();
+  const isRtl = locale === 'ar';
   if (!items || items.length === 0) return null;
 
   return (
-    <div className="w-full space-y-4 rounded-xl border border-gray-100 bg-white p-6 shadow-sm">
+    <div className="w-full space-y-4 rounded-xl border border-gray-100 bg-white p-6 shadow-sm" dir={isRtl ? "rtl" : "ltr"}>
       <div className="flex items-center justify-between px-1">
         <h3 className="text-sm font-bold uppercase tracking-widest text-gray-500">
           {title}
@@ -190,6 +194,7 @@ export function HorizontalFilterRow({
               apiImageUrl={item.image}
               isSelected={selectedItems.includes(item.name)}
               onSelect={(checked) => onToggle(item.name, checked)}
+               isRtl={isRtl}
               icon={
                 iconMap[item.name.toUpperCase()] || (
                   <Package className="h-6 w-6" />
@@ -199,7 +204,7 @@ export function HorizontalFilterRow({
           ))}
         </div>
       ) : (
-        <ScrollArea className="w-full whitespace-nowrap pb-4">
+        <ScrollArea className="w-full whitespace-nowrap pb-4" dir={isRtl ? "rtl" : "ltr"}>
           <div className="flex gap-4 py-4">
             {items.map((item) => (
               <FilterItem
@@ -208,6 +213,7 @@ export function HorizontalFilterRow({
                 apiImageUrl={item.image}
                 isSelected={selectedItems.includes(item.name)}
                 onSelect={(checked) => onToggle(item.name, checked)}
+                isRtl={isRtl}
                 icon={
                   iconMap[item.name.toUpperCase()] || (
                     <Package className="h-6 w-6" />

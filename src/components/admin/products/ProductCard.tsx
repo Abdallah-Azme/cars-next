@@ -53,15 +53,15 @@ export function ProductCard({ vehicle }: Props) {
   ];
 
   return (
-    <Card className={`overflow-hidden hover:shadow-lg transition-shadow duration-300 ${isRtl ? 'text-right' : 'text-left'}`}>
+    <Card className={`overflow-hidden hover:shadow-lg transition-shadow duration-300 text-start`}>
       <CardContent className="px-4 py-2">
         {/* Top row: title + grade */}
-        <div className={`flex items-start justify-between gap-3 ${isRtl ? 'flex-row-reverse' : ''}`}>
+        <div className={`flex items-start justify-between gap-3`}>
           <div className="space-y-1">
-            <div className={`font-semibold tracking-wide ${isRtl ? 'text-right' : ''}`}>
+            <div className={`font-semibold tracking-wide `}>
               {vehicle.carMaker} {vehicle.model}
             </div>
-            <div className={`text-sm text-muted-foreground ${isRtl ? 'text-right' : ''}`}>
+            <div className={`text-sm text-muted-foreground `}>
               {vehicle.auctionDay} {vehicle.holdingDate ? new Date(vehicle.holdingDate).toLocaleDateString(locale) : ""}
             </div>
           </div>
@@ -155,10 +155,10 @@ export function ProductCard({ vehicle }: Props) {
               <div className={`grid ${isRtl ? 'grid-cols-[1fr_130px]' : 'grid-cols-[110px_1fr]'}`}>
                 {specs.map((row, idx) => (
                   <div key={`${row.label}-${idx}`} className="contents">
-                    <div className={`border-b px-3 py-2 text-xs font-medium bg-muted/60 ${isRtl ? 'order-2 text-right' : 'order-1'}`}>
+                    <div className={`border-b px-3 py-2 text-xs font-medium bg-muted/60 text-start`}>
                       {row.label}
                     </div>
-                    <div className={`border-b px-3 py-2 text-xs ${isRtl ? 'order-1 text-right' : 'order-2'}`}>{row.value}</div>
+                    <div className={`border-b px-3 py-2 text-xs text-end`}>{row.value}</div>
                   </div>
                 ))}
               </div>
@@ -170,14 +170,14 @@ export function ProductCard({ vehicle }: Props) {
       {/* Footer */}
       <CardFooter className=" border-t">
         <div className="flex w-full flex-col gap-2  ">
-          <div className={`text-xs text-muted-foreground ${isRtl ? 'flex flex-row-reverse justify-end gap-2' : ''}`}>
+          <div className={`text-xs text-muted-foreground flex justify-start gap-2`}>
             {t("startPrice")}
-            <span className={`${isRtl ? 'mr-0 ml-2' : 'ml-2'} text-sm font-semibold text-foreground`}>
+            <span className={`${"ms-0 me-2"} text-sm font-semibold text-foreground`}>
               {Number(vehicle.startPrice).toLocaleString(locale)} {t("currency")}
             </span>
           </div>
 
-          <div className={`flex items-center justify-between gap-3 ${isRtl ? 'flex-row-reverse' : ''}`}>
+          <div className={`flex items-center justify-between gap-3`}>
             <Badge variant="outline" className="font-normal capitalize">
               {vehicle.status}
             </Badge>

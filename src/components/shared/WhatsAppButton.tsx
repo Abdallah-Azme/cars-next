@@ -19,7 +19,7 @@ export default function WhatsAppButton() {
   if (!whatsappUrl) return null;
 
   return (
-    <div className={`fixed bottom-24 md:bottom-6 z-9999 group ${isRtl ? 'left-8' : 'right-8'}`}>
+    <div className={`fixed bottom-24 md:bottom-6 z-9999 group end-8`}>
 
       <motion.a
         href={whatsappUrl}
@@ -45,7 +45,7 @@ export default function WhatsAppButton() {
         </div>
         
         {/* Tooltip */}
-        <div className={`absolute bottom-full mb-3 hidden group-hover:block whitespace-nowrap rounded-lg bg-gray-900 px-3 py-1.5 text-[10px] font-bold uppercase tracking-widest text-white shadow-xl ${isRtl ? 'right-0' : 'left-0'}`}>
+        <div className={`absolute bottom-full mb-3 hidden group-hover:block whitespace-nowrap rounded-lg bg-gray-900 px-3 py-1.5 text-[10px] font-bold uppercase tracking-widest text-white shadow-xl start-0`}>
           {t("whatsappTitle")}
         </div>
       </motion.a>

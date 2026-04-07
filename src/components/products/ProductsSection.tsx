@@ -19,7 +19,7 @@ import {
 } from "@/lib/actions";
 import { useSearchParams } from "next/navigation";
 import { useEffect, Suspense } from "react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 
 /** Build the query string for the /api/vehicles route */
 function buildVehicleQS(
@@ -65,6 +65,8 @@ function ProductSectionContent() {
   const [page, setPage] = useState(1);
   const [perPage, setPerPage] = useState(10);
   const t = useTranslations("Vehicle.inventory");
+  const locale = useLocale();
+  const isRtl = locale === 'ar';
   
   const activeType = filterParams.selectedTypes?.[0];
   const isByTypeMode = !!activeType;
@@ -222,7 +224,7 @@ function ProductSectionContent() {
   };
 
   return (
-    <section className="container py-10 text-start">
+    <section className="container py-10" dir={isRtl ? "rtl" : "ltr"}>
       {/* Top bar */}
       <div className="flex flex-col gap-4">
         {/* Header */}

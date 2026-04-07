@@ -66,7 +66,7 @@ export default function UsersPage() {
   const pagination = data?.pagination;
 
   return (
-    <div className={`space-y-6 container mx-auto py-6 ${isRtl ? 'text-right' : 'text-left'}`}>
+    <div className={`space-y-6 container mx-auto py-6 text-start`}>
       <div className="flex justify-between items-center">
         <h1 className="text-3xl font-bold tracking-tight text-red-700">{t("title")}</h1>
       </div>
@@ -78,31 +78,31 @@ export default function UsersPage() {
         <CardContent className="p-0">
           <Table>
             <TableHeader>
-              <TableRow className={isRtl ? 'flex-row-reverse' : ''}>
-                <TableHead className={isRtl ? 'text-right' : 'text-left'}>{t("table.user")}</TableHead>
-                <TableHead className={isRtl ? 'text-right' : 'text-left'}>{t("table.email")}</TableHead>
-                <TableHead className={isRtl ? 'text-right' : 'text-left'}>{t("table.role")}</TableHead>
-                <TableHead className={isRtl ? 'text-right' : 'text-left'}>{t("table.status")}</TableHead>
-                <TableHead className={isRtl ? 'text-left' : 'text-right'}>{t("table.actions")}</TableHead>
+              <TableRow >
+                <TableHead className="text-start">{t("table.user")}</TableHead>
+                <TableHead className="text-start">{t("table.email")}</TableHead>
+                <TableHead className="text-start">{t("table.role")}</TableHead>
+                <TableHead className="text-start">{t("table.status")}</TableHead>
+                <TableHead className="text-end">{t("table.actions")}</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {users.length > 0 ? (
                 users.map((user) => (
-                  <TableRow key={user.id} className={`hover:bg-muted/50 transition-colors ${isRtl ? 'flex-row-reverse' : ''}`}>
+                  <TableRow key={user.id} className={`hover:bg-muted/50 transition-colors`}>
                     <TableCell>
-                      <div className={`flex items-center gap-3 ${isRtl ? 'flex-row-reverse' : ''}`}>
+                      <div className={`flex items-center gap-3`}>
                         <div className="h-9 w-9 rounded-full bg-red-100 flex items-center justify-center text-red-700">
                           <UserIcon size={18} />
                         </div>
                         <span className="font-medium">{user.name}</span>
                       </div>
                     </TableCell>
-                    <TableCell className={isRtl ? 'text-right' : 'text-left'}>{user.email}</TableCell>
-                    <TableCell className={isRtl ? 'text-right' : 'text-left'}>
+                    <TableCell className="text-start">{user.email}</TableCell>
+                    <TableCell className="text-start">
                       <Badge variant="outline">{user.role}</Badge>
                     </TableCell>
-                    <TableCell className={isRtl ? 'text-right' : 'text-left'}>
+                    <TableCell className="text-start">
                       <Badge 
                         variant={user.statue === "active" ? "default" : "destructive"}
                         className={user.statue === "active" ? "bg-green-600 hover:bg-green-700 font-bold" : "font-bold"}
@@ -110,27 +110,27 @@ export default function UsersPage() {
                         {user.statue === "active" ? t("status.active") : t("status.disabled")}
                       </Badge>
                     </TableCell>
-                    <TableCell className={isRtl ? 'text-left' : 'text-right'}>
+                    <TableCell className="text-end">
                       {user.statue === "active" ? (
                         <Button
                           variant="outline"
                           size="sm"
-                          className={`text-red-600 border-red-200 hover:bg-red-50 font-bold ${isRtl ? 'flex-row-reverse' : ''}`}
+                          className={`text-red-600 border-red-200 hover:bg-red-50 font-bold`}
                           onClick={() => disableMutation.mutate(user.id)}
                           disabled={disableMutation.isPending}
                         >
-                          <UserX className={`${isRtl ? 'ml-2' : 'mr-2'} h-4 w-4`} />
+                          <UserX className="me-2 h-4 w-4" />
                           {disableMutation.isPending ? t("actions.disabling") : t("actions.disable")}
                         </Button>
                       ) : (
                         <Button
                           variant="outline"
                           size="sm"
-                          className={`text-green-600 border-green-200 hover:bg-green-50 font-bold ${isRtl ? 'flex-row-reverse' : ''}`}
+                          className={`text-green-600 border-green-200 hover:bg-green-50 font-bold`}
                           onClick={() => activateMutation.mutate(user.id)}
                           disabled={activateMutation.isPending}
                         >
-                          <UserCheck className={`${isRtl ? 'ml-2' : 'mr-2'} h-4 w-4`} />
+                          <UserCheck className="me-2 h-4 w-4" />
                           {activateMutation.isPending ? t("actions.activating") : t("actions.activate")}
                         </Button>
                       )}
@@ -150,7 +150,7 @@ export default function UsersPage() {
       </Card>
 
       {pagination && pagination.last_page > 1 && (
-        <div className={`flex items-center justify-end space-x-2 py-4 ${isRtl ? 'flex-row-reverse space-x-reverse' : ''}`}>
+        <div className={`flex items-center justify-end space-x-2 py-4`}>
           <Button
             variant="outline"
             size="sm"

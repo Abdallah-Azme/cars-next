@@ -27,7 +27,7 @@ const CategoriesPage = () => {
   const pagination = data?.pagination;
 
   return (
-    <div className={`flex flex-col gap-4 container mx-auto py-6 ${isRtl ? 'text-right' : 'text-left'}`}>
+    <div className={`flex flex-col gap-4 container mx-auto py-6 text-start`}>
       <div className="flex items-center justify-between">
         <h1 className="text-3xl font-bold text-red-700">
           {t("title")}

@@ -59,11 +59,11 @@ export function ParentCategoriesList({
     <div className="rounded-md border">
       <Table>
         <TableHeader>
-          <TableRow className={isRtl ? 'flex-row-reverse' : ''}>
-            <TableHead className={`w-[80px] ${isRtl ? 'text-right' : 'text-left'}`}>{t("image")}</TableHead>
-            <TableHead className={isRtl ? 'text-right' : 'text-left'}>{t("name")}</TableHead>
-            <TableHead className={isRtl ? 'text-right' : 'text-left'}>{t("children")}</TableHead>
-            <TableHead className={isRtl ? 'text-left' : 'text-right'}>{t("actions")}</TableHead>
+          <TableRow >
+            <TableHead className={`w-[80px] text-start`}>{t("image")}</TableHead>
+            <TableHead className="text-start">{t("name")}</TableHead>
+            <TableHead className="text-start">{t("children")}</TableHead>
+            <TableHead className="text-end">{t("actions")}</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -75,7 +75,7 @@ export function ParentCategoriesList({
             </TableRow>
           ) : (
             categories.map((cat) => (
-              <TableRow key={cat.id} className={isRtl ? 'flex-row-reverse' : ''}>
+              <TableRow key={cat.id} >
                 <TableCell>
                   {cat.image ? (
                     <div className="relative w-10 h-10 overflow-hidden rounded shadow-sm border">
@@ -93,15 +93,15 @@ export function ParentCategoriesList({
                     </div>
                   )}
                 </TableCell>
-                <TableCell className={`font-medium text-red-700 ${isRtl ? 'text-right' : 'text-left'}`}>
+                <TableCell className={`font-medium text-red-700 text-start`}>
                     {cat.name}
                 </TableCell>
-                <TableCell className={isRtl ? 'text-right' : 'text-left'}>
+                <TableCell className="text-start">
                   <span className="inline-flex items-center rounded-full bg-red-50 px-2 py-1 text-xs font-medium text-red-700 ring-1 ring-inset ring-red-600/10">
                     {t("subCount", { count: cat.childrenCount })}
                   </span>
                 </TableCell>
-                <TableCell className={isRtl ? 'text-left' : 'text-right'}>
+                <TableCell className="text-end">
                   <div className={`flex gap-2 ${isRtl ? 'justify-start' : 'justify-end'}`}>
                     <Button
                       variant="ghost"

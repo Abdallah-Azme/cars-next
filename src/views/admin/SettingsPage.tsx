@@ -23,7 +23,7 @@ const SettingsPage = () => {
   const settings = data?.data;
 
   return (
-    <div className={`flex flex-col gap-6 container mx-auto py-6 ${isRtl ? 'text-right' : 'text-left'}`}>
+    <div className={`flex flex-col gap-6 container mx-auto py-6 text-start`}>
       <div className="flex items-center justify-between">
         <h1 className="text-3xl font-bold text-red-700">
           {t("title")}

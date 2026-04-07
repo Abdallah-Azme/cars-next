@@ -10,7 +10,7 @@ import AddToFavBtn from "./AddToFavBtn";
 import { fixImageUrl, cn, formatWhatsAppUrl } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { useSettingsStore } from "@/stores/settings";
-import { MessageCircle, ZoomIn, ZoomOut, RotateCcw, X, Mail } from "lucide-react";
+import { MessageCircle, ZoomIn, ZoomOut, RotateCcw, X } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -140,32 +140,17 @@ export function ProductCard({ vehicle }: Props) {
     if (finalUrl) window.open(finalUrl, "_blank");
   };
 
-  const handleEmailContact = (e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    const email = settings?.email;
-    if (!email) return;
-    const productUrl = getProductUrl();
-    const subject = isRtl
-      ? `استفسار عن ${vehicle?.carMaker || ""} ${vehicle?.model || ""}`
-      : `Inquiry about ${vehicle?.carMaker || ""} ${vehicle?.model || ""}`;
-    const body = isRtl
-      ? `مرحباً،\nأنا مهتم بالمعدة التالية:\n${productUrl}\n\nيرجى تزويدي بمزيد من التفاصيل.`
-      : `Hello,\nI'm interested in the following product:\n${productUrl}\n\nCould you please provide more details?`;
-    window.open(`mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`, "_blank");
-  };
-
   return (
     <>
     <Link href={`/products/${vehicle?.id}`} className="block group/card">
     <Card className="overflow-hidden transition-shadow duration-300 group-hover/card:shadow-md">
       <CardContent className="px-4 py-2">
         {/* Top row: date + grade + favorite */}
-        <div className={`flex items-start justify-between gap-3 ${isRtl ? 'flex-row-reverse' : ''}`}>
-          <div className={`space-y-1 ${isRtl ? 'text-right' : 'text-left'}`}>
-            <div className={`flex items-center gap-2 flex-wrap ${isRtl ? 'flex-row-reverse' : ''}`}>
+        <div className={`flex items-start justify-between gap-3`}>
+          <div className={`space-y-1 text-start`}>
+            <div className={`flex items-center gap-2 flex-wrap`}>
               <span className="font-semibold tracking-wide group-hover/card:text-red-600 transition-colors">
-                {vehicle?.carMaker || "-"} {vehicle?.model || "-"}
+                {(`${vehicle?.maker || ""} ${vehicle?.model || ""}`.trim() || vehicle?.carMaker || "-")}
               </span>
               {vehicle?.lotNumber && (
                 <span className="bg-red-600 text-white text-[10px] font-black px-2 py-0.5 rounded tracking-wider">
@@ -173,7 +158,7 @@ export function ProductCard({ vehicle }: Props) {
                 </span>
               )}
             </div>
-            <div className={`flex flex-wrap items-center gap-2 text-xs ${isRtl ? 'flex-row-reverse' : ''}`}>
+            <div className={`flex flex-wrap items-center gap-2 text-xs`}>
               <span className="text-muted-foreground uppercase font-medium">
                 {vehicle?.auctionDay}
               </span>
@@ -293,7 +278,7 @@ export function ProductCard({ vehicle }: Props) {
           )}
           {/* Specs */}
           <div className="rounded-md border bg-muted/20 overflow-hidden">
-            <div className={`grid ${isRtl ? 'grid-cols-[1fr_110px]' : 'grid-cols-[110px_1fr]'}`}>
+            <div className={`grid grid-cols-[110px_1fr]`}>
               {labels.map((row, idx) => (
                 <div key={`${row.label}-${idx}`} className="contents">
                   {isRtl ? (
@@ -326,14 +311,13 @@ export function ProductCard({ vehicle }: Props) {
       <CardFooter className=" border-t bg-muted/5">
         <div className="flex w-full flex-col gap-2  ">
           {(rawResult.toLowerCase().includes("sold") || rawResult.toLowerCase().includes("yet")) ? (
-            <div className={`flex items-center justify-between ${isRtl ? 'flex-row-reverse' : ''}`}>
+            <div className={`flex items-center justify-between`}>
               <div className="text-xs text-muted-foreground font-medium uppercase tracking-wider">
                 {rawResult.toLowerCase() === "sold" ? t("status.soldPrice") : t("status.startPrice")}
               </div>
               <div
                 className={cn(
                   "text-sm font-black px-2 py-0.5 rounded flex items-center gap-1",
-                  isRtl ? 'flex-row-reverse' : '',
                   rawResult.toLowerCase() === "sold" ? "text-green-600 bg-green-50" : "text-blue-600 bg-blue-50"
                 )}
               >
@@ -359,7 +343,7 @@ export function ProductCard({ vehicle }: Props) {
             <div className="h-10 invisible" />
           )}
 
-          <div className={`text-[10px] text-muted-foreground flex items-center justify-between border-t border-dashed pt-2 mt-1 ${isRtl ? 'flex-row-reverse' : ''}`}>
+          <div className={`text-[10px] text-muted-foreground flex items-center justify-between border-t border-dashed pt-2 mt-1`}>
             <span className="flex items-center gap-1 font-medium italic">
               {t("status.acceptanceEnds")}
             </span>
@@ -371,28 +355,14 @@ export function ProductCard({ vehicle }: Props) {
           </div>
 
           <div className="mt-4 pt-4 border-t border-dashed">
-            {(settings?.whatsapp || settings?.phone || settings?.email) ? (
-              <div className={`flex gap-2 ${isRtl ? 'flex-row-reverse' : ''}`}>
-                {settings?.email && (
-                  <Button
-                    onClick={handleEmailContact}
-                    variant="outline"
-                    className="flex-1 border-blue-200 text-blue-700 hover:bg-blue-50 hover:border-blue-400 gap-1.5 transition-all active:scale-95"
-                  >
-                    <Mail className="size-4" />
-                    {t("contact.email")}
-                  </Button>
-                )}
-                {(settings?.whatsapp || settings?.phone) && (
-                  <Button
-                    onClick={handleWhatsAppContact}
-                    className="flex-1 bg-green-600 hover:bg-green-700 text-white gap-1.5 transition-all active:scale-95 shadow-sm"
-                  >
-                    <MessageCircle className="size-4" />
-                    {t("contact.whatsapp")}
-                  </Button>
-                )}
-              </div>
+            {(settings?.whatsapp || settings?.phone) ? (
+              <Button 
+                onClick={handleWhatsAppContact}
+                className="w-full bg-green-600 hover:bg-green-700 text-white gap-2 transition-all active:scale-95 shadow-sm"
+              >
+                <MessageCircle className="size-4" />
+                {t("contact.whatsapp")}
+              </Button>
             ) : (
               <Button
                 disabled

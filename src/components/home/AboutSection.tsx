@@ -78,7 +78,7 @@ export default function AboutSection() {
               <div className="bg-red-600 w-16 h-16 rounded-xl flex items-center justify-center text-white shadow-lg shadow-red-600/30">
                 <span className="text-2xl font-bold">15+</span>
               </div>
-              <div className={isRtl ? 'text-right' : 'text-left'}>
+              <div className="text-start">
                 <div className="text-slate-900 dark:text-white font-bold text-lg leading-tight text-nowrap">{t("yearsOf")}</div>
                 <div className="text-red-600 font-semibold">{t("excellence")}</div>
               </div>
@@ -91,10 +91,10 @@ export default function AboutSection() {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
-            className={`flex flex-col gap-8 ${isRtl ? 'text-right' : 'text-left'}`}
+            className={`flex flex-col gap-8 text-start`}
           >
             <div className="flex flex-col gap-4">
-              <div className={`flex items-center gap-3 ${isRtl ? 'flex-row-reverse' : ''}`}>
+              <div className={`flex items-center gap-3`}>
                 <div className="w-12 h-[2px] bg-red-600"></div>
                 <span className="text-red-600 font-bold tracking-widest uppercase text-xs">{t('badge')}</span>
               </div>
@@ -110,7 +110,7 @@ export default function AboutSection() {
             {/* Features List */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
               {features.map((feature, i) => (
-                <div key={i} className={`flex items-center gap-2 ${isRtl ? 'flex-row-reverse' : ''}`}>
+                <div key={i} className={`flex items-center gap-2`}>
                   <CheckCircle2 className="text-red-600 size-5 shrink-0" />
                   <span className="text-slate-700 dark:text-slate-300 font-medium">{feature}</span>
                 </div>

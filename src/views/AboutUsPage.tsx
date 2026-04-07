@@ -47,10 +47,10 @@ const AboutUsPage = ({ data, locale }: AboutUsPageProps) => {
         <div className="absolute bottom-0 left-0 -ml-20 -mb-20 w-80 h-80 rounded-full bg-neutral-100/50 blur-3xl opacity-60 pointer-events-none" />
 
         <div className="container px-4 md:px-8 max-w-6xl relative z-10">
-          <div className={`flex flex-col lg:flex-row gap-12 lg:gap-20 items-center ${isRtl ? 'lg:flex-row-reverse' : ''}`}>
+          <div className={`flex flex-col lg:flex-row gap-12 lg:gap-20 items-center`}>
              
              {/* Left Text Content */}
-             <div className={`flex-1 space-y-6 ${isRtl ? 'text-right' : 'text-left'}`}>
+             <div className={`flex-1 space-y-6 text-start`}>
                <div className="space-y-4">
                  <h4 className="text-red-700 font-bold uppercase tracking-widest text-sm inline-block px-3 py-1 bg-red-50 rounded-full">
                     {t("badge")}
@@ -81,8 +81,8 @@ const AboutUsPage = ({ data, locale }: AboutUsPageProps) => {
                     />
                  </div>
                  {/* Decorative element */}
-                 <div className={`absolute -bottom-6 ${isRtl ? '-right-6' : '-left-6'} w-32 h-32 bg-red-100 rounded-full -z-10 blur-2xl opacity-70`} />
-                 <div className={`absolute -top-6 ${isRtl ? '-left-6' : '-right-6'} w-40 h-40 bg-neutral-200 rounded-full -z-10 blur-3xl opacity-50`} />
+                 <div className={`absolute -bottom-6 -start-6 w-32 h-32 bg-red-100 rounded-full -z-10 blur-2xl opacity-70`} />
+                 <div className={`absolute -top-6 -end-6 w-40 h-40 bg-neutral-200 rounded-full -z-10 blur-3xl opacity-50`} />
                </div>
              )}
           </div>

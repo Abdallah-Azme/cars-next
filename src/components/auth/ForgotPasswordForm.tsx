@@ -61,7 +61,7 @@ export default function ForgotPasswordForm() {
   return (
     <div className="space-y-6">
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className={`space-y-4 ${isRtl ? 'text-right' : 'text-left'}`}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className={`space-y-4 text-start`}>
           <FormField
             control={form.control}
             name="email"
@@ -71,7 +71,7 @@ export default function ForgotPasswordForm() {
                 <FormControl>
                   <Input 
                     placeholder="name@example.com" 
-                    className={`${isRtl ? 'text-right' : 'text-left'} h-11 focus-visible:ring-red-600`}
+                    className={`text-start h-11 focus-visible:ring-red-600`}
                     {...field} 
                   />
                 </FormControl>
@@ -91,7 +91,7 @@ export default function ForgotPasswordForm() {
       </Form>
 
       <div className="text-center pt-2">
-         <Link href="/login" className={`text-sm font-semibold text-gray-500 hover:text-red-700 flex items-center justify-center gap-2 ${isRtl ? 'flex-row-reverse' : ''}`}>
+         <Link href="/login" className={`text-sm font-semibold text-gray-500 hover:text-red-700 flex items-center justify-center gap-2`}>
             {isRtl ? <ArrowRight className="w-4 h-4" /> : <ArrowLeft className="w-4 h-4" />}
             {t("backToLogin")}
          </Link>

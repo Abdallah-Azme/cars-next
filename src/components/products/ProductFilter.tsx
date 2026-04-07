@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/select";
 import { Trash, Loader2 } from "lucide-react";
 import type { VehicleFilterParams } from "@/lib/actions";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 
 import { useProductFilters } from "@/hooks/use-product-filters";
 import { SectionTitle } from "./filters/SectionTitle";
@@ -29,6 +29,8 @@ export function ProductFilters({
 }) {
   const t = useTranslations("Vehicle.inventory.filter");
   const tCommon = useTranslations("Common");
+  const locale = useLocale();
+  const isRtl = locale === 'ar';
 
   const { state, data, loading, handlers } = useProductFilters({
     onFilterChange,
@@ -37,7 +39,7 @@ export function ProductFilters({
   });
 
   return (
-    <div className="space-y-5">
+    <div className="space-y-5" dir={isRtl ? "rtl" : "ltr"}>
       {/* header */}
       <div className="flex items-center justify-between">
         <h3 className="text-base font-semibold text-red-600">{t('title')}</h3>

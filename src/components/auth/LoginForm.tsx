@@ -111,7 +111,7 @@ export default function LoginForm() {
         </button>
       </div>
 
-      <form onSubmit={form.handleSubmit(onSubmit)} className={`space-y-4 ${isRtl ? 'text-right' : 'text-left'}`}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className={`space-y-4 text-start`}>
         {loginMethod === "email" ? (
           <FormField
             control={form.control}
@@ -121,7 +121,7 @@ export default function LoginForm() {
                 <Label>{tl("email")}</Label>
                 <Input
                   placeholder="your@email.com"
-                  className={`${inputStyle} ${isRtl ? 'text-right' : 'text-left'}`}
+                  className={`${inputStyle} text-start`}
                   {...field}
                 />
                 <FormMessage />
@@ -134,7 +134,7 @@ export default function LoginForm() {
             name="phone"
             render={({ field }) => (
               <FormItem className="flex flex-col items-start w-full" dir="ltr">
-                <Label className={`w-full ${isRtl ? 'text-right' : 'text-left'}`}>{tl("phone")}</Label>
+                <Label className={`w-full text-start`}>{tl("phone")}</Label>
                 <PhoneInput
                   {...field}
                   defaultCountry="EG"
@@ -155,7 +155,7 @@ export default function LoginForm() {
               <Input
                 type="password"
                 placeholder="******"
-                className={`${inputStyle} ${isRtl ? 'text-right' : 'text-left'}`}
+                className={`${inputStyle} text-start`}
                 {...field}
               />
               <FormMessage />

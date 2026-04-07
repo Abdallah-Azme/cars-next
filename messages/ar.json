@@ -5,7 +5,7 @@
   },
   "Navbar": {
     "home": "الرئيسية",
-    "machines": "المعدات",
+    "machines": "المركبات والمعدات",
     "categories": "التصنيفات",
     "favorites": "المفضلة",
     "profile": "الملف الشخصي",
@@ -88,7 +88,7 @@
   },
   "Vehicle": {
     "labels": {
-      "lotNumber": "رقم اللوط",
+      "lotNumber": "الرقم",
       "vehicleType": "نوع المركبة",
       "chassisId": "رقم الشاسيه",
       "hours": "ساعات العمل",
@@ -327,7 +327,7 @@
         "specs": "المواصفات",
         "pricing": "معلومات التسعير",
         "maker": "المصنع",
-        "ref": "رقم اللوط",
+        "ref": "الرقم",
         "scorePrefix": "التقييم:",
         "auctionDate": "تاريخ المزاد:"
       }
@@ -485,6 +485,7 @@
   "Common": {
     "loading": "جاري التحميل...",
     "error": "حدث خطأ ما",
+    "search": "بحث...",
     "whatsappTitle": "تحدث معنا عبر واتساب!",
     "whatsappAria": "تواصل معنا عبر واتساب",
     "connectWithUs": "تواصل معنا",

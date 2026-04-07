@@ -48,17 +48,17 @@ const PageHeader = ({ title }: { title: string }) => {
       {/* Overlay */}
       <div className="absolute inset-0 bg-black/75 backdrop-blur-[2px]" />
 
-      <div className={`container relative h-full flex flex-col md:flex-row items-center justify-between gap-8 py-8 ${isRtl ? 'md:flex-row-reverse' : ''}`}>
+      <div className={`container relative h-full flex flex-col md:flex-row items-center justify-between gap-8 py-8`}>
         {/* Title Section */}
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className={`flex-1 text-center ${isRtl ? 'md:text-right' : 'md:text-left'}`}
+          className={`flex-1 text-center md:text-start`}
         >
           <h1 className="text-3xl md:text-6xl font-black text-white tracking-tight uppercase italic">
             {title}
           </h1>
-          <div className={`h-1 w-20 bg-red-600 mt-4 mx-auto ${isRtl ? 'md:mr-0 md:ml-auto' : 'md:ml-0'}`} />
+          <div className={`h-1 w-20 bg-red-600 mt-4 mx-auto md:ms-0 md:me-auto`} />
         </motion.div>
 
         {/* Social Card overlaying the background */}
@@ -66,13 +66,13 @@ const PageHeader = ({ title }: { title: string }) => {
           initial={{ opacity: 0, x: isRtl ? -40 : 40 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}
-          className={`flex flex-col gap-4 p-5 rounded-2xl border border-white/10 bg-white/5 backdrop-blur-xl w-full max-w-[320px] md:max-w-[280px] ${isRtl ? 'text-right' : 'text-left'}`}
+          className={`flex flex-col gap-4 p-5 rounded-2xl border border-white/10 bg-white/5 backdrop-blur-xl w-full max-w-[320px] md:max-w-[280px] text-start`}
         >
           <div className="space-y-1">
             <p className="text-[10px] font-bold uppercase tracking-widest text-white/40">
               {t("connectWithUs")}
             </p>
-            <div className={`flex flex-wrap gap-2 ${isRtl ? 'flex-row-reverse' : ''}`}>
+            <div className={`flex flex-wrap gap-2`}>
               {activeSocials.slice(0, 5).map((platform) => (
                 <a
                   key={platform.id}
@@ -92,7 +92,7 @@ const PageHeader = ({ title }: { title: string }) => {
             <div className="pt-4 border-t border-white/10">
               <a
                 href={`tel:${settings.phone}`}
-                className={`flex items-center gap-3 transition-colors group ${isRtl ? 'flex-row-reverse' : ''}`}
+                className={`flex items-center gap-3 transition-colors group`}
               >
                 <div className="w-8 h-8 rounded-lg bg-red-600 flex items-center justify-center text-white shadow-lg shadow-red-600/20">
                   <Phone size={14} />

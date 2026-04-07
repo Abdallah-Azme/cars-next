@@ -91,7 +91,7 @@ export function AppSidebar() {
                 className="object-contain p-1" 
              />
           </div>
-          <div className={cn(isRtl ? 'text-right' : 'text-left')}>
+          <div className={cn("text-start")}>
             <h1 className="text-lg font-extrabold tracking-tight text-neutral-900 leading-none">{t("title")}</h1>
             <p className="mt-1 text-[10px] uppercase tracking-widest text-neutral-400 font-bold block">Dashboard</p>
           </div>
@@ -100,7 +100,7 @@ export function AppSidebar() {
 
       <SidebarContent className="bg-white">
         <SidebarGroup className="px-4 py-6">
-          <div className={cn("px-4 py-2 mb-4", isRtl ? "text-right" : "text-left")}>
+          <div className={cn("px-4 py-2 mb-4", "text-start")}>
             <h2 className="text-[10px] font-bold uppercase tracking-widest text-neutral-400">Main Navigation</h2>
           </div>
           <SidebarMenu className="gap-2">
@@ -116,7 +116,7 @@ export function AppSidebar() {
                       isActive
                         ? "bg-red-700 text-white shadow-lg shadow-red-200 border-red-800"
                         : "text-neutral-500 hover:bg-neutral-50 hover:text-neutral-900 hover:border-neutral-100",
-                      isRtl && "flex-row-reverse text-right"
+                      "text-start"
                     )}
                   >
                     <Link href={nav.href} className="w-full h-full">
@@ -148,7 +148,7 @@ export function AppSidebar() {
           size="lg"
           className={cn(
             "w-full group flex items-center gap-4 rounded-xl px-4 py-7 text-neutral-500 hover:bg-neutral-50 hover:text-red-700 transition-all duration-300 border border-transparent hover:border-red-100", 
-            isRtl && "flex-row-reverse text-right"
+            "text-start"
           )}
           onClick={handleLogout}
           disabled={isLoggingOut}

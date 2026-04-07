@@ -112,7 +112,7 @@ export default function ProfileInfoForm() {
           <button
             type="button"
             onClick={handleAvatarClick}
-            className={`absolute bottom-0 ${isRtl ? 'left-0' : 'right-0'} p-2 bg-red-600 text-white rounded-full hover:bg-red-700 transition-colors shadow-lg`}
+            className={`absolute bottom-0 end-0 p-2 bg-red-600 text-white rounded-full hover:bg-red-700 transition-colors shadow-lg`}
           >
             <Camera size={18} />
           </button>
@@ -134,7 +134,7 @@ export default function ProfileInfoForm() {
       </div>
 
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className={`space-y-4 ${isRtl ? 'text-right' : 'text-left'}`}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className={`space-y-4 text-start`}>
           <FormField
             control={form.control}
             name="name"
@@ -144,7 +144,7 @@ export default function ProfileInfoForm() {
                 <FormControl>
                   <Input 
                     placeholder={t("nameLabel")} 
-                    className={`${isRtl ? 'text-right' : 'text-left'}`}
+                    className={`text-start`}
                     {...field} 
                   />
                 </FormControl>
@@ -158,9 +158,9 @@ export default function ProfileInfoForm() {
             <Input 
               value={user?.email || ""} 
               disabled 
-              className={`bg-muted ${isRtl ? 'text-right' : 'text-left'}`} 
+              className={`bg-muted text-start`} 
             />
-            <p className={`text-[0.8rem] text-muted-foreground ${isRtl ? 'text-right' : 'text-left'}`}>
+            <p className={`text-[0.8rem] text-muted-foreground text-start`}>
               {t("emailReadOnly")}
             </p>
           </div>
@@ -170,7 +170,7 @@ export default function ProfileInfoForm() {
             <Input
               value={user?.role || ""}
               disabled
-              className={`bg-muted capitalize ${isRtl ? 'text-right' : 'text-left'}`}
+              className={`bg-muted capitalize text-start`}
             />
           </div>
 
@@ -180,7 +180,7 @@ export default function ProfileInfoForm() {
             disabled={isSubmitting}
           >
             {isSubmitting ? (
-              <Loader2 className={`${isRtl ? 'ml-2' : 'mr-2'} h-4 w-4 animate-spin`} />
+              <Loader2 className={`me-2 h-4 w-4 animate-spin`} />
             ) : (
               t("submit")
             )}

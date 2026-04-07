@@ -10,8 +10,8 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
   if (!vehicle) return { title: "Vehicle Not Found" };
 
   return {
-    title: `${vehicle.maker} ${vehicle.model}`,
-    description: vehicle.equipment || `Check out this ${vehicle.maker} ${vehicle.model} on our platform.`,
+    title: `${vehicle.maker || ""} ${vehicle.model || ""}`.trim() || vehicle.carMaker || "Vehicle",
+    description: vehicle.equipment || `Check out this ${vehicle.maker || ""} ${vehicle.model || ""} details on our platform.`,
     openGraph: {
       images: vehicle.images?.[0]?.download_url ? [vehicle.images[0].download_url] : [],
     },
