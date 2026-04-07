@@ -13,6 +13,7 @@ import { Link, usePathname } from "@/i18n/routing";
 import AuthBtns from "./AuthBtns";
 import FallbackImage from "./FallbackImage";
 import LanguageSwitcher from "./LanguageSwitcher";
+import CurrencySwitcher from "./CurrencySwitcher";
 import { useTranslations } from 'next-intl';
 
 export default function Navbar() {
@@ -90,6 +91,7 @@ export default function Navbar() {
 
           {/* auth btns & i18n */}
           <div className="flex items-center gap-4">
+            <CurrencySwitcher />
             <LanguageSwitcher />
             <AuthBtns />
           </div>
@@ -99,7 +101,8 @@ export default function Navbar() {
       {/* Mobile Bottom Navbar */}
       <nav className="fixed bottom-0 left-0 right-0 md:hidden border-t bg-background z-50">
         <div className="flex justify-around items-center py-2 relative">
-          <div className="absolute -top-12 right-4">
+          <div className="absolute flex gap-2 -top-12 right-4">
+             <CurrencySwitcher />
              <LanguageSwitcher />
           </div>
 

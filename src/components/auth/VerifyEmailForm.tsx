@@ -39,6 +39,7 @@ function VerifyEmailFormContent() {
     code: z.string().length(6, {
       message: tv("required"),
     }),
+    mobile: z.string().optional(),
   });
 
   const searchParams = useSearchParams();
@@ -48,12 +49,14 @@ function VerifyEmailFormContent() {
 
   const emailParam = searchParams.get("email") || "";
   const codeParam = searchParams.get("code") || "";
+  const mobileParam = searchParams.get("mobile") || "";
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
       email: emailParam,
       code: codeParam,
+      mobile: mobileParam,
     },
   });
 
@@ -64,7 +67,10 @@ function VerifyEmailFormContent() {
     if (emailParam) {
       form.setValue("email", emailParam);
     }
-  }, [codeParam, emailParam, form]);
+    if (mobileParam) {
+      form.setValue("mobile", mobileParam);
+    }
+  }, [codeParam, emailParam, mobileParam, form]);
 
   useEffect(() => {
     if (countdown > 0) {
@@ -86,13 +92,14 @@ function VerifyEmailFormContent() {
 
   async function handleResend() {
     const email = form.getValues("email");
+    const mobile = form.getValues("mobile");
     if (!email) {
       toast.error(tv("email"));
       return;
     }
 
     setIsResending(true);
-    const res = await resendVerification(email);
+    const res = await resendVerification(email, mobile);
     setIsResending(false);
 
     if (res.ok) {
@@ -112,6 +119,14 @@ function VerifyEmailFormContent() {
             name="email"
             render={({ field }) => (
               <input type="hidden" {...field} />
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="mobile"
+            render={({ field }) => (
+              <input type="hidden" { ...field } />
             )}
           />
 

@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { useForm, FormProvider } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -14,6 +15,8 @@ import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
 import { useAuthStore } from "@/stores/user";
 import { useLocale, useTranslations } from "next-intl";
+import { cn } from "@/lib/utils";
+import { PhoneInput } from "@/components/ui/phone-input";
 
 export default function LoginForm() {
   const locale = useLocale();
@@ -22,8 +25,11 @@ export default function LoginForm() {
   const tv = useTranslations("auth.validation");
   const isRtl = locale === 'ar';
   
+  const [loginMethod, setLoginMethod] = useState<"email" | "phone">("email");
+
   const loginSchema = z.object({
-    email: z.string().email(tv("email")),
+    email: loginMethod === "email" ? z.string().email(tv("email")) : z.string().optional(),
+    phone: loginMethod === "phone" ? z.string().min(7, tv("phone")) : z.string().optional(),
     password: z.string().min(6, tv("password")),
   });
 
@@ -32,17 +38,26 @@ export default function LoginForm() {
   const inputStyle = "h-11! focus-visible:black";
   const router = useRouter();
   const setAuth = useAuthStore((state) => state.setAuth);
+  
   const form = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
       email: "",
+      phone: "",
       password: "",
     },
   });
+
   const { isSubmitting } = form.formState;
   
   const onSubmit = async (data: LoginFormValues) => {
-    const res = await login(data);
+    // Map phone to mobile for the backend and strip '+' if present
+    const formattedPhone = data.phone?.startsWith("+") ? data.phone.slice(1) : data.phone;
+    const payload = loginMethod === "email" 
+      ? { email: data.email, password: data.password }
+      : { mobile: formattedPhone, password: data.password };
+
+    const res = await login(payload);
 
     if (res?.ok) {
       const accessToken = res?.data?.data?.accessToken;
@@ -63,22 +78,73 @@ export default function LoginForm() {
 
   return (
     <FormProvider {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className={`space-y-4 ${isRtl ? 'text-right' : 'text-left'}`}>
-        <FormField
-          control={form.control}
-          name="email"
-          render={({ field }) => (
-            <FormItem>
-              <Label>{tl("email")}</Label>
-              <Input
-                placeholder="your@email.com"
-                className={`${inputStyle} ${isRtl ? 'text-right' : 'text-left'}`}
-                {...field}
-              />
-              <FormMessage />
-            </FormItem>
+      <div className="mb-6 flex p-1 bg-muted rounded-lg w-full max-w-sm mx-auto border overflow-hidden shadow-sm">
+        <button
+          type="button"
+          onClick={() => {
+            setLoginMethod("email");
+            form.clearErrors();
+          }}
+          className={cn(
+            "flex-1 py-2 text-sm font-bold rounded-md transition-all duration-200",
+            loginMethod === "email" 
+              ? "bg-white dark:bg-slate-900 shadow-sm text-red-700" 
+              : "text-muted-foreground hover:text-foreground"
           )}
-        />
+        >
+          {tl("email")}
+        </button>
+        <button
+          type="button"
+          onClick={() => {
+            setLoginMethod("phone");
+            form.clearErrors();
+          }}
+          className={cn(
+            "flex-1 py-2 text-sm font-bold rounded-md transition-all duration-200",
+            loginMethod === "phone" 
+              ? "bg-white dark:bg-slate-900 shadow-sm text-red-700" 
+              : "text-muted-foreground hover:text-foreground"
+          )}
+        >
+          {tl("phone")}
+        </button>
+      </div>
+
+      <form onSubmit={form.handleSubmit(onSubmit)} className={`space-y-4 ${isRtl ? 'text-right' : 'text-left'}`}>
+        {loginMethod === "email" ? (
+          <FormField
+            control={form.control}
+            name="email"
+            render={({ field }) => (
+              <FormItem>
+                <Label>{tl("email")}</Label>
+                <Input
+                  placeholder="your@email.com"
+                  className={`${inputStyle} ${isRtl ? 'text-right' : 'text-left'}`}
+                  {...field}
+                />
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        ) : (
+          <FormField
+            control={form.control}
+            name="phone"
+            render={({ field }) => (
+              <FormItem className="flex flex-col items-start w-full" dir="ltr">
+                <Label className={`w-full ${isRtl ? 'text-right' : 'text-left'}`}>{tl("phone")}</Label>
+                <PhoneInput
+                  {...field}
+                  defaultCountry="EG"
+                  placeholder={tl("phone")}
+                />
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        )}
 
         <FormField
           control={form.control}

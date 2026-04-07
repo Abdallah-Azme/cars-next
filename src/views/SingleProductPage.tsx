@@ -28,6 +28,7 @@ import { getSingleVehicle } from "@/lib/actions";
 import { fixImageUrl, formatWhatsAppUrl } from "@/lib/utils";
 import type { VehicleImage } from "@/types/vehicles";
 import { useLocale, useTranslations } from "next-intl";
+import { useCurrency } from "@/hooks/useCurrency";
 
 const SingleProductPage = () => {
   const params = useParams();
@@ -36,6 +37,7 @@ const SingleProductPage = () => {
   const t = useTranslations("Vehicle");
   const ts = useTranslations("single");
   const isRtl = locale === 'ar';
+  const { formatPrice } = useCurrency();
   
   const settings = useSettingsStore((state) => state.settings);
 
@@ -288,10 +290,7 @@ const SingleProductPage = () => {
 
                     return (
                       <>
-                        <span className="text-xs font-bold opacity-60 italic tracking-tighter">
-                          {t("contact.currency")}
-                        </span>
-                        {price}
+                        {formatPrice(price)}
                       </>
                     );
                   })()}

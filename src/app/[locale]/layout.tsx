@@ -6,8 +6,9 @@ import { Toaster } from "sonner";
 import Navbar from "@/components/shared/Navbar";
 import Footer from "@/components/shared/Footer";
 import { DynamicHead } from "@/components/shared/DynamicHead";
-import { getSettings } from "@/lib/actions";
+import { getSettings, getCurrencyRates } from "@/lib/actions";
 import SettingsInitializer from "@/components/shared/SettingsInitializer";
+import CurrencyInitializer from "@/components/shared/CurrencyInitializer";
 import WhatsAppButton from "@/components/shared/WhatsAppButton";
 import NextTopLoader from "nextjs-toploader";
 import { NextIntlClientProvider } from 'next-intl';
@@ -20,6 +21,16 @@ const inter = Inter({ subsets: ["latin"] });
 async function fetchSettings() {
   const settingsRes = await getSettings();
   return settingsRes.ok ? settingsRes.data?.data ?? null : null;
+}
+
+async function fetchCurrencyRates(): Promise<Record<string, number>> {
+  const res = await getCurrencyRates();
+  if (!res.ok || !res.data?.data) return { USD: 1 };
+  const filtered: Record<string, number> = {};
+  Object.entries(res.data.data).forEach(([k, v]) => {
+    if (k !== 'updated_at' && typeof v === 'number') filtered[k] = v;
+  });
+  return filtered;
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
@@ -63,6 +74,7 @@ export default async function RootLayout({
   // side is the easiest way to get started
   const messages = await getMessages();
   const settings = await fetchSettings();
+  const currencyRates = await fetchCurrencyRates();
 
   const direction = locale === 'ar' ? 'rtl' : 'ltr';
 
@@ -73,6 +85,7 @@ export default async function RootLayout({
           <QueryProvider>
             <NextTopLoader color="#dc2626" showSpinner={false} />
             <SettingsInitializer settings={settings} />
+            <CurrencyInitializer rates={currencyRates} />
             <DynamicHead />
             <Navbar />
             {children}

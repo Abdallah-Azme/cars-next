@@ -281,7 +281,8 @@
     },
     "validation": {
       "email": "Invalid email address",
-      "password": "Password must be at least 6 characters",
+      "phone": "Invalid phone number",
+      "password": "Minimum 6 characters, with uppercase and lowercase letters",
       "required": "This field is required",
       "match": "Passwords do not match"
     }

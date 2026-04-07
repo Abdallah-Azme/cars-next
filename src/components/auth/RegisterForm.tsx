@@ -38,7 +38,9 @@ export default function RegisterForm() {
       role: z.string().min(1, { message: tv("required") }),
       password: z
         .string()
-        .min(6, { message: tv("password") }),
+        .min(6, { message: tv("password") })
+        .regex(/[a-z]/, { message: tv("password") })
+        .regex(/[A-Z]/, { message: tv("password") }),
       password_confirmation: z
         .string()
         .min(6, { message: tv("required") }),
@@ -67,16 +69,20 @@ export default function RegisterForm() {
   const { isSubmitting } = form.formState;
   
   const onSubmit = async (data: RegisterFormValues) => {
-    const res = await register(data);
+    // Map phone to mobile for the backend - maintain original format (with +) for register
+    const { phone, ...rest } = data;
+    const res = await register({ ...rest, mobile: phone });
     
     if (res?.ok) {
       toast.success(res?.data?.message || t("success"));
       const email = res.data?.data?.user?.email || data.email;
       const code = res.data?.data?.verificationCode;
+      const mobile = data.phone;
       
       const params = new URLSearchParams();
       params.set("email", email);
       if (code) params.set("code", code);
+      if (mobile) params.set("mobile", mobile);
       
       router.push(`/verify-email?${params.toString()}`);
     } else {

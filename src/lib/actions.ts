@@ -389,31 +389,32 @@ export async function register(data: Record<string, unknown>) {
   return res;
 }
 
-export async function verifyEmail(data: { email: string; code: string }) {
-  const formData = new FormData();
-  formData.append("email", data.email);
-  formData.append("code", data.code);
-
-  return fetchFromLaravel<{ success: boolean; message: string; data: null }>(
+export async function verifyEmail(data: { email: string; code: string; mobile?: string }) {
+  const formattedMobile = data.mobile?.startsWith("+") ? data.mobile.slice(1) : data.mobile;
+  const res = await fetchFromLaravel<{ success: boolean; message: string; data: null }>(
     "/verify-email",
     {
       method: "POST",
-      body: formData,
+      body: JSON.stringify({
+        email: data.email,
+        code: data.code,
+        mobile: formattedMobile,
+      }),
     },
   );
+  return res;
 }
 
-export async function resendVerification(email: string) {
-  const formData = new FormData();
-  formData.append("email", email);
-
-  return fetchFromLaravel<{ success: boolean; message: string; data: null }>(
+export async function resendVerification(email: string, mobile?: string) {
+  const formattedMobile = mobile?.startsWith("+") ? mobile.slice(1) : mobile;
+  const res = await fetchFromLaravel<{ success: boolean; message: string; data: null }>(
     "/resend-verification",
     {
       method: "POST",
-      body: formData,
+      body: JSON.stringify({ email, mobile: formattedMobile }),
     },
   );
+  return res;
 }
 
 export async function logout() {
@@ -534,5 +535,17 @@ export async function activateUser(userId: number) {
 export async function disableUser(userId: number) {
   return fetchFromLaravel<UserActionResponse>(`/users/${userId}/disable`, {
     method: "PATCH",
+  });
+}
+
+// Currency Rates
+export async function getCurrencyRates() {
+  return fetchFromLaravel<{
+    success: boolean;
+    message: string;
+    data: Record<string, number>;
+  }>("/currency/rates", {
+    method: "GET",
+    cache: "no-store",
   });
 }

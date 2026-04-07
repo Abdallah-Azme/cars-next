@@ -281,7 +281,8 @@
     },
     "validation": {
       "email": "Barua pepe isiyo sahihi",
-      "password": "Nywila lazima iwe na angalau nambari 6",
+      "phone": "Nambari ya simu isiyo sahihi",
+      "password": "Angalau nambari 6, yenye herufi kubwa na ndogo",
       "required": "Sehemu hii inahitajika",
       "match": "Nywila hazilingani"
     }

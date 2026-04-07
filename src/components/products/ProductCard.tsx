@@ -20,9 +20,9 @@ import {
   type CarouselApi,
 } from "@/components/ui/carousel";
 import { useLocale, useTranslations } from "next-intl";
+import { useCurrency } from "@/hooks/useCurrency";
 
 import { ZoomDialog } from "./ZoomDialog";
-
 type Props = {
   isFavorite?: boolean;
   vehicle: VehicleData;
@@ -34,6 +34,7 @@ export function ProductCard({ vehicle }: Props) {
   const locale = useLocale();
   const t = useTranslations("Vehicle");
   const isRtl = locale === 'ar';
+  const { formatPrice } = useCurrency();
 
   const images = vehicle?.images?.filter(img => img.download_url) || [];
   
@@ -234,8 +235,7 @@ export function ProductCard({ vehicle }: Props) {
                   
                   return (
                     <>
-                      <span className="text-[10px] opacity-70 font-bold italic">{t("contact.currency")}</span>
-                      {price}
+                      {formatPrice(price)}
                     </>
                   );
                 })()}
