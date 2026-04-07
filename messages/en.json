@@ -26,6 +26,7 @@
     "links": {
       "home": "Home",
       "inventory": "All Vehicles",
+      "aboutUs": "About Us",
       "services": "Our Services",
       "contact": "Contact Us"
     },

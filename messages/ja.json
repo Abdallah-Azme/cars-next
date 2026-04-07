@@ -1,4 +1,8 @@
 {
+  "AboutUs": {
+    "title": "私たちについて",
+    "badge": "私たちの歩み"
+  },
   "Navbar": {
     "home": "ホーム",
     "machines": "在庫一覧",
@@ -22,6 +26,7 @@
     "links": {
       "home": "ホーム",
       "inventory": "全車両一覧",
+      "aboutUs": "私たちについて",
       "services": "サービス案内",
       "contact": "お問い合わせ"
     },

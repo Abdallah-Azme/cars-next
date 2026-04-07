@@ -47,6 +47,7 @@ export default function Footer() {
   const importantLinks = [
     { label: t("links.home"), href: "/" },
     { label: t("links.inventory"), href: "/products" },
+    { label: t("links.aboutUs"), href: "/about-us" },
     { label: t("links.services"), href: "/#services" },
     { label: t("links.contact"), href: "/#contact" },
   ];
@@ -108,7 +109,7 @@ export default function Footer() {
                   href={platform.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-10 h-10 rounded-lg bg-gray-100/50 border border-gray-100 flex items-center justify-center text-gray-500 hover:bg-red-600 hover:text-white hover:border-red-600 transition-all duration-300"
+                  className="w-10 h-10 rounded-lg bg-white/10 border border-white/10 flex items-center justify-center text-gray-300 hover:bg-red-600 hover:text-white hover:border-red-600 transition-all duration-300"
                   aria-label={platform.label}
                 >
                   <platform.icon size={18} />

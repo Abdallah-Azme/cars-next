@@ -1,4 +1,8 @@
 {
+  "AboutUs": {
+    "title": "Kuhusu Sisi",
+    "badge": "Hadithi Yetu"
+  },
   "Navbar": {
     "home": "Nyumbani",
     "machines": "Mali Iliyopo",
@@ -22,6 +26,7 @@
     "links": {
       "home": "Nyumbani",
       "inventory": "Magari Yote",
+      "aboutUs": "Kuhusu Sisi",
       "services": "Huduma Zetu",
       "contact": "Wasiliana Nasi"
     },
