@@ -1,26 +1,26 @@
-import type { Metadata } from "next";
-import { Inter } from "next/font/google";
-import "../globals.css";
 import QueryProvider from "@/components/providers/query-provider";
-import { Toaster } from "sonner";
-import Navbar from "@/components/shared/Navbar";
-import Footer from "@/components/shared/Footer";
-import { DynamicHead } from "@/components/shared/DynamicHead";
-import { getSettings, getCurrencyRates } from "@/lib/actions";
-import SettingsInitializer from "@/components/shared/SettingsInitializer";
 import CurrencyInitializer from "@/components/shared/CurrencyInitializer";
+import { DynamicHead } from "@/components/shared/DynamicHead";
+import Footer from "@/components/shared/Footer";
+import Navbar from "@/components/shared/Navbar";
+import SettingsInitializer from "@/components/shared/SettingsInitializer";
 import WhatsAppButton from "@/components/shared/WhatsAppButton";
+import { routing } from "@/i18n/routing";
+import { getCurrencyRates, getSettings } from "@/lib/actions";
+import type { Metadata } from "next";
+import { NextIntlClientProvider } from "next-intl";
+import { getMessages } from "next-intl/server";
+import { Inter } from "next/font/google";
+import { notFound } from "next/navigation";
 import NextTopLoader from "nextjs-toploader";
-import { NextIntlClientProvider } from 'next-intl';
-import { getMessages, getTranslations } from 'next-intl/server';
-import { notFound } from 'next/navigation';
-import { routing } from '@/i18n/routing';
+import { Toaster } from "sonner";
+import "../globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
 
 async function fetchSettings() {
   const settingsRes = await getSettings();
-  return settingsRes.ok ? settingsRes.data?.data ?? null : null;
+  return settingsRes.ok ? (settingsRes.data?.data ?? null) : null;
 }
 
 async function fetchCurrencyRates(): Promise<Record<string, number>> {
@@ -28,12 +28,16 @@ async function fetchCurrencyRates(): Promise<Record<string, number>> {
   if (!res.ok || !res.data?.data) return { USD: 1 };
   const filtered: Record<string, number> = {};
   Object.entries(res.data.data).forEach(([k, v]) => {
-    if (k !== 'updated_at' && typeof v === 'number') filtered[k] = v;
+    if (k !== "updated_at" && typeof v === "number") filtered[k] = v;
   });
   return filtered;
 }
 
-export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
   const { locale } = await params;
   const settings = await fetchSettings();
   const siteName = settings?.siteName || "Car Auction";
@@ -43,11 +47,15 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
       default: siteName,
       template: `%s | ${siteName}`,
     },
-    description: settings?.metaDescription || "Browse our wide range of heavy machinery solutions.",
+    description:
+      settings?.metaDescription ||
+      "Browse our wide range of heavy machinery solutions.",
     keywords: settings?.metaKeywords || "machinery, heavy equipment, auction",
     openGraph: {
       title: siteName,
-      description: settings?.metaDescription || "Providing high-performance heavy machinery solutions worldwide.",
+      description:
+        settings?.metaDescription ||
+        "Providing high-performance heavy machinery solutions worldwide.",
       images: settings?.metaImage ? [settings.metaImage] : ["/hero-egypt.jpg"],
     },
     icons: {
@@ -58,7 +66,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
 
 export default async function RootLayout({
   children,
-  params
+  params,
 }: {
   children: React.ReactNode;
   params: Promise<{ locale: string }>;
@@ -76,7 +84,7 @@ export default async function RootLayout({
   const settings = await fetchSettings();
   const currencyRates = await fetchCurrencyRates();
 
-  const direction = locale === 'ar' ? 'rtl' : 'ltr';
+  const direction = locale === "ar" ? "rtl" : "ltr";
 
   return (
     <html lang={locale} dir={direction}>

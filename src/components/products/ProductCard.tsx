@@ -44,7 +44,12 @@ export function ProductCard({ vehicle }: Props) {
   const rawResult = lastHistory?.result || "";
   
   // Localize the result if it's a known status
-  const lastResult = rawResult.toLowerCase().includes("sold") ? t("status.sold") : rawResult;
+  const lastResult = React.useMemo(() => {
+    const lower = rawResult.toLowerCase();
+    if (lower === "sold") return t("status.sold");
+    if (lower.includes("not sold")) return t("status.notSold");
+    return rawResult;
+  }, [rawResult, t]);
 
   React.useEffect(() => {
     if (!api) return;
@@ -99,7 +104,8 @@ export function ProductCard({ vehicle }: Props) {
               {lastHistory && (
                 <span className={cn(
                   "px-2 py-0.5 rounded-full font-bold uppercase text-[10px] tracking-tighter",
-                  rawResult.toLowerCase().includes("sold") ? "bg-green-100 text-green-700" :
+                  rawResult.toLowerCase() === "sold" ? "bg-green-100 text-green-700" :
+                  rawResult.toLowerCase().includes("not sold") ? "bg-red-100 text-red-700" :
                   rawResult.toLowerCase().includes("yet") ? "bg-blue-100 text-blue-700" :
                   "bg-amber-100 text-amber-700"
                 )}>
@@ -217,17 +223,17 @@ export function ProductCard({ vehicle }: Props) {
           {(rawResult.toLowerCase().includes("sold") || rawResult.toLowerCase().includes("yet")) ? (
             <div className={`flex items-center justify-between ${isRtl ? 'flex-row-reverse' : ''}`}>
               <div className="text-xs text-muted-foreground font-medium uppercase tracking-wider">
-                {rawResult.toLowerCase().includes("sold") ? t("status.soldPrice") : t("status.startPrice")}
+                {rawResult.toLowerCase() === "sold" ? t("status.soldPrice") : t("status.startPrice")}
               </div>
               <div
                 className={cn(
                   "text-sm font-black px-2 py-0.5 rounded flex items-center gap-1",
                   isRtl ? 'flex-row-reverse' : '',
-                  rawResult.toLowerCase().includes("sold") ? "text-green-600 bg-green-50" : "text-blue-600 bg-blue-50"
+                  rawResult.toLowerCase() === "sold" ? "text-green-600 bg-green-50" : "text-blue-600 bg-blue-50"
                 )}
               >
                 {(() => {
-                  const price = rawResult.toLowerCase().includes("sold") 
+                  const price = rawResult.toLowerCase() === "sold" 
                     ? (vehicle.soldPrice || vehicle.startPrice || vehicle.translatedData?.startPrice) 
                     : (vehicle.startPrice || vehicle.translatedData?.startPrice);
                   

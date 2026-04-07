@@ -96,9 +96,12 @@ const SingleProductPage = () => {
       ?.map((img: VehicleImage) => img.download_url)
       .filter((url): url is string => Boolean(url)) || [];
   const images = mappedImages.length > 0 ? mappedImages : [];
-
   const rawStatus = vehicle.status || "";
-  const localizedStatus = rawStatus.toLowerCase().includes("sold") ? t("status.sold") : rawStatus;
+  const lowerStatus = rawStatus.toLowerCase();
+  const localizedStatus =
+    lowerStatus === "sold" ? t("status.sold") :
+    lowerStatus.includes("not sold") ? t("status.notSold") :
+    rawStatus;
 
   const specs = [
     { label: ts("labels.model"), value: vehicle.model || "—" },
@@ -268,7 +271,7 @@ const SingleProductPage = () => {
             <Card>
               <CardContent className="p-4">
                 <div className="text-xs text-muted-foreground uppercase font-medium tracking-wider">
-                  {rawStatus.toLowerCase().includes("sold")
+                  {rawStatus.toLowerCase() === "sold"
                     ? t("status.soldPrice")
                     : t("status.startPrice")}
                 </div>
@@ -276,13 +279,13 @@ const SingleProductPage = () => {
                   className={cn(
                     "mt-1 text-lg font-black flex items-center gap-1",
                     isRtl ? 'flex-row-reverse' : '',
-                    rawStatus.toLowerCase().includes("sold")
+                    rawStatus.toLowerCase() === "sold"
                       ? "text-green-600"
                       : "text-blue-600",
                   )}
                 >
                   {(() => {
-                    const price = rawStatus.toLowerCase().includes("sold")
+                    const price = rawStatus.toLowerCase() === "sold"
                       ? (vehicle.soldPrice || vehicle.startPrice || vehicle.translatedData?.startPrice)
                       : (vehicle.startPrice || vehicle.translatedData?.startPrice);
 

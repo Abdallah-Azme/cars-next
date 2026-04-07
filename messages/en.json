@@ -96,6 +96,7 @@
     },
     "status": {
       "sold": "Sold",
+      "notSold": "Not Sold",
       "soldPrice": "Selling Price",
       "startPrice": "Start Price",
       "tbd": "Ask for Price",
@@ -169,20 +170,20 @@
   },
   "auth": {
     "login": {
-      "title": "Login",
-      "header": "Login to your account",
-      "subtitle": "Enter your email below to login to your account",
-      "submit": "Login",
+      "title": "Log In",
+      "header": "Log In to your account",
+      "subtitle": "Enter your credentials to log in",
+      "submit": "Log In",
       "noAccount": "Don't have an account?",
       "forgot": "Forgot password?",
       "success": "Login successful",
       "failed": "Login failed"
     },
     "register": {
-      "title": "Signup",
+      "title": "Sign Up",
       "header": "Create an account",
-      "subtitle": "Enter your details below to create your account",
-      "submit": "Signup",
+      "subtitle": "Enter your details to sign up",
+      "submit": "Sign Up",
       "hasAccount": "Already have an account?",
       "success": "Registration successful",
       "failed": "Registration failed"
