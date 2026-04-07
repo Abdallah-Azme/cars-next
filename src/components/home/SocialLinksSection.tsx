@@ -1,8 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { useSettingsStore } from "@/stores/settings";
-import { getSettings } from "@/lib/actions";
 import {
   Facebook,
   Twitter,
@@ -19,7 +17,8 @@ import {
   MapPin,
 } from "lucide-react";
 import { motion } from "framer-motion";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
+import { getLocalizedValue } from "@/lib/utils";
 
 const socialPlatforms = [
   { id: "facebook", icon: Facebook, label: "Facebook" },
@@ -36,31 +35,19 @@ const socialPlatforms = [
 
 export default function SocialLinksSection() {
   const settings = useSettingsStore((state) => state.settings);
-  const setSettings = useSettingsStore((state) => state.setSettings);
-  const [loading, setLoading] = useState(!settings);
+  const locale = useLocale();
   const t = useTranslations("Common.SocialLinks");
 
-  useEffect(() => {
-    if (!settings) {
-      const fetchSettings = async () => {
-        const res = await getSettings();
-        if (res.ok && res.data?.data) {
-          setSettings(res.data.data);
-        }
-        setLoading(false);
-      };
-      fetchSettings();
-    }
-  }, [settings, setSettings]);
-
-  if (loading) return null;
+  if (!settings) return null;
 
   const activeSocials = socialPlatforms.filter(
     (platform) => settings?.[platform.id as keyof typeof settings],
   );
 
+  const address = getLocalizedValue(settings, "address", locale);
+
   const hasContactInfo =
-    settings?.phone || settings?.email || settings?.address;
+    settings?.phone || settings?.email || address;
 
   if (activeSocials.length === 0 && !hasContactInfo) return null;
 
@@ -162,7 +149,7 @@ export default function SocialLinksSection() {
                   </a>
                 )}
 
-                {settings?.address && (
+                {address && (
                   <div className="flex items-center gap-6 p-6 rounded-2xl border border-gray-100 bg-white shadow-sm border-l-4 border-l-red-600/10">
                     <div className="w-16 h-16 rounded-2xl bg-gray-50 flex items-center justify-center text-gray-400 shadow-inner border border-gray-100">
                       <MapPin size={28} />
@@ -172,7 +159,7 @@ export default function SocialLinksSection() {
                         {t('address')}
                       </span>
                       <span className="text-xl font-bold text-gray-900 leading-tight">
-                        {settings.address}
+                        {address}
                       </span>
                     </div>
                   </div>
@@ -185,3 +172,4 @@ export default function SocialLinksSection() {
     </section>
   );
 }
+

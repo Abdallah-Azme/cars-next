@@ -41,3 +41,19 @@ export function formatWhatsAppUrl(contact: string | null | undefined, message?: 
 
   return baseUrl;
 }
+
+export function getLocalizedValue(
+  obj: any,
+  key: string,
+  locale: string
+): string {
+  if (!obj) return "";
+  const mapping: Record<string, string> = {
+    ar: "Ar",
+    en: "En",
+    ja: "Jp",
+    sw: "Sw",
+  };
+  const suffix = mapping[locale] || "En";
+  return obj[`${key}${suffix}`] || obj[`${key}En`] || "";
+}

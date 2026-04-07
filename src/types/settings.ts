@@ -1,40 +1,70 @@
 export type Statistic = {
-  id: number,
-  value: string,
-  label: string
-}
+  id: number;
+  value: string;
+  labelAr: string | null;
+  labelEn: string | null;
+  labelJp: string | null;
+  labelSw: string | null;
+};
 
 export type SettingsResponse = {
-    success: boolean|string,
-    message: string,
-    data: {
-        id: number,
-        siteName: string|null,
-        siteLogo: string|null,
-        metaTitle: string|null,
-        metaDescription: string|null,
-        metaKeywords: string|null,
-        metaImage: string|null,
-        heroTitle: string,
-        heroDescription: string,
-        heroImage: string,
-        heroButton1Link: string,
-        heroButton2Link: string,
-        email: string|null,
-        phone: string|null,
-        address: string|null,
-        facebook: string|null,
-        twitter: string|null,
-        instagram: string|null,
-        linkedin: string|null,
-        youtube: string|null,
-        tiktok: string|null,
-        snapchat: string|null,
-        pinterest: string|null,
-        whatsapp: string|null,
-        telegram: string|null,
-        statisticsHeading: string,
-        statisticsDescription: string,
-        statistics: Statistic[]
-    }
-}
+  success: boolean | string;
+  message: string;
+  data: {
+    id: number;
+    siteNameAr: string | null;
+    siteNameEn: string | null;
+    siteNameJp: string | null;
+    siteNameSw: string | null;
+    siteLogo: string | null;
+    metaTitleAr: string | null;
+    metaTitleEn: string | null;
+    metaTitleJp: string | null;
+    metaTitleSw: string | null;
+    metaDescriptionAr: string | null;
+    metaDescriptionEn: string | null;
+    metaDescriptionJp: string | null;
+    metaDescriptionSw: string | null;
+    metaKeywordsAr: string | null;
+    metaKeywordsEn: string | null;
+    metaKeywordsJp: string | null;
+    metaKeywordsSw: string | null;
+    metaImage: string | null;
+    heroTitleAr: string | null;
+    heroTitleEn: string | null;
+    heroTitleJp: string | null;
+    heroTitleSw: string | null;
+    heroDescriptionAr: string | null;
+    heroDescriptionEn: string | null;
+    heroDescriptionJp: string | null;
+    heroDescriptionSw: string | null;
+    heroImage: string | null;
+    heroButton1Link: string;
+    heroButton2Link: string;
+    email: string | null;
+    phone: string | null;
+    addressAr: string | null;
+    addressEn: string | null;
+    addressJp: string | null;
+    addressSw: string | null;
+    facebook: string | null;
+    twitter: string | null;
+    instagram: string | null;
+    linkedin: string | null;
+    youtube: string | null;
+    tiktok: string | null;
+    snapchat: string | null;
+    pinterest: string | null;
+    whatsapp: string | null;
+    telegram: string | null;
+    statisticsHeadingAr: string | null;
+    statisticsHeadingEn: string | null;
+    statisticsHeadingJp: string | null;
+    statisticsHeadingSw: string | null;
+    statisticsDescriptionAr: string | null;
+    statisticsDescriptionEn: string | null;
+    statisticsDescriptionJp: string | null;
+    statisticsDescriptionSw: string | null;
+    statistics: Statistic[];
+  };
+};

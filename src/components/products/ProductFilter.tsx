@@ -55,6 +55,18 @@ export function ProductFilters({
       <Separator />
 
       <div className="flex flex-col gap-6">
+        {/* ── 8. Auction Status checklist (Moved to Top) ────────────────────── */}
+        {!exclude.includes("auctionStatus") && (
+          <div className="space-y-3">
+            <SectionTitle title={t('auctionStatus')} />
+            <ChecklistBox
+              items={data.displayResults}
+              selectedItems={state.selectedResults}
+              onToggle={handlers.toggleResult}
+            />
+          </div>
+        )}
+
         {/* ── 1. Parent Category ─────────────────────────────────────────── */}
         {!exclude.includes("parentCategory") && (
           <div className="space-y-3">
@@ -164,17 +176,7 @@ export function ProductFilters({
           </div>
         )}
 
-        {/* ── 8. Auction Status checklist ────────────────────────────────────── */}
-        {!exclude.includes("auctionStatus") && (
-          <div className="space-y-3">
-            <SectionTitle title={t('auctionStatus')} />
-            <ChecklistBox
-              items={data.displayResults}
-              selectedItems={state.selectedResults}
-              onToggle={handlers.toggleResult}
-            />
-          </div>
-        )}
+
       </div>
     </div>
   );

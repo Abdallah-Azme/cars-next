@@ -2,7 +2,7 @@
 
 import { useSettingsStore } from "@/stores/settings";
 import { usePathname } from "next/navigation";
-import { fixImageUrl } from "@/lib/utils";
+import { fixImageUrl, getLocalizedValue } from "@/lib/utils";
 import { Link } from "@/i18n/routing";
 import {
   Facebook,
@@ -41,6 +41,9 @@ export default function Footer() {
   const locale = useLocale();
   const t = useTranslations("Footer");
   const isRtl = locale === 'ar';
+
+  const siteName = getLocalizedValue(settings, "siteName", locale) || "Sub Coders";
+  const address = getLocalizedValue(settings, "address", locale);
 
   if (pathname?.includes("/admin")) return null;
 
@@ -81,7 +84,7 @@ export default function Footer() {
                   <div className="relative w-12 h-12">
                     <Image
                       src={fixImageUrl(settings.siteLogo)}
-                      alt={settings?.siteName || "Logo"}
+                      alt={siteName}
                       fill
                       className="object-contain"
                       sizes="48px"
@@ -95,7 +98,7 @@ export default function Footer() {
                   </div>
                 )}
                 <span className="text-2xl font-black tracking-tighter uppercase italic">
-                  {settings?.siteName || "Sub Coders"}
+                  {siteName}
                 </span>
               </div>
             </Link>
@@ -200,7 +203,7 @@ export default function Footer() {
                 </div>
               )}
 
-              {settings?.address && (
+              {address && (
                 <div className={`flex flex-col items-center gap-3 md:gap-4 group ${isRtl ? 'md:flex-row-reverse' : 'md:flex-row'}`}>
                   <div className="w-10 h-10 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-red-500">
                     <MapPin size={18} />
@@ -210,7 +213,7 @@ export default function Footer() {
                       {t('location')}
                     </span>
                     <span className="text-sm font-bold text-gray-300">
-                      {settings.address}
+                      {address}
                     </span>
                   </div>
                 </div>
@@ -224,7 +227,7 @@ export default function Footer() {
           <p className="text-gray-500 text-xs font-medium text-center">
             © {new Date().getFullYear()}{" "}
             <span className="text-gray-500 underline underline-offset-4 decoration-red-600/30 font-black">
-              {settings?.siteName || "Sub Coders"}
+              {siteName}
             </span>
             . {t('rights')}
           </p>

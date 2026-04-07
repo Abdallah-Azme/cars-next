@@ -4,9 +4,16 @@ import { Button } from "@/components/ui/button";
 import { CircleDollarSign, Phone } from "lucide-react";
 import { useSettingsStore } from "@/stores/settings";
 import FallbackImage from "../shared/FallbackImage";
+import { getLocalizedValue } from "@/lib/utils";
+import { useLocale } from "next-intl";
 
 export default function Hero() {
   const settings = useSettingsStore((state) => state.settings);
+  const locale = useLocale();
+
+  const title = getLocalizedValue(settings, "heroTitle", locale) || "Powerful Heavy Equipment";
+  const description = getLocalizedValue(settings, "heroDescription", locale) || 
+    "We provide high-performance heavy machinery for construction, roadwork, infrastructure, and industrial projects — built for reliability and maximum productivity.";
 
   return (
     <section className="relative md:h-[60vh] h-[70vh] text-white">
@@ -27,12 +34,11 @@ export default function Hero() {
         {/* Content */}
         <div className=" text-center max-w-5xl flex flex-col gap-4 ">
           <h1 className="text-3xl md:text-6xl font-black leading-tight drop-shadow-[0_2px_10px_rgba(0,0,0,0.5)]">
-            {settings?.heroTitle || "Powerful Heavy Equipment"}
+            {title}
           </h1>
 
           <p className=" md:text-lg text-sm text-gray-200 font-medium drop-shadow-[0_1px_4px_rgba(0,0,0,0.8)]">
-            {settings?.heroDescription ||
-              "We provide high-performance heavy machinery for construction, roadwork, infrastructure, and industrial projects — built for reliability and maximum productivity."}
+            {description}
           </p>
 
           <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">

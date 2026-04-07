@@ -68,7 +68,6 @@ export function ProductCard({ vehicle }: Props) {
 
   const labels = [
     { label: t("labels.vehicleType"), value: vehicle?.vehicleType },
-    { label: t("labels.chassisId"), value: vehicle?.chassisId },
     { label: t("labels.hours"), value: vehicle?.workingHours },
     { label: t("labels.score"), value: vehicle?.score },
     { label: t("labels.year"), value: vehicle?.year },
@@ -239,9 +238,12 @@ export function ProductCard({ vehicle }: Props) {
                   
                   if (!price) return <span>{t("status.tbd")}</span>;
                   
+                  // strip 'T' if present (e.g. from some auction formats)
+                  const cleanPrice = price.toString().replace(/T/gi, '');
+                  
                   return (
                     <>
-                      {formatPrice(price)}
+                      {formatPrice(cleanPrice)}
                     </>
                   );
                 })()}

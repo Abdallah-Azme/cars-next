@@ -7,6 +7,7 @@ import SettingsInitializer from "@/components/shared/SettingsInitializer";
 import WhatsAppButton from "@/components/shared/WhatsAppButton";
 import { routing } from "@/i18n/routing";
 import { getCurrencyRates, getSettings } from "@/lib/actions";
+import { getLocalizedValue } from "@/lib/utils";
 import type { Metadata } from "next";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
@@ -40,7 +41,8 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale } = await params;
   const settings = await fetchSettings();
-  const siteName = settings?.siteName || "Car Auction";
+  
+  const siteName = getLocalizedValue(settings, "siteName", locale) || "Car Auction";
 
   return {
     title: {
@@ -48,13 +50,13 @@ export async function generateMetadata({
       template: `%s | ${siteName}`,
     },
     description:
-      settings?.metaDescription ||
+      getLocalizedValue(settings, "metaDescription", locale) ||
       "Browse our wide range of heavy machinery solutions.",
-    keywords: settings?.metaKeywords || "machinery, heavy equipment, auction",
+    keywords: getLocalizedValue(settings, "metaKeywords", locale) || "machinery, heavy equipment, auction",
     openGraph: {
       title: siteName,
       description:
-        settings?.metaDescription ||
+        getLocalizedValue(settings, "metaDescription", locale) ||
         "Providing high-performance heavy machinery solutions worldwide.",
       images: settings?.metaImage ? [settings.metaImage] : ["/hero-egypt.jpg"],
     },

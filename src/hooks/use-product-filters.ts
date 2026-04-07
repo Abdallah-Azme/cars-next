@@ -44,7 +44,7 @@ export function useProductFilters({
     controlledParams.sizes || [],
   );
   const [selectedResults, setSelectedResults] = useState<string[]>(
-    (controlledParams.results as string[]) || [],
+    (controlledParams.results as string[]) || ["Yet To Be Auctioned"],
   );
 
   // ── range filter state ───────────────────────────────────────────────────
@@ -233,14 +233,14 @@ export function useProductFilters({
     setSelectedModels([]);
     setSelectedTypes([]);
     setSelectedSizes([]);
-    setSelectedResults([]);
+    setSelectedResults(["Yet To Be Auctioned"]);
     setYearFrom(undefined);
     setYearTo(undefined);
     setHourFrom(undefined);
     setHourTo(undefined);
     setScoreFrom(undefined);
     setScoreTo(undefined);
-    onFilterChange({});
+    onFilterChange({ results: ["Yet To Be Auctioned"] });
   };
 
   return {

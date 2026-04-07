@@ -14,13 +14,18 @@ import AuthBtns from "./AuthBtns";
 import FallbackImage from "./FallbackImage";
 import LanguageSwitcher from "./LanguageSwitcher";
 import CurrencySwitcher from "./CurrencySwitcher";
-import { useTranslations } from 'next-intl';
+import { getLocalizedValue } from "@/lib/utils";
+import { useTranslations, useLocale } from 'next-intl';
 
 export default function Navbar() {
   const t = useTranslations('Navbar');
+  const locale = useLocale();
   const pathname = usePathname();
   const { token, isAuthenticated } = useAuthStore();
   const settings = useSettingsStore((state) => state.settings);
+
+  const siteName = getLocalizedValue(settings, "siteName", locale);
+  const hasValidSiteName = siteName && !siteName.includes("site_nan");
 
   const links = [
     {
@@ -49,16 +54,16 @@ export default function Navbar() {
           <Link href={"/"} className="text-xl font-bold flex items-center gap-2">
             <FallbackImage 
               src={settings?.siteLogo || "/logo-icon.jpeg"}
-              alt={settings?.siteName && !settings.siteName.includes("site_nan") ? settings.siteName : "Car Auction"}
+              alt={hasValidSiteName ? siteName : "Car Auction"}
               width={80}
               height={80}
               className="size-20 object-contain"
               priority
             />
-            {settings?.siteName && !settings.siteName.includes("site_nan") && (
-              <span className="hidden lg:block">{settings.siteName}</span>
+            {hasValidSiteName && (
+              <span className="hidden lg:block">{siteName}</span>
             )}
-            {(!settings?.siteName || settings.siteName.includes("site_nan")) && (
+            {!hasValidSiteName && (
               <span className="hidden lg:block text-2xl font-black italic tracking-tighter uppercase">{t('siteName')}</span>
             )}
           </Link>

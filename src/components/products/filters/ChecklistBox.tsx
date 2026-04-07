@@ -20,7 +20,7 @@ export function ChecklistBox({
   selectedItems,
   onToggle,
   searchable = false,
-  maxHeight = "h-64",
+  maxHeight = "h-auto",
 }: ChecklistBoxProps) {
   const [search, setSearch] = useState("");
   

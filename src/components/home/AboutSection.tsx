@@ -1,7 +1,7 @@
 "use client";
 
 import { useSettingsStore } from "@/stores/settings";
-import { fixImageUrl } from "@/lib/utils";
+import { fixImageUrl, getLocalizedValue } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, ArrowLeft, CheckCircle2 } from "lucide-react";
 import { motion } from "framer-motion";
@@ -19,7 +19,7 @@ export default function AboutSection() {
   const stats = settings?.statistics?.length
     ? settings.statistics.map((s) => ({
         number: s.value,
-        label: s.label,
+        label: getLocalizedValue(s, "label", locale),
       }))
     : [
         { number: "15+", label: t("stats.experience") },
@@ -34,6 +34,9 @@ export default function AboutSection() {
     t("features.rentalSales"),
     t("features.quality")
   ];
+
+  const title = getLocalizedValue(settings, "statisticsHeading", locale) || t('title');
+  const subtitle = getLocalizedValue(settings, "statisticsDescription", locale) || t('subtitle');
 
   return (
     <section id="about-us" className="py-20 md:py-32 bg-slate-50 dark:bg-slate-900/50 overflow-hidden">
@@ -96,11 +99,11 @@ export default function AboutSection() {
                 <span className="text-red-600 font-bold tracking-widest uppercase text-xs">{t('badge')}</span>
               </div>
               <h2 className="text-4xl md:text-5xl font-extrabold text-slate-900 dark:text-white leading-[1.15]">
-                {settings?.statisticsHeading || t('title')}
+                {title}
                 <span className="text-red-600">.</span>
               </h2>
               <p className="text-slate-600 dark:text-slate-400 text-lg leading-relaxed max-w-xl mx-auto lg:mx-0">
-                {settings?.statisticsDescription || t('subtitle')}
+                {subtitle}
               </p>
             </div>
             

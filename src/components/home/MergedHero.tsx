@@ -20,6 +20,7 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 import { useLocale, useTranslations } from "next-intl";
+import { getLocalizedValue, fixImageUrl } from "@/lib/utils";
 
 export default function MergedHero() {
   const settings = useSettingsStore((state) => state.settings);
@@ -49,9 +50,9 @@ export default function MergedHero() {
       url: settings?.[p.id as keyof typeof settings] as string,
     }));
 
-  const heroImage = "/hero-egypt.jpg";
-  const heroTitle = settings?.heroTitle || tHome("heroTitle");
-  const heroDescription = settings?.heroDescription || tHome("heroSubtitle");
+  const heroImage = settings?.heroImage ? fixImageUrl(settings.heroImage) : "/hero-egypt.jpg";
+  const heroTitle = getLocalizedValue(settings, "heroTitle", locale) || tHome("heroTitle");
+  const heroDescription = getLocalizedValue(settings, "heroDescription", locale) || tHome("heroSubtitle");
 
   return (
     <section className="relative w-full h-[90vh] min-h-[500px] overflow-hidden">
