@@ -44,11 +44,11 @@ const PageHeader = ({ title }: { title: string }) => {
     }));
 
   return (
-    <div className="relative md:h-[45vh] h-[30vh] bg-[url(/hero.jpg)] bg-cover bg-center bg-no-repeat overflow-hidden">
+    <div className="relative h-auto min-h-[420px] md:h-[45vh] bg-[url(/hero.jpg)] bg-cover bg-center bg-no-repeat overflow-hidden">
       {/* Overlay */}
       <div className="absolute inset-0 bg-black/75 backdrop-blur-[2px]" />
 
-      <div className={`container relative h-full flex flex-col md:flex-row items-center justify-between gap-8 py-8`}>
+      <div className={`container relative h-full flex flex-col md:flex-row items-center justify-between gap-6 md:gap-8 py-10 md:py-8`}>
         {/* Title Section */}
         <motion.div 
           initial={{ opacity: 0, y: 20 }}

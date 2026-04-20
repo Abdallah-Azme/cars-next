@@ -68,13 +68,14 @@ export default function Footer() {
     ...p,
     url: settings?.[p.id as keyof typeof settings] as string
   }));
+  const mobileSocials = activeSocials.slice(0, 5);
 
   return (
-    <footer className="bg-[#0f0f0f] text-white pt-20 pb-28 md:pb-10 border-t border-white/5">
+    <footer className="bg-[#0f0f0f] text-white pt-8 pb-6 md:pt-14 md:pb-8 border-t border-white/5">
       <div className="container mx-auto px-4">
-        <div className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16 py-4 text-center md:text-start`}>
+        <div className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-10 mb-6 md:mb-10 py-1 md:py-2 text-center md:text-start`}>
           {/* Brand Column */}
-          <div className="space-y-6">
+          <div className="space-y-3">
             <Link
               href="/"
               className={`inline-block transition-transform hover:scale-105 mx-auto md:ms-0`}
@@ -97,36 +98,52 @@ export default function Footer() {
                     </span>
                   </div>
                 )}
-                <span className="text-2xl font-black tracking-tighter uppercase italic">
+                <span className="text-xl md:text-2xl font-black tracking-tighter uppercase italic">
                   {siteName}
                 </span>
               </div>
             </Link>
-            <p className="text-gray-400 text-sm leading-relaxed max-w-sm mx-auto md:mx-0">
+            <p className="hidden sm:block text-gray-400 text-sm leading-relaxed max-w-sm mx-auto md:mx-0">
               {t("description")}
             </p>
-            <div className={`grid grid-cols-5 gap-2 md:flex md:flex-wrap md:gap-3 pt-2 justify-items-center max-w-[250px] mx-auto md:max-w-none md:mx-0 md:justify-start`}>
-              {activeSocials.map((platform) => (
-                <a
-                  key={platform.id}
-                  href={platform.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-10 h-10 rounded-lg bg-white/10 border border-white/10 flex items-center justify-center text-gray-300 hover:bg-red-600 hover:text-white hover:border-red-600 transition-all duration-300"
-                  aria-label={platform.label}
-                >
-                  <platform.icon size={18} />
-                </a>
-              ))}
+            <div className={`grid grid-cols-5 gap-2 md:flex md:flex-wrap md:gap-3 pt-1 md:pt-2 justify-items-center max-w-[250px] mx-auto md:max-w-none md:mx-0 md:justify-start`}>
+              <div className="contents md:hidden">
+                {mobileSocials.map((platform) => (
+                  <a
+                    key={platform.id}
+                    href={platform.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-9 h-9 rounded-lg bg-white/10 border border-white/10 flex items-center justify-center text-gray-300 hover:bg-red-600 hover:text-white hover:border-red-600 transition-all duration-300"
+                    aria-label={platform.label}
+                  >
+                    <platform.icon size={16} />
+                  </a>
+                ))}
+              </div>
+              <div className="hidden md:contents">
+                {activeSocials.map((platform) => (
+                  <a
+                    key={platform.id}
+                    href={platform.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-10 h-10 rounded-lg bg-white/10 border border-white/10 flex items-center justify-center text-gray-300 hover:bg-red-600 hover:text-white hover:border-red-600 transition-all duration-300"
+                    aria-label={platform.label}
+                  >
+                    <platform.icon size={18} />
+                  </a>
+                ))}
+              </div>
             </div>
           </div>
 
           {/* Important Links */}
-          <div className="space-y-6">
+          <div className="space-y-3">
             <h4 className={`text-lg font-bold tracking-tight border-red-600 inline-block md:block mb-4 ${isRtl ? 'border-r-4 pr-4' : 'border-l-4 pl-4'}`}>
               {t('importantLinks')}
             </h4>
-            <ul className="space-y-4">
+            <ul className="space-y-2">
               {importantLinks.map((link) => (
                 <li key={link.label}>
                   <Link
@@ -141,11 +158,11 @@ export default function Footer() {
           </div>
 
           {/* Categories */}
-          <div className="space-y-6">
+          <div className="hidden md:block space-y-3">
             <h4 className={`text-lg font-bold tracking-tight border-red-600 inline-block md:block mb-4 ${isRtl ? 'border-r-4 pr-4' : 'border-l-4 pl-4'}`}>
               {t('topCategories')}
             </h4>
-            <ul className="space-y-4">
+            <ul className="space-y-3">
               {categories.map((link) => (
                 <li key={link.label}>
                   <Link
@@ -160,11 +177,11 @@ export default function Footer() {
           </div>
 
           {/* Contact Info */}
-          <div className="space-y-6">
+          <div className="hidden sm:block space-y-3">
             <h4 className={`text-lg font-bold tracking-tight border-red-600 inline-block md:block mb-4 ${isRtl ? 'border-r-4 pr-4' : 'border-l-4 pl-4'}`}>
               {t('quickContact')}
             </h4>
-            <div className={`space-y-5 flex flex-col items-center ${isRtl ? 'md:items-end' : 'md:items-start'}`}>
+            <div className={`space-y-4 flex flex-col items-center ${isRtl ? 'md:items-end' : 'md:items-start'}`}>
               {settings?.phone && (
                 <div className={`flex flex-col items-center gap-3 md:gap-4 group md:flex-row`}>
                   <div className="w-10 h-10 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-red-500 group-hover:bg-red-600 group-hover:text-white transition-colors">
@@ -223,7 +240,7 @@ export default function Footer() {
         </div>
 
         {/* Footer Bottom */}
-        <div className="pt-10 border-t border-white/5 flex flex-col items-center">
+        <div className="pt-4 md:pt-6 border-t border-white/5 flex flex-col items-center">
           <p className="text-gray-500 text-xs font-medium text-center">
             © {new Date().getFullYear()}{" "}
             <span className="text-gray-500 underline underline-offset-4 decoration-red-600/30 font-black">

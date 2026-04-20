@@ -18,7 +18,6 @@ export default function CategorySection() {
     queryKey: ["parentCategories"],
     queryFn: () => getParentCategories(),
   });
-
   const parentCategories: ParentCategory[] = data?.data?.data ?? [];
 
   // Flatten out all subcategories
@@ -42,7 +41,7 @@ export default function CategorySection() {
   }
 
   return (
-    <section className="bg-slate-50/50 dark:bg-slate-900/50 py-10 my-8 border-y border-slate-100 dark:border-slate-800">
+    <section className="bg-slate-50/50 dark:bg-slate-900/50 py-8 md:py-10 my-6 md:my-8 border-y border-slate-100 dark:border-slate-800 overflow-x-clip">
       <div className="container relative group/section space-y-8">
         <div className="flex flex-col gap-2">
           <h2 className="text-3xl md:text-4xl font-bold text-red-600">
@@ -68,8 +67,8 @@ export default function CategorySection() {
             ))}
           </CarouselContent>
           
-          {/* Navigation Arrows, hidden by default shown on hover */}
-          <div className="absolute top-1/2 -translate-y-1/2 left-0 right-0 flex justify-between pointer-events-none opacity-0 group-hover/section:opacity-100 transition-opacity duration-300 w-[calc(100%+4rem)] -ml-8">
+          {/* Navigation Arrows, hidden on mobile to avoid overflow */}
+          <div className="absolute top-1/2 -translate-y-1/2 inset-x-0 hidden md:flex justify-between pointer-events-none opacity-0 group-hover/section:opacity-100 transition-opacity duration-300">
             <CarouselPrevious className="pointer-events-auto bg-white/80 hover:bg-white text-blue-600 border-none shadow-md size-12" />
             <CarouselNext className="pointer-events-auto bg-white/80 hover:bg-white text-blue-600 border-none shadow-md size-12" />
           </div>
