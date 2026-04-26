@@ -18,6 +18,8 @@ export default function CategorySection() {
     queryKey: ["parentCategories"],
     queryFn: () => getParentCategories(),
   });
+
+  console.log({ data });
   const parentCategories: ParentCategory[] = data?.data?.data ?? [];
 
   // Flatten out all subcategories
@@ -25,7 +27,7 @@ export default function CategorySection() {
     (parent.children || []).map((child) => ({
       ...child,
       parentId: parent.id,
-    }))
+    })),
   );
 
   if (isLoading) {
@@ -33,11 +35,15 @@ export default function CategorySection() {
   }
 
   if (error) {
-    return <div className="py-20 text-center text-red-500">Error loading categories</div>;
+    return (
+      <div className="py-20 text-center text-red-500">
+        Error loading categories
+      </div>
+    );
   }
 
   if (subCategories.length === 0) {
-     return <div className="py-20 text-center">No categories found.</div>;
+    return <div className="py-20 text-center">No categories found.</div>;
   }
 
   return (
@@ -48,7 +54,8 @@ export default function CategorySection() {
             Browse by Subcategory
           </h2>
           <p className="text-gray-400">
-            Find the perfect vehicle or equipment from our extensive subcategories
+            Find the perfect vehicle or equipment from our extensive
+            subcategories
           </p>
         </div>
         {/* Slider */}
@@ -66,7 +73,7 @@ export default function CategorySection() {
               </CarouselItem>
             ))}
           </CarouselContent>
-          
+
           {/* Navigation Arrows, hidden on mobile to avoid overflow */}
           <div className="absolute top-1/2 -translate-y-1/2 inset-x-0 hidden md:flex justify-between pointer-events-none opacity-0 group-hover/section:opacity-100 transition-opacity duration-300">
             <CarouselPrevious className="pointer-events-auto bg-white/80 hover:bg-white text-blue-600 border-none shadow-md size-12" />
